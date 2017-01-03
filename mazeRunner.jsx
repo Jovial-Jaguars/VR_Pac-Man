@@ -28,27 +28,28 @@ class MazeRunner extends React.Component {
           plane5.checkCollisions = true;
           plane5.material = new BABYLON.StandardMaterial("texture1", scene);
           plane5.material.diffuseColor = new BABYLON.Color3(1, 0.9, 0);
-          var light1 = new BABYLON.SpotLight("Spot0", new BABYLON.Vector3(0, 210, 0), new BABYLON.Vector3(0, -1, 0), 0.2, 1, scene);
+          // var light1 = new BABYLON.SpotLight("Spot0", new BABYLON.Vector3(0, 210, 0), new BABYLON.Vector3(0, -1, 0), 0.2, 1, scene);
           //light1.intensity = 1;
           // light0.diffuse = new BABYLON.Color3(1, 1, 1);
           // light0.specular = new BABYLON.Color3(1, 1, 1);
           // light0.groundColor = new BABYLON.Color3(0, 0, 0);
-          light1.parent = plane5;
+          // light1.parent = plane5;
           //boxes.push(plane5);
         } else if (arr[i][j] === 2) {
-          var sphere = BABYLON.Mesh.CreateSphere("sphere", 2.0, 2.0, scene);
+          var sphere = BABYLON.Mesh.CreateSphere("sphere", 20.0, 4.0, scene);
           // plane.position.x = 50;
           // plane.position.z = 50;
 
           sphere.parent = plane;
           sphere.position.z = z;
           sphere.position.x = x; 
-          sphere.position.y = 2; 
+          sphere.position.y = 10; 
           sphere.checkCollisions = true;
           sphere.material = new BABYLON.StandardMaterial("wow", scene);
           //sphere.material.diffuseTexture  = new BABYLON.Texture("grass.jpg", scene);
           sphere.material.diffuseColor = new BABYLON.Color3(0, 0.2, 0.7);
           sphere.material.emissiveColor = new BABYLON.Color3(0, .2, .7);
+          
           // sphere.onCollide = function() {
           //   sphere.dispose();
           // };
@@ -58,15 +59,15 @@ class MazeRunner extends React.Component {
           //     sphere.dispose();
           //   }
           // };
-          var light1 = new BABYLON.SpotLight("Spot0", new BABYLON.Vector3(0, 10, 0), new BABYLON.Vector3(0, -1, 0), 0.5, 1, scene);
-          light1.intensity = 1;
-          // light0.diffuse = new BABYLON.Color3(1, 1, 1);
-          // light0.specular = new BABYLON.Color3(1, 1, 1);
-          // light0.groundColor = new BABYLON.Color3(0, 0, 0);
-          light1.parent = plane;
-          light1.position.z = z;
-          light1.position.x = x; 
-          light1.position.y = 2; 
+          // var light1 = new BABYLON.SpotLight("Spot0", new BABYLON.Vector3(0, 10, 0), new BABYLON.Vector3(0, -1, 0), 0.5, 1, scene);
+          // light1.intensity = 1;
+          // // light0.diffuse = new BABYLON.Color3(1, 1, 1);
+          // // light0.specular = new BABYLON.Color3(1, 1, 1);
+          // // light0.groundColor = new BABYLON.Color3(0, 0, 0);
+          // light1.parent = plane;
+          // light1.position.z = z;
+          // light1.position.x = x; 
+          // light1.position.y = 2; 
           // sphere.actionManager = new BABYLON.ActionManager(scene);
           // var action = new BABYLON.SetValueAction({ trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger, parameter: camera }, sphere, "visibility", 0, 500, false, false, function() {sphere.dispose()});
           // sphere.actionManager.registerAction(action);
@@ -108,10 +109,10 @@ class MazeRunner extends React.Component {
     // Change the scene background color to green.
     scene.clearColor = new BABYLON.Color3(0, 0, 0.8);
     //VRDeviceOrientationFreeCamera
-    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(-200, 1, -15), scene);
+    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(-200, 6, -15), scene);
     camera.inputs.addGamepad();
     camera.attachControl(canvas, true);
-    //camera.ellipsoid = new BABYLON.Vector3(2, 2, 2);
+    camera.ellipsoid = new BABYLON.Vector3(2, 6, 2);
     //camera.position.y = 10;
     //camera.collisionRadius = new BABYLON.Vector3(0.5, 0.5, 0.5);
     // Activate collisions
@@ -140,6 +141,7 @@ class MazeRunner extends React.Component {
     // skybox.infiniteDistance = true;
     var mm = new BABYLON.FreeCamera("minimap", new BABYLON.Vector3(0,1000,0), scene);
     mm.setTarget(new BABYLON.Vector3(0.1,0.1,0.1));
+    mm.checkCollisions = true;
     // Activate the orthographic projection
     mm.mode = BABYLON.Camera.ORTHOGRAPHIC_CAMERA;
 
@@ -199,6 +201,10 @@ class MazeRunner extends React.Component {
     plane2.checkCollisions = true;
     plane2.material = new BABYLON.StandardMaterial("grass.png", scene);
     plane2.material.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.8);
+    var light0 = new BABYLON.PointLight("Omni0", new BABYLON.Vector3(-200, 50, -15), scene);
+    light0.intensity = 0.9;
+    //light0.diffuse = new BABYLON.Color3(1, 0, 0);
+    //light0.specular = new BABYLON.Color3(1, 1, 1);
     //plane2.material.emissiveColor = new BABYLON.Color3(0, .2, .7);
     var plane3 = BABYLON.MeshBuilder.CreateBox("plane", { width: 400, height: 200}, scene);
     // plane.position.x = 50;
@@ -251,11 +257,12 @@ class MazeRunner extends React.Component {
     ground.material = new BABYLON.StandardMaterial("texture1", scene);
     ground.material.diffuseColor = new BABYLON.Color3(0.1, 0.1, 0.1);
     //ground.applyGravity = true;
-    scene.activeCamera.onCollide = function(collidedMesh) {
-      //console.log(sphere.position.y);
+    camera.onCollide = function(collidedMesh) {
+      //console.log(collidedMesh.uniqueId);
+      //console.log(arr[collidedMesh.uniqueId])
       if (arr[collidedMesh.uniqueId] !== undefined) {
-        console.log('gone');
-        collidedMesh.dispose();
+        //console.log('gone');
+        arr[collidedMesh.uniqueId].dispose();
       }
     };
     // mm.onCollide = function(collidedMesh) {
@@ -279,7 +286,7 @@ class MazeRunner extends React.Component {
     //   var action = new BABYLON.InterpolateValueAction({ trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger, parameter: camera }, arr[i], "visibility", 0, 500, false, false, function() {arr[i].dispose()});
     //   arr[i].actionManager.registerAction(action);
     // }
-    
+    scene.activeCamera.checkCollisions = true;
 
     
     // Leave this function
