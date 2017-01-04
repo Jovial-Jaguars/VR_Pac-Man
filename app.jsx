@@ -18,9 +18,28 @@ class App extends React.Component {
              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
+
+      default1: [[1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1],
+                 [1, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1],
+                 [1, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1],
+                 [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
+                 [1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1],
+                 [1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 1],
+                 [1, 1, 1, 1, 2, 1, 1, 1, 0, 1, 0, 1, 1, 1, 2, 1],
+                 [1, 1, 1, 1, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2, 1],
+                 [1, 0, 0, 0, 2, 0, 0, 1, 1, 0, 1, 1, 0, 0, 2, 1],
+                 [1, 1, 1, 1, 2, 1, 0, 1, 0, 0, 0, 1, 0, 1, 2, 1],
+                 [1, 1, 1, 1, 2, 1, 0, 1, 1, 1, 1, 1, 0, 1, 2, 1],
+                 [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
+                 [1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1],
+                 [1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 1],
+                 [1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1],
+                 [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1]]
+
     };
     this.amaze = this.amaze.bind(this);
+    this.clickLevel = this.clickLevel.bind(this);
   }
   amaze() {
     console.log('Fetching pet status...');
@@ -34,20 +53,22 @@ class App extends React.Component {
     //     .then(function (data) {
     // });
   }
-  click(num, e) {
+  clickLevel (arr, e) {
+    this.setState({
+      maze: arr.map(function(arr) {
+        return arr.slice();
+      })
+    });
+  }
+
+  click(indy, index, e) {
     var curr = this.state.maze;
-    if (e.target.className === 'element' && curr[num % 16][Math.floor(num / 16)] === 0) {
-      e.target.removeAttribute('class');
-      e.target.setAttribute('class', 'elemental');
-      curr[num % 16][Math.floor(num / 16)] = 1;
-    } else if (e.target.className === 'elemental' && curr[num % 16][Math.floor(num / 16)] === 1) {
-      e.target.removeAttribute('class');
-      e.target.setAttribute('class', 'dot');
-      curr[num % 16][Math.floor(num / 16)] = 2;
+    if (curr[indy][index] === 0) {
+      curr[indy][index] = 1;
+    } else if (curr[indy][index] === 1) {
+      curr[indy][index] = 2;
     } else {
-      e.target.removeAttribute('class');
-      e.target.setAttribute('class', 'element');
-      curr[num % 16][Math.floor(num / 16)] = 0;
+      curr[indy][index] = 0;
     }
     this.setState({
       maze: curr
@@ -61,7 +82,7 @@ class App extends React.Component {
       <div className="maze">
       { this.state.choice ? 
         <MazeRunner maze={this.state.maze}/>
-        : <MazeEditor click={this.click.bind(this)} maze={this.state.maze} amaze={this.amaze.bind(this)}/>
+        : <MazeEditor def={this.state.default1} clickLevel={this.clickLevel.bind(this)} click={this.click.bind(this)} maze={this.state.maze} amaze={this.amaze.bind(this)}/>
       }
       </div>
     );
