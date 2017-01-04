@@ -29,6 +29,8 @@ class MazeRunner extends React.Component {
       });
       return canvas;
     };
+    // BABYLON.SceneLoader.ImportMesh("Plane", "", "ghost2.babylon", scene, function (newMeshes, particleSystems) {
+    // });
   var mazemaker = function(arr, scene, plane, camera) {
     var boxes = [];
     var x = -187;
@@ -67,51 +69,51 @@ class MazeRunner extends React.Component {
           //sphere.material.diffuseTexture  = new BABYLON.Texture("grass.jpg", scene);
           sphere.material.diffuseColor = new BABYLON.Color3(0, 0.2, 0.7);
           sphere.material.emissiveColor = new BABYLON.Color3(0, .2, .7);
-          var particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
+          // var particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
 
-          //Texture of each particle
-          particleSystem.particleTexture = new BABYLON.Texture("./flare.png", scene);
+          // //Texture of each particle
+          // particleSystem.particleTexture = new BABYLON.Texture("./flare.png", scene);
 
-          // Where the particles come from
-          particleSystem.emitter = sphere; // the starting object, the emitter
+          // // Where the particles come from
+          // particleSystem.emitter = sphere; // the starting object, the emitter
 
-          // Colors of all particles
-          particleSystem.color1 = new BABYLON.Color4(0.7, 0.8, 1.0, 1.0);
-          particleSystem.color2 = new BABYLON.Color4(0.2, 0.5, 1.0, 1.0);
-          particleSystem.colorDead = new BABYLON.Color4(0, 0, 0.2, 0.0);
+          // // Colors of all particles
+          // particleSystem.color1 = new BABYLON.Color4(0.7, 0.8, 1.0, 1.0);
+          // particleSystem.color2 = new BABYLON.Color4(0.2, 0.5, 1.0, 1.0);
+          // particleSystem.colorDead = new BABYLON.Color4(0, 0, 0.2, 0.0);
 
-          // Size of each particle (random between...
-          particleSystem.minSize = 0.1;
-          particleSystem.maxSize = 0.5;
+          // // Size of each particle (random between...
+          // particleSystem.minSize = 0.1;
+          // particleSystem.maxSize = 0.5;
 
-          // Life time of each particle (random between...
-          particleSystem.minLifeTime = 0.3;
-          particleSystem.maxLifeTime = 1.5;
+          // // Life time of each particle (random between...
+          // particleSystem.minLifeTime = 0.3;
+          // particleSystem.maxLifeTime = 1.5;
 
-          // Emission rate
-          particleSystem.emitRate = 1500;
+          // // Emission rate
+          // particleSystem.emitRate = 1500;
 
-          // Blend mode : BLENDMODE_ONEONE, or BLENDMODE_STANDARD
-          particleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE;
+          // // Blend mode : BLENDMODE_ONEONE, or BLENDMODE_STANDARD
+          // particleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE;
 
-          // Set the gravity of all particles
-          particleSystem.gravity = new BABYLON.Vector3(0, -9.81, 0);
+          // // Set the gravity of all particles
+          // particleSystem.gravity = new BABYLON.Vector3(0, -9.81, 0);
 
-          // Direction of each particle after it has been emitted
-          particleSystem.direction1 = new BABYLON.Vector3(-7, -8, 3);
-          particleSystem.direction2 = new BABYLON.Vector3(7, -8, -3);
+          // // Direction of each particle after it has been emitted
+          // particleSystem.direction1 = new BABYLON.Vector3(-7, -8, 3);
+          // particleSystem.direction2 = new BABYLON.Vector3(7, -8, -3);
 
-          // Angular speed, in radians
-          particleSystem.minAngularSpeed = 0;
-          particleSystem.maxAngularSpeed = Math.PI;
+          // // Angular speed, in radians
+          // particleSystem.minAngularSpeed = 0;
+          // particleSystem.maxAngularSpeed = Math.PI;
 
-          // Speed
-          particleSystem.minEmitPower = 1;
-          particleSystem.maxEmitPower = 3;
-          particleSystem.updateSpeed = 0.005;
+          // // Speed
+          // particleSystem.minEmitPower = 1;
+          // particleSystem.maxEmitPower = 3;
+          // particleSystem.updateSpeed = 0.005;
 
-          // Start the particle system
-          particleSystem.start();
+          // // Start the particle system
+          // particleSystem.start();
 
           // Fountain's animation
           
@@ -207,10 +209,20 @@ class MazeRunner extends React.Component {
     skybox.infiniteDistance = true;
     skybox.renderingGroupId = 0;
     scene.fogMode = BABYLON.Scene.LINEAR;
-    //scene.fogDensity = 0.01;
+    scene.fogDensity = 0.01;
     scene.fogStart = -400.0;
     scene.fogEnd = 400.0;
     scene.fogColor = new BABYLON.Color3(0.3, 0.9, 0.85);
+    BABYLON.SceneLoader.ImportMesh("Plane", "./", "ghostparent.babylon", scene, function (newMeshes, particleSystems) {
+      var ghost = newMeshes[0];
+      ghost.position.y = 10;
+      ghost.position.x = -200;
+      ghost.position.z = -10;
+      ghost.material = new BABYLON.StandardMaterial("ghost", scene);
+      ghost.material.emissiveTexture = new BABYLON.Texture("grass.jpg", scene);
+      //ghost.material = new BABYLON.StandardMaterial("lol", scene);
+      //x.material.emissiveColor = new BABYLON.Color3(0.1, 0.8, 0.8);
+    });
     var mm = new BABYLON.FreeCamera("minimap", new BABYLON.Vector3(0,1000,0), scene);
     mm.setTarget(new BABYLON.Vector3(0.1,0.1,0.1));
     mm.checkCollisions = true;
@@ -238,17 +250,17 @@ class MazeRunner extends React.Component {
         width,
         height
         );
-    var scoreTexture = new BABYLON.DynamicTexture("scoreTexture", 512, scene, true);
-    var scoreboard = BABYLON.Mesh.CreatePlane("scoreboard", 50, scene);
-    // Position the scoreboard after the lane.
-    scoreboard.position.x = -200; 
-    scoreboard.position.z = -50;
-    scoreboard.position.y = 30;
-    scoreboard.rotation.x = Math.PI;
-    scoreboard.checkCollisions = true; 
-    // Create a material for the scoreboard.
-    scoreboard.material = new BABYLON.StandardMaterial("scoradboardMat", scene);
-    scoreboard.material.diffuseTexture = scoreTexture;
+    // var scoreTexture = new BABYLON.DynamicTexture("scoreTexture", 512, scene, true);
+    // var scoreboard = BABYLON.Mesh.CreatePlane("scoreboard", 50, scene);
+    // // Position the scoreboard after the lane.
+    // scoreboard.position.x = -200; 
+    // scoreboard.position.z = -50;
+    // scoreboard.position.y = 30;
+    // scoreboard.rotation.x = Math.PI;
+    // scoreboard.checkCollisions = true; 
+    // // Create a material for the scoreboard.
+    // scoreboard.material = new BABYLON.StandardMaterial("scoradboardMat", scene);
+    // scoreboard.material.diffuseTexture = scoreTexture;
     // Set the diffuse texture to be the dynamic texture.
     //scoreboard.material.diffuseTexture = scoreTexture;
     // Add the camera to the list of active cameras of the game
@@ -354,7 +366,7 @@ class MazeRunner extends React.Component {
     // ground.position.y = -10;
     //ground.position = new BABYLON.Vector3(5, -10, -15);
     ground.material = new BABYLON.StandardMaterial("texture1", scene);
-    ground.material.diffuseColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+    ground.material.emissiveColor = new BABYLON.Color3(1.0, 0.5, 0);
     //ground.applyGravity = true;
     var pellet = new BABYLON.Sound("pellet", "./pellet.wav", scene);
     //create(scene);

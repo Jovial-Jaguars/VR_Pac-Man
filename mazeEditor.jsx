@@ -1,8 +1,34 @@
 var MazeEditor = (props) => (
-  <div> 
+  <div className= "maze-editor"> 
+    <div className="side-bar">
+      <h3>Defaults</h3>
+      <div className="default1" onClick={props.clickLevel.bind(this, props.def)}>
+      {
+        props.def.map((curr, indy)=> (
+          curr.map((num, index, arr) => {
+            if (num === 0) {
+              return (<div className="block1" ></div>);
+            } else if (num === 1) {
+              return (<div className="block2"></div>);
+            } else if (num === 2) {
+              return (<div className="block3" ></div>);
+            }
+          }).concat(<br />)
+        ))
+      }
+      </div>
+    </div>
     {
       props.maze.map((curr, indy)=> (
-        curr.map((num, index, arr) => (<div className="element" onClick={props.click.bind(this, indy * arr.length + index)}></div>)).concat(<br></br>)
+        curr.map((num, index, arr) => {
+          if (num === 0) {
+            return (<div className="element" onDragEnter ={props.click.bind(this, indy, index)} onMouseDown={props.click.bind(this, indy, index)}></div>);
+          } else if (num === 1) {
+            return (<div className="elemental" onDragEnter ={props.click.bind(this, indy, index)} onMouseDown={props.click.bind(this, indy, index)}></div>);
+          } else if (num === 2) {
+            return (<div className="dot" onDragEnter={props.click.bind(this, indy, index)} onMouseDown={props.click.bind(this, indy, index)}></div>);
+          }
+        }).concat(<br></br>)
       ))
     }
     <button onClick={props.amaze}>Maze</button>
