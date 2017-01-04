@@ -1,7 +1,11 @@
+h3{
+  text-align: center;
+}
+
 .element {
   display: inline-block;
-  width: 25px;
-  height: 25px;
+  width: 3%;
+  height: 4%;
   margin-left: 2px;
   margin-right: 2px;
   border-radius: 5px;
@@ -9,8 +13,8 @@
 }
 .elemental {
   display: inline-block;
-  width: 25px;
-  height: 25px;
+  width: 3%;
+  height: 4%;
   margin-left: 2px;
   margin-right: 2px;
   border-radius: 5px;
@@ -18,8 +22,8 @@
 }
 .dot {
   display: inline-block;
-  width: 25px;
-  height: 25px;
+  width: 3%;
+  height: 4%;
   margin-left: 2px;
   margin-right: 2px;
   border-radius: 5px;
@@ -27,7 +31,57 @@
   background-color: blue;
   background-size: cover;
 }
+.side-bar {
+  display: inline-block;
+  float: right;
+  height: 60%;
+  width: 25%;
+  background-color: blue;
+  background: linear-gradient(to bottom right, rgba(56, 132, 255, 0.5), rgba(13, 49, 147, 0.2));
+  color: white;
+}
+.default1 {
+  display: inline-block;
+  width: 100%;
+  height: 20%;
+  background-color: blue;
+}
+.block1 {
+  display: inline-block;
+  width: 4%;
+  height: 4%;
+  background-color: blue;
+
+}
+.block2 {
+  display: inline-block;
+  width: 4%;
+  height: 4%;
+  background-color: black;
+
+}
+.block3 {
+  display: inline-block;
+  width: 4%;
+  height: 4%;
+  background-image: url('dot.png');
+  background-color: blue;
+  background-size: cover;
+
+}
+.in-between {
+  display: block;
+  height: -2%;
+}
+.maze-editor {
+  height: 100%;
+  width: 100%;
+}
 .maze {
   width: 100%;
   height: 100%;
+  background-image: url('pac4.jpg');
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: none;
 }
