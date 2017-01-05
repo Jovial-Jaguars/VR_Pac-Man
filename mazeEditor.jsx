@@ -24,21 +24,25 @@ var MazeEditor = (props) => (
 
       </table>
     </div>
+    <table className="maze-editor-table">
     {
       props.maze.map((curr, indy)=> (
+        <tr className="maze-editor-row">{
         curr.map((num, index, arr) => {
           if (num === 0) {
-            return (<div className="element" onDragEnter ={props.click.bind(this, indy, index)} onMouseDown={props.click.bind(this, indy, index)}></div>);
+            return (<td className="element" onDragEnter ={props.click.bind(this, indy, index)} onMouseDown={props.click.bind(this, indy, index)}></td>);
           } else if (num === 1) {
-            return (<div className="elemental" onDragEnter ={props.click.bind(this, indy, index)} onMouseDown={props.click.bind(this, indy, index)}></div>);
+            return (<td className="elemental" onDragEnter ={props.click.bind(this, indy, index)} onMouseDown={props.click.bind(this, indy, index)}></td>);
           } else if (num === 2) {
-            return (<div className="dot" onDragEnter={props.click.bind(this, indy, index)} onMouseDown={props.click.bind(this, indy, index)}></div>);
+            return (<td className="dot" onDragEnter={props.click.bind(this, indy, index)} onMouseDown={props.click.bind(this, indy, index)}></td>);
           } else if (num === 3) {
-            return (<div className="pacman" onDragEnter={props.click.bind(this, indy, index)} onMouseDown={props.click.bind(this, indy, index)}></div>);
+            return (<td className="pacman" onDragEnter={props.click.bind(this, indy, index)} onMouseDown={props.click.bind(this, indy, index)}></td>);
           }
-        }).concat(<br></br>)
+        })
+        }</tr>
       ))
     }
+    </table>
     <button onClick={props.amaze}>Maze</button>
   </div> 
 );
