@@ -160,9 +160,9 @@ class MazeRunner extends React.Component {
           // light0.specular = new BABYLON.Color3(1, 1, 1);
           boxes[sphere.uniqueId] = sphere;
         } else if (arr[i][j] === 3) {
-          
-          camera.position.z = z; 
-          camera.position.x = x; 
+          scene.activeCamera.position.z = z + 200; 
+          scene.activeCamera.position.x = x - 200; 
+          console.log('x:', camera.position.x, "z:", plane.position.z);
         }
         z -= 25;
       }
@@ -191,7 +191,7 @@ class MazeRunner extends React.Component {
     // Activate gravity !
     //scene.gravity = new BABYLON.Vector3(0, -9.81, 0);
     camera.applyGravity = true;
-    camera.rotation.y = Math.PI/2; 
+    //camera.rotation.y = Math.PI/2; 
     camera.keysUp = [87]; // W
     camera.keysDown = [83]; // S
     camera.keysLeft = [65]; // Q
@@ -293,14 +293,14 @@ class MazeRunner extends React.Component {
     var plane = BABYLON.MeshBuilder.CreateBox("plane", { width: 400, height: 200}, scene);
     // plane.position.x = 50;
     // plane.position.z = 50;
-    console.log('x:',plane.position.x, "y:", plane.position.y, "z:", plane.position.z)
+    //console.log('x:',plane.position.x, "y:", plane.position.y, "z:", plane.position.z)
     plane.rotation.y = Math.PI/2; 
     plane.checkCollisions = true;
     plane.material = new BABYLON.StandardMaterial("texture1", scene);
     plane.material.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.8);
     plane.material.alpha = 0.2;
     //plane.material.backFaceCulling = false;
-    var arr = mazemaker(that.props.maze, scene, plane, camera);
+    var arr = mazemaker(that.props.maze, scene, plane, scene.activeCamera);
    
     console.log(arr);
     
