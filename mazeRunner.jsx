@@ -217,34 +217,34 @@ class MazeRunner extends React.Component {
     scene.fogStart = -400.0;
     scene.fogEnd = 400.0;
     scene.fogColor = new BABYLON.Color3(0.3, 0.9, 0.85);
-    BABYLON.SceneLoader.ImportMesh("", "./", "ghostparent.babylon", scene, function (newMeshes, particleSystems) {
-      for (var i = 0; i < newMeshes.length; i++) {
-        var ghost = newMeshes[i];
-        var light0 = new BABYLON.SpotLight("Spot0", new BABYLON.Vector3(0, 50, 0), new BABYLON.Vector3(0, -1, 0), 0.4, 3, scene);
-        light0.parent = ghost;
-        if (ghost.name === 'Plane') {
-          ghost.position.y = 10;
-          ghost.position.x = -200;
-          ghost.position.z = -10;
-          ghost.material = new BABYLON.StandardMaterial('ghost', scene);
-          ghost.material.emissiveColor = new BABYLON.Color3(0.2, 0.4, 0.8);
-        } else if (ghost.name === 'Sphere' || ghost.name === 'Sphere.001') {
-          ghost.material = new BABYLON.StandardMaterial('ghost', scene);
-          ghost.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
-          ghost.material.specularColor = new BABYLON.Color3(1, 1, 1);
-          ghost.material.diffuseColor = new BABYLON.Color3(0.8, 0.8, 0.8);
-        } else if (ghost.name === 'Sphere.002' || ghost.name === 'Sphere.003') {
-          ghost.material = new BABYLON.StandardMaterial('ghost', scene);
-          ghost.material.emissiveColor = new BABYLON.Color3(0, 0, 0);
-          ghost.material.specularColor = new BABYLON.Color3(1, 1, 1);
-          ghost.material.diffuseColor = new BABYLON.Color3(0.8, 0.8, 0.8);
-        }
+    // BABYLON.SceneLoader.ImportMesh("", "./", "ghostparent.babylon", scene, function (newMeshes, particleSystems) {
+    //   for (var i = 0; i < newMeshes.length; i++) {
+    //     var ghost = newMeshes[i];
+    //     var light0 = new BABYLON.SpotLight("Spot0", new BABYLON.Vector3(0, 50, 0), new BABYLON.Vector3(0, -1, 0), 0.4, 3, scene);
+    //     light0.parent = ghost;
+    //     if (ghost.name === 'Plane') {
+    //       ghost.position.y = 10;
+    //       ghost.position.x = -200;
+    //       ghost.position.z = -10;
+    //       ghost.material = new BABYLON.StandardMaterial('ghost', scene);
+    //       ghost.material.emissiveColor = new BABYLON.Color3(0.2, 0.4, 0.8);
+    //     } else if (ghost.name === 'Sphere' || ghost.name === 'Sphere.001') {
+    //       ghost.material = new BABYLON.StandardMaterial('ghost', scene);
+    //       ghost.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
+    //       ghost.material.specularColor = new BABYLON.Color3(1, 1, 1);
+    //       ghost.material.diffuseColor = new BABYLON.Color3(0.8, 0.8, 0.8);
+    //     } else if (ghost.name === 'Sphere.002' || ghost.name === 'Sphere.003') {
+    //       ghost.material = new BABYLON.StandardMaterial('ghost', scene);
+    //       ghost.material.emissiveColor = new BABYLON.Color3(0, 0, 0);
+    //       ghost.material.specularColor = new BABYLON.Color3(1, 1, 1);
+    //       ghost.material.diffuseColor = new BABYLON.Color3(0.8, 0.8, 0.8);
+    //     }
          
-      }
+    //   }
       
-      //ghost.material = new BABYLON.StandardMaterial("lol", scene);
-      //x.material.emissiveColor = new BABYLON.Color3(0.1, 0.8, 0.8);
-    });
+    //   //ghost.material = new BABYLON.StandardMaterial("lol", scene);
+    //   //x.material.emissiveColor = new BABYLON.Color3(0.1, 0.8, 0.8);
+    // });
     var mm = new BABYLON.FreeCamera("minimap", new BABYLON.Vector3(0,1000,0), scene);
     mm.setTarget(new BABYLON.Vector3(0.1,0.1,0.1));
     mm.checkCollisions = true;
