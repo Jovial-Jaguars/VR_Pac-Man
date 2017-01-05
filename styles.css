@@ -4,8 +4,8 @@ h3{
 
 .element {
   display: inline-block;
-  width: 3%;
-  height: 4%;
+  width: 4.5%;
+  height: 100%;
   margin-left: 2px;
   margin-right: 2px;
   border-radius: 5px;
@@ -13,8 +13,8 @@ h3{
 }
 .elemental {
   display: inline-block;
-  width: 3%;
-  height: 4%;
+  width: 4.5%;
+  height: 100%;
   margin-left: 2px;
   margin-right: 2px;
   border-radius: 5px;
@@ -24,8 +24,8 @@ h3{
   display: inline-block;
   max-width:100%;
   max-height:100%;
-  width: 3%;
-  height: 4%;
+  width: 4.5%;
+  height: 100%;
   margin-left: 2px;
   margin-right: 2px;
   border-radius: 5px;
@@ -40,8 +40,8 @@ h3{
   display: inline-block;
   max-width:100%;
   max-height:100%;
-  width: 3%;
-  height: 4%;
+  width: 4.5%;
+  height: 100%;
   margin-left: 2px;
   margin-right: 2px;
   border-radius: 5px;
@@ -110,6 +110,27 @@ h3{
   height: 100%;
   width: 100%;
 }
+.maze-editor-table {
+  width: 50%;
+  height: 70%;
+  display: inline-block;
+  float: left;
+  background-color: green;
+}
+
+.maze-editor-row {
+  width: 100%;
+  height: 5.5%;
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.button {
+  display: inline-block;
+  float: left;
+  clear: both;
+}
+
 .maze {
   width: 100%;
   height: 100%;
