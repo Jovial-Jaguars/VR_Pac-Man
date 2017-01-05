@@ -93,7 +93,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="maze">
-      { this.state.choice ? 
+      { this.state.choice ?
         <MazeRunner maze={this.state.maze} />
         : <MazeEditor def={this.state.default1} clickLevel={this.clickLevel.bind(this)} click={this.click.bind(this)} maze={this.state.maze} amaze={this.amaze.bind(this)}/>
       }
