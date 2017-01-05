@@ -36,6 +36,22 @@ h3{
   background-position: center;
 
 }
+.pacman {
+  display: inline-block;
+  max-width:100%;
+  max-height:100%;
+  width: 3%;
+  height: 4%;
+  margin-left: 2px;
+  margin-right: 2px;
+  border-radius: 5px;
+  background-image: url('pacman.png');
+  background-size: contain;
+  background-color: blue;
+  background-repeat: no-repeat;
+  background-position: center;
+
+}
 .side-bar {
   display: inline-block;
   float: right;
@@ -77,6 +93,15 @@ h3{
   width: 5.5%;
   height: 100%;
   background-image: url('dot.png');
+  background-size: contain;
+  background-color: blue;
+  background-position: center;
+}
+.block4 {
+  display: inline-block;
+  width: 5.5%;
+  height: 100%;
+  background-image: url('pacman.png');
   background-size: contain;
   background-color: blue;
   background-position: center;

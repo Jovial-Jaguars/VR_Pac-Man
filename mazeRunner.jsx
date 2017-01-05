@@ -159,6 +159,10 @@ class MazeRunner extends React.Component {
           // light0.diffuse = new BABYLON.Color3(1, 0, 0);
           // light0.specular = new BABYLON.Color3(1, 1, 1);
           boxes[sphere.uniqueId] = sphere;
+        } else if (arr[i][j] === 3) {
+          
+          camera.position.z = z; 
+          camera.position.x = x; 
         }
         z -= 25;
       }
@@ -176,7 +180,7 @@ class MazeRunner extends React.Component {
     // Change the scene background color to green.
     scene.ambientColor = new BABYLON.Color3(0.3, 0.3, 0.3);
     //VRDeviceOrientationFreeCamera
-    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(-200, 6, -15), scene);
+    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 6, 0), scene);
     camera.inputs.addGamepad();
     camera.attachControl(canvas, true);
     camera.ellipsoid = new BABYLON.Vector3(2, 6, 2);
@@ -289,6 +293,7 @@ class MazeRunner extends React.Component {
     var plane = BABYLON.MeshBuilder.CreateBox("plane", { width: 400, height: 200}, scene);
     // plane.position.x = 50;
     // plane.position.z = 50;
+    console.log('x:',plane.position.x, "y:", plane.position.y, "z:", plane.position.z)
     plane.rotation.y = Math.PI/2; 
     plane.checkCollisions = true;
     plane.material = new BABYLON.StandardMaterial("texture1", scene);
