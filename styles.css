@@ -35,7 +35,7 @@ h3{
   display: inline-block;
   float: right;
   height: 60%;
-  width: 25%;
+  width: 40%;
   background-color: blue;
   background: linear-gradient(to bottom right, rgba(56, 132, 255, 0.5), rgba(13, 49, 147, 0.2));
   color: white;
@@ -43,35 +43,38 @@ h3{
 .default1 {
   display: inline-block;
   width: 100%;
-  height: 20%;
+  height: 25%;
   background-color: blue;
 }
+.tablerow {
+  display: inline-block;
+  width: 100%;
+  height: 25%;
+  background-color: blue;
+}
+
 .block1 {
   display: inline-block;
-  width: 4%;
-  height: 4%;
+  width: 5.5%;
+  height: 100%;
   background-color: blue;
 
 }
 .block2 {
   display: inline-block;
-  width: 4%;
-  height: 4%;
+  width: 5.5%;
+  height: 100%;
   background-color: black;
 
 }
 .block3 {
   display: inline-block;
-  width: 4%;
-  height: 4%;
+  width: 5.5%;
+  height: 100%;
   background-image: url('dot.png');
   background-color: blue;
   background-size: cover;
 
-}
-.in-between {
-  display: block;
-  height: -2%;
 }
 .maze-editor {
   height: 100%;
