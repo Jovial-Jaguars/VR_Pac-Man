@@ -2,21 +2,23 @@ var MazeEditor = (props) => (
   <div className= "maze-editor"> 
     <div className="side-bar">
       <h3>Defaults</h3>
-      <div className="default1" onClick={props.clickLevel.bind(this, props.def)}>
+      <table className="default1" onClick={props.clickLevel.bind(this, props.def)}>
       {
         props.def.map((curr, indy)=> (
-          curr.map((num, index, arr) => {
+          <tr className="tablerow">
+          {curr.map((num, index, arr) => {
             if (num === 0) {
-              return (<div className="block1" ></div>);
+              return (<td className="block1" ></td>);
             } else if (num === 1) {
-              return (<div className="block2"></div>);
+              return (<td className="block2"></td>);
             } else if (num === 2) {
-              return (<div className="block3" ></div>);
+              return (<td className="block3" ></td>);
             }
-          }).concat(<br />)
+          })}
+          </tr> 
         ))
       }
-      </div>
+      </table>
     </div>
     {
       props.maze.map((curr, indy)=> (
