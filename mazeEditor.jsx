@@ -43,7 +43,7 @@ var MazeEditor = (props) => (
       ))
     }
     </table>
-    <button onClick={props.amaze}>Maze</button>
+    <button className="button" onClick={props.amaze}>Maze</button>
   </div> 
 );
 
