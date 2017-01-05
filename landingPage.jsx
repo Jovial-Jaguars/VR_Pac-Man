@@ -1,6 +1,7 @@
 class LandingPage extends React.Component {
   constructor(props) {
     super(props);
+    this.mazebuilderClick = this.mazebuilderClick.bind(this);
   }
 
   navClickHome() {
@@ -26,6 +27,10 @@ class LandingPage extends React.Component {
     $('.modal').css('display', 'none');
   }
 
+  mazebuilderClick() {
+    this.props.router.push({pathname: '/mazebuilder'});
+  }
+
   render() {
     return (
     <div>
@@ -34,6 +39,9 @@ class LandingPage extends React.Component {
         <button id="nav-login" onClick={this.modalClickLogin}>Login</button>
         <button id="nav-signup" onClick={this.modalClickSignup}>Signup</button>
       </nav>
+      <div>
+        <button id="mazebuilder" onClick={this.mazebuilderClick}>Maze Builder</button>
+      </div>
       <div id="myModal" className="modal">
         <div className="modal-content">
           <div className="modal-header">
