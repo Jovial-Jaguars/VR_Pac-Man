@@ -1,19 +1,23 @@
 module.exports = function(app, passport) {
 
-  app.get('/*', function(req, res) {
+  app.get('/', function(req, res) {
     res.redirect('/');
   });
 
+  app.get('/profile', function(req, res) {
+    //success
+  })
+
   app.post('/login', passport.authenticate('local-login', {
-    successRedirect: '/profile',
-    failureRedirect: '/login',
+    successRedirect: '/#/profile',
+    failureRedirect: '/#/login',
     failureFlash: true
     })
   );
 
   app.post('/signup', passport.authenticate('local-signup', {
-    successRedirect: '/profile',
-    failureRedirect: '/signup',
+    successRedirect: '/#/profile',
+    failureRedirect: '/#/failure',
     failureFlash: true
     })
   );
@@ -31,6 +35,7 @@ module.exports = function(app, passport) {
 function isLoggedIn(req, res, next) {
   // if user is authenticated, continue
   if (req.isAuthenticated()) {
+    console.log('user is authenticated');
     return next();
   }
   console.log('user is not authenticated man');
