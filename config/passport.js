@@ -5,7 +5,8 @@ var User = require('../app/models/user');
 module.exports = function(passport) {
   // serialize and deserialize users for sessions
   passport.serializeUser(function(user, done) {
-    done(null, user.username);
+    console.log('serializeuser.boundto.dataValues.username:', user._boundTo.dataValues.username);
+    done(null, user._boundTo.dataValues.username);
   });
 
   passport.deserializeUser(function(username, done) {
@@ -51,15 +52,17 @@ module.exports = function(passport) {
           return done(null, false, req.flash('signupMessage', 'That username is already taken!'));
         }
         else if (!user) {
-          User.create({
+          var newUser = User.create({
             username: username,
             email: req.body.email,
             password: User.generateHash(password)
           })
           .then(function() {
-            return done(null, user);
+            console.log('hits success signup');
+            return done(null, newUser);
           })
           .catch(function(err) {
+            console.log('hits fail signup');
             return done(err);
           });
         }
