@@ -5,6 +5,11 @@ var SignupForm = (props) => (
       <input type="text" name="username"/>
     </div>
     <div>
+      <label>Email:</label>
+      <input type="text" name="email"/>
+    </div>
+
+    <div>
       <label>Password:</label>
       <input type="text" name="password"/>
     </div>

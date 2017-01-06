@@ -31,18 +31,22 @@ class LandingPage extends React.Component {
     this.props.router.push({pathname: '/mazebuilder'});
   }
 
+  modalBlankSpaceClick() {
+    console.log('test');
+  }
+
   render() {
     return (
     <div>
       <nav>
         <button id="nav-home" onClick={this.navClickHome}>Home</button>
         <button id="nav-login" onClick={this.modalClickLogin}>Login</button>
-        <button id="nav-signup" onClick={this.modalClickSignup}>Signup</button>
+        <button id="nav-signup" onClick={this.modalClickSignup}>Signup </button>
       </nav>
       <div>
         <button id="mazebuilder" onClick={this.mazebuilderClick}>Maze Builder</button>
       </div>
-      <div id="myModal" className="modal">
+      <div id="myModal" className="modal" onClick={this.modalBlankSpaceClick}>
         <div className="modal-content">
           <div className="modal-header">
             <button id="modal-login" onClick={this.modalClickLogin}>Login</button>
@@ -66,6 +70,14 @@ class LandingPage extends React.Component {
     </div>
     );
   }
+}
+
+window.onclick = function(event) {
+  var modal = document.getElementById('myModal');
+    if (event.target == modal) {
+      console.log('hit');
+        modal.style.display = 'none';
+    }
 }
 
 window.LandingPage = LandingPage;

@@ -1,7 +1,7 @@
 module.exports = function(app, passport) {
 
-  app.get('/', function(req, res) {
-    res.redirect('/index.html');
+  app.get('/*', function(req, res) {
+    res.redirect('/');
   });
 
   app.post('/login', passport.authenticate('local-login', {
@@ -33,6 +33,7 @@ function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
+  console.log('user is not authenticated man');
   // else, redirect to home page
   res.redirect('/');
 };
