@@ -23,18 +23,24 @@ module.exports = function(passport) {
   function(req, username, password, done) {
    User.find({ where: {username: username} })
     .then(function(user) {
+      var hash = user.dataValues.password;
+      console.log('validpassword fxn:', User.validPassword(password, hash));
       if (!user) {
+        console.log('hit !user');
         return done(null, false, req.flash('loginMessage', 'User not found.'));
       }
-      if (!user.validPassword(password)) {
+      if (!User.validPassword(password, hash)) {
+        console.log('***Enter valid password condition***');
         return done(null, false, req.flash('loginMessage', 'Invalid password.'));
       }
+      console.log('doesn\'t hit any conditionals');
       return done(null, user);
     });
   }));
 
   passport.use('local-signup', new LocalStrategy({
     usernameField: 'username',
+    emailField: 'email',
     passwordField: 'password',
     passReqToCallback: true
   },
@@ -45,19 +51,18 @@ module.exports = function(passport) {
           return done(null, false, req.flash('signupMessage', 'That username is already taken!'));
         }
         else if (!user) {
-          var newUser = User.build({
+          User.create({
             username: username,
-            password: user.generateHash(password)
+            email: req.body.email,
+            password: User.generateHash(password)
           })
-          .save()
-          .catch(function(err) {
+          .then(function() {
             return done(null, user);
+          })
+          .catch(function(err) {
+            return done(err);
           });
         }
-        return done(null, user);
-      })
-      .catch(function(err) {
-        return done(null, user);
       })
   }));
 }
