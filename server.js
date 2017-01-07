@@ -34,7 +34,7 @@ sequelize
   });
 
 
-app.use(express.static(path.join(__dirname, './')));
+
 require('./config/passport')(passport); //pass passport for configuration
 
 
@@ -44,7 +44,7 @@ app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({'extended': true}));
-
+app.use(express.static(path.join(__dirname, './')));
 app.use(session({ secret: 'wells'}));
 app.use(passport.initialize());
 app.use(passport.session());

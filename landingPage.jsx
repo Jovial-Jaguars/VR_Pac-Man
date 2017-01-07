@@ -9,21 +9,18 @@ class LandingPage extends React.Component {
   }
 
   modalClickLogin() {
-    console.log('clicked login');
     $('.modal').css('display', 'block');
     $('#modal-signupform').css('display', 'none');
     $('#modal-loginform').css('display', 'block');
   }
 
   modalClickSignup() {
-    console.log('clicked signup');
     $('.modal').css('display', 'block');
     $('#modal-loginform').css('display', 'none');
     $('#modal-signupform').css('display', 'block');
   }
 
   modalClickExit() {
-    console.log('clicked exit');
     $('.modal').css('display', 'none');
   }
 
@@ -31,8 +28,37 @@ class LandingPage extends React.Component {
     this.props.router.push({pathname: '/mazebuilder'});
   }
 
-  modalBlankSpaceClick() {
-    console.log('test');
+  signupFormSubmit(e) {
+    e.preventDefault()
+    var username = $('#signup-username').val();
+    var dataString = $('#signupForm').serialize();
+    $.ajax({
+      type: 'POST',
+      url: '/signup',
+      data: dataString,
+      success: function() {
+        console.log('successfully signed up!');
+        window.username = username;
+        this.props.router.push({pathname: '/profile'});
+      }.bind(this)
+    })
+  }
+
+  loginFormSubmit(e) {
+    e.preventDefault();
+    var username = $('#login-username').val();
+    console.log('username:', username);
+    var dataString = $('#loginForm').serialize();
+    $.ajax({
+      type: 'POST',
+      url: '/login',
+      data: dataString,
+      success: function() {
+        console.log('successfully logged in!');
+        window.username = username;
+        this.props.router.push({pathname: '/profile'});
+      }.bind(this)
+    })
   }
 
   render() {
@@ -46,7 +72,7 @@ class LandingPage extends React.Component {
       <div>
         <button id="mazebuilder" onClick={this.mazebuilderClick}>Maze Builder</button>
       </div>
-      <div id="myModal" className="modal" onClick={this.modalBlankSpaceClick}>
+      <div id="myModal" className="modal">
         <div className="modal-content">
           <div className="modal-header">
             <button id="modal-login" onClick={this.modalClickLogin}>Login</button>
@@ -55,11 +81,11 @@ class LandingPage extends React.Component {
           </div>
           <div id="modal-loginform">
             <p>Login</p>
-            <LoginForm/>
+            <LoginForm loginFormSubmit={this.loginFormSubmit.bind(this)}/>
           </div>
           <div id="modal-signupform">
             <p>Signup</p>
-            <SignupForm/>
+            <SignupForm signupFormSubmit={this.signupFormSubmit.bind(this)}/>
             <p>Already have an account?<a>Login</a></p>
           </div>
           <div className="modal-footer">
@@ -75,7 +101,6 @@ class LandingPage extends React.Component {
 window.onclick = function(event) {
   var modal = document.getElementById('myModal');
     if (event.target == modal) {
-      console.log('hit');
         modal.style.display = 'none';
     }
 }

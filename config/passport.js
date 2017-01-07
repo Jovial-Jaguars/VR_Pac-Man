@@ -5,8 +5,7 @@ var User = require('../app/models/user');
 module.exports = function(passport) {
   // serialize and deserialize users for sessions
   passport.serializeUser(function(user, done) {
-    console.log('serializeuser.boundto.dataValues.username:', user._boundTo.dataValues.username);
-    done(null, user._boundTo.dataValues.username);
+    done(null, user);
   });
 
   passport.deserializeUser(function(username, done) {
@@ -24,17 +23,20 @@ module.exports = function(passport) {
   function(req, username, password, done) {
    User.find({ where: {username: username} })
     .then(function(user) {
-      var hash = user.dataValues.password;
-      console.log('validpassword fxn:', User.validPassword(password, hash));
       if (!user) {
         console.log('hit !user');
-        return done(null, false, req.flash('loginMessage', 'User not found.'));
+        return done(err);
+        // return done(null, false, req.flash('loginMessage', 'User not found.'));
       }
+      var hash = user.dataValues.password;
       if (!User.validPassword(password, hash)) {
         console.log('***Enter valid password condition***');
-        return done(null, false, req.flash('loginMessage', 'Invalid password.'));
+        return done(err);
+        // return done(null, false, req.flash('loginMessage', 'Invalid password.'));
       }
-      console.log('doesn\'t hit any conditionals');
+      //login success
+      console.log('login success');
+      user = user.dataValues.username;
       return done(null, user);
     });
   }));
@@ -49,20 +51,21 @@ module.exports = function(passport) {
       User.find({ where: {username: username} })
       .then(function(user) {
         if (user) {
-          return done(null, false, req.flash('signupMessage', 'That username is already taken!'));
+          return done(err);
+          // return done(null, false, req.flash('signupMessage', 'That username is already taken!'));
         }
         else if (!user) {
-          var newUser = User.create({
+          User.create({
             username: username,
             email: req.body.email,
             password: User.generateHash(password)
           })
-          .then(function() {
-            console.log('hits success signup');
+          .then(function(user) {
+            //signup success
+            newUser = user.dataValues.username;
             return done(null, newUser);
           })
           .catch(function(err) {
-            console.log('hits fail signup');
             return done(err);
           });
         }
