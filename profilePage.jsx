@@ -6,6 +6,7 @@ class ProfilePage extends React.Component {
       savedMaps: null,
       highScore: null,
     }
+    this.mazebuilderClick = this.mazebuilderClick.bind(this);
   }
 
   logout() {
@@ -34,12 +35,19 @@ class ProfilePage extends React.Component {
     });
   }
 
+  mazebuilderClick() {
+    this.props.router.push({pathname: '/mazebuilder'});
+  }
+
 
   render() {
     return (
       <div>
         <div>Welcome {this.state.username}</div>
         <button id="logout" onClick={this.logout.bind(this)}>Log Out</button>
+        <div>
+          <button id="mazebuilder" onClick={this.mazebuilderClick}>Maze Builder</button>
+        </div>
       </div>
     )
   }
