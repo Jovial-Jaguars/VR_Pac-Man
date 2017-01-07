@@ -89,13 +89,37 @@ class App extends React.Component {
 
   }
 
+  saveMaze() {
+    // convert maze to string
+    var currentMaze = this.state.maze;
+    var mazeData = '';
+    for (var i = 0; i < currentMaze.length; i++) {
+      for (var j = 0; j < currentMaze[i].length; j++) {
+        mazeData += currentMaze[i][j];
+      }
+    }
+    console.log('mapData', mazeData);
+    var data = {
+      mapData: mazeData,
+      shareable: true,
+      username: window.username
+    }
+    $.ajax({
+      type: 'POST',
+      url: '/maps',
+      data: data,
+      success: function() {
+        console.log('success post to /maps');
+      }
+    })
+  }
 
   render() {
     return (
       <div className="maze">
       { this.state.choice ?
         <MazeRunner maze={this.state.maze} />
-        : <MazeEditor def={this.state.default1} clickLevel={this.clickLevel.bind(this)} click={this.click.bind(this)} maze={this.state.maze} amaze={this.amaze.bind(this)}/>
+        : <MazeEditor def={this.state.default1} clickLevel={this.clickLevel.bind(this)} click={this.click.bind(this)} maze={this.state.maze} amaze={this.amaze.bind(this)} saveMaze={this.saveMaze.bind(this)}/>
       }
       </div>
     );

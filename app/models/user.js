@@ -2,6 +2,8 @@ var Sequelize = require('sequelize');
 var sequelize = new Sequelize('PacmanVR', 'root', '');
 var bcrypt = require('bcrypt-nodejs');
 
+var Maps = require('./maps');
+
 var User = sequelize.define('User', {
   username: {
     type: Sequelize.STRING,
