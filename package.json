@@ -5,7 +5,7 @@
   "main": "babylon.custom.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "babel . --watch --out-dir compiled --presets=es2015,react --ignore=node_modules,compiled,bower_components --source-maps inline | nodemon server.js"
+    "start": "babel ./client/components --watch --out-dir client/compiled --presets=es2015,react --ignore=node_modules,compiled,bower_components --source-maps inline | nodemon server.js"
   },
   "author": "",
   "license": "ISC",

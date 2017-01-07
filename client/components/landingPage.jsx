@@ -67,7 +67,7 @@ class LandingPage extends React.Component {
       <nav>
         <button id="nav-home" onClick={this.navClickHome}>Home</button>
         <button id="nav-login" onClick={this.modalClickLogin}>Login</button>
-        <button id="nav-signup" onClick={this.modalClickSignup}>Signup </button>
+        <button id="nav-signup" onClick={this.modalClickSignup}>Signup</button>
       </nav>
       <div>
         <button id="mazebuilder" onClick={this.mazebuilderClick}>Maze Builder</button>
