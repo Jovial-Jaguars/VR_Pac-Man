@@ -28,12 +28,14 @@ var User = sequelize.define('User', {
   }
 }, {
   freezeTableName: true,
-  instanceMethods: {
+  classMethods: {
     generateHash: function(password) {
       return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
     },
-    validPassword: function(password) {
-      return bcrypt.compareSync(password, this.password);
+    validPassword: function(password, hash) {
+      console.log('hash in validPw:', hash);
+      // return 'pacmanx';
+      return bcrypt.compareSync(password, hash);
     }
   }
 });
