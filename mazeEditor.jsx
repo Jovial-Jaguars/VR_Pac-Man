@@ -1,9 +1,9 @@
 var MazeEditor = (props) => (
-  <div className= "maze-editor"> 
+  <div className= "maze-editor">
     <div className="side-bar">
       <h3>Defaults</h3>
       <table className="default1" onClick={props.clickLevel.bind(this, props.def)}>
-      
+
       {
         props.def.map((curr, indy)=> (
           <tr className="tablerow">
@@ -16,7 +16,7 @@ var MazeEditor = (props) => (
               return (<td className="block3" ></td>);
             } else if (num === 3) {
               return (<td className="block4"></td>);
-            } 
+            }
           })}
           </tr>
         ))
@@ -44,7 +44,8 @@ var MazeEditor = (props) => (
     }
     </table>
     <button className="button" onClick={props.amaze}>Maze</button>
-  </div> 
+    <button className="button" onClick ={props.saveMaze}>Save Maze</button>
+  </div>
 );
 
 // PropTypes tell other developers what `props` a component expects
