@@ -39,6 +39,17 @@ class ProfilePage extends React.Component {
     this.props.router.push({pathname: '/mazebuilder'});
   }
 
+  getMazeClick() {
+    $.ajax({
+      type: 'GET',
+      url: '/maps',
+      success: function(data) {
+        console.log('ajax get /maps success');
+        console.log('data:', JSON.stringify(data));
+      }
+    });
+  }
+
 
   render() {
     return (
@@ -47,6 +58,7 @@ class ProfilePage extends React.Component {
         <button id="logout" onClick={this.logout.bind(this)}>Log Out</button>
         <div>
           <button id="mazebuilder" onClick={this.mazebuilderClick}>Maze Builder</button>
+          <button id="getmazes" onClick={this.getMazeClick}>Get Mazes Wow</button>
         </div>
       </div>
     )
