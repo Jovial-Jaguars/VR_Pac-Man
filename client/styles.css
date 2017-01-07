@@ -29,7 +29,7 @@ h3{
   margin-left: 2px;
   margin-right: 2px;
   border-radius: 5px;
-  background-image: url('dot.png');
+  background-image: url('assets/dot.png');
   background-size: contain;
   background-color: blue;
   background-repeat: no-repeat;
@@ -45,7 +45,7 @@ h3{
   margin-left: 2px;
   margin-right: 2px;
   border-radius: 5px;
-  background-image: url('pacman.png');
+  background-image: url('/assets/pacman.png');
   background-size: contain;
   background-color: blue;
   background-repeat: no-repeat;
@@ -92,7 +92,7 @@ h3{
   display: inline-block;
   width: 5.5%;
   height: 100%;
-  background-image: url('dot.png');
+  background-image: url('assets/dot.png');
   background-size: contain;
   background-color: blue;
   background-position: center;
@@ -101,7 +101,7 @@ h3{
   display: inline-block;
   width: 5.5%;
   height: 100%;
-  background-image: url('pacman.png');
+  background-image: url('assets/pacman.png');
   background-size: contain;
   background-color: blue;
   background-position: center;
@@ -134,7 +134,7 @@ h3{
 .maze {
   width: 100%;
   height: 100%;
-  background-image: url('pac4.jpg');
+  background-image: url('assets/pac4.jpg');
   background-attachment: fixed;
   background-size: cover;
   background-repeat: none;
