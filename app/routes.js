@@ -1,4 +1,5 @@
 var User = require('../app/models/user');
+var Maps = require('../app/models/maps');
 
 module.exports = function(app, passport) {
 
@@ -27,7 +28,7 @@ module.exports = function(app, passport) {
   });
 
   app.post('/profileInfo', isLoggedIn, function(req, res) {
-    console.log('hit profileinfo request');
+    console.log('hit profileinfo request.');
     // console.log('req.body:', req.body);
     User.findOne({
       where: {
@@ -37,6 +38,18 @@ module.exports = function(app, passport) {
       res.send({user: user.dataValues});
     });
   });
+
+  app.post('/maps', isLoggedIn, function(req, res) {
+    console.log('hit /post maps in server!');
+    console.log(req.body);
+    Maps.create({
+      mapData: req.body.mapData,
+      shareable: req.body.shareable,
+      user_id: req.body.username
+    }).then(function() {
+      res.end();
+    });
+  })
 
   app.get('/logout', function(req, res) {
     req.logout();
