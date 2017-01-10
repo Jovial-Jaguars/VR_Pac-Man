@@ -5,7 +5,6 @@ class LandingPage extends React.Component {
   }
 
   navClickHome() {
-    console.log('clicked home');
   }
 
   modalClickLogin() {
@@ -65,9 +64,9 @@ class LandingPage extends React.Component {
     return (
     <div>
       <nav>
-        <button id="nav-home" onClick={this.navClickHome}>Home</button>
+        <button id="nav-home" onClick={this.navClickHome.bind(this)}>Home</button>
         <button id="nav-login" onClick={this.modalClickLogin}>Login</button>
-        <button id="nav-signup" onClick={this.modalClickSignup}>Signup </button>
+        <button id="nav-signup" onClick={this.modalClickSignup}>Signup</button>
       </nav>
       <div>
         <button id="mazebuilder" onClick={this.mazebuilderClick}>Maze Builder</button>

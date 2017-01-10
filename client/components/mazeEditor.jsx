@@ -44,7 +44,7 @@ var MazeEditor = (props) => (
     }
     </table>
     <button className="button" onClick={props.amaze}>Maze</button>
-    <button className="button" onClick ={props.saveMaze}>Save Maze</button>
+    <button className="button" onClick ={props.saveMaze}>Save Maze!</button>
   </div>
 );
 
