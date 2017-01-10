@@ -1,0 +1,5 @@
+db:
+  image: mysql
+my-running-script:
+  build: .
+  links: db

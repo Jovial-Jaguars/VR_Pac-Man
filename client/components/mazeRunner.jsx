@@ -196,7 +196,7 @@ class MazeRunner extends React.Component {
     camera.keysDown = [83]; // S
     camera.keysLeft = [65]; // Q
     camera.keysRight = [68]; // D
-    camera.speed = 1;
+    camera.speed = .4;
     camera.inertia = 0.9;
     camera.angularSensibility = 1000;
     scene.activeCameras.push(camera);
@@ -204,7 +204,7 @@ class MazeRunner extends React.Component {
     var skybox = BABYLON.Mesh.CreateBox("skyBox", 5000.0, scene);
     var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
     skyboxMaterial.backFaceCulling = false;
-    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture('./assets/sky35/citysky', scene);
+    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture('assets/sky35/citysky', scene);
     skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
     skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
     skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
@@ -389,7 +389,10 @@ class MazeRunner extends React.Component {
     // ground.position.y = -10;
     //ground.position = new BABYLON.Vector3(5, -10, -15);
     ground.material = new BABYLON.StandardMaterial("texture1", scene);
-    ground.material.emissiveColor = new BABYLON.Color3(1.0, 0.5, 0);
+    // ground.material.emissiveColor = new BABYLON.Color3(1.0, 0.5, 0);
+    ground.material.emissiveTexture = new BABYLON.Texture('../assets/ground2.jpg', scene);
+    ground.material.emissiveTexture.uScale = 100.0;
+    ground.material.emissiveTexture.vScale = 100.0;
     //ground.applyGravity = true;
     var pellet = new BABYLON.Sound("pellet", "./assets/pellet.wav", scene);
     //create(scene);
@@ -401,7 +404,7 @@ class MazeRunner extends React.Component {
         //console.log('gone');
         arr[collidedMesh.uniqueId].dispose();
         pellet.play();
-        score++;
+        score+= 10;
         if (canvas2 === undefined) {
           canvas2 = create(scene, score);
         } else {

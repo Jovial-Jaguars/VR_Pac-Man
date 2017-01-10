@@ -3,7 +3,7 @@ var Maps = require('../app/models/maps');
 
 module.exports = function(app, passport) {
 
-  app.get('/', function(req, res) {
+  app.get('/*', function(req, res) {
     res.redirect('/');
   });
 
