@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-var port = process.env.PORT || 3000;
+var port = 3000;
 
 var passport = require('passport');
 var flash = require('connect-flash');
@@ -27,7 +27,7 @@ var sequelize = new Sequelize('PacmanVR', 'root', '');
 sequelize
   .authenticate()
   .then(function(err) {
-    console.log('Connection established successfully!!');
+    console.log('Connection established successfully!');
   })
   .catch(function(err) {
     console.log('Unable to connect to the database:', err);
@@ -44,8 +44,8 @@ app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({'extended': true}));
-app.use(express.static(path.join(__dirname, './')));
-app.use(session({ secret: 'wells'}));
+app.use(express.static(path.join(__dirname, './client/')));
+app.use(session({ secret: 'wells', resave: true, saveUninitialized: true}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());

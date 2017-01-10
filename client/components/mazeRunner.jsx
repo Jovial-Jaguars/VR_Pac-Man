@@ -5,7 +5,7 @@ class MazeRunner extends React.Component {
   }
 
   componentDidMount() {
-    
+
   // Get the canvas element from our HTML above
     var that = this;
     var canvas = document.getElementById("renderCanvas");
@@ -42,12 +42,12 @@ class MazeRunner extends React.Component {
           // plane.position.x = 50;
           // plane.position.z = 50;
           plane5.parent = plane;
-          plane5.position.z = z; 
-          plane5.position.x = x; 
+          plane5.position.z = z;
+          plane5.position.x = x;
           plane5.checkCollisions = true;
           plane5.material = new BABYLON.StandardMaterial("texture1", scene);
           // plane5.material.diffuseColor = new BABYLON.Color3(1, 0.9, 0);
-          plane5.material.emissiveTexture = new BABYLON.Texture('tron1.jpg', scene);
+          plane5.material.emissiveTexture = new BABYLON.Texture('../assets/tron1.jpg', scene);
           // var light1 = new BABYLON.SpotLight("Spot0", new BABYLON.Vector3(0, 210, 0), new BABYLON.Vector3(0, -1, 0), 0.2, 1, scene);
           //light1.intensity = 1;
           // light0.diffuse = new BABYLON.Color3(1, 1, 1);
@@ -62,8 +62,8 @@ class MazeRunner extends React.Component {
 
           sphere.parent = plane;
           sphere.position.z = z;
-          sphere.position.x = x; 
-          sphere.position.y = 10; 
+          sphere.position.x = x;
+          sphere.position.y = 10;
           sphere.checkCollisions = true;
           sphere.material = new BABYLON.StandardMaterial("wow", scene);
           //sphere.material.diffuseTexture  = new BABYLON.Texture("grass.jpg", scene);
@@ -116,7 +116,7 @@ class MazeRunner extends React.Component {
           // particleSystem.start();
 
           // Fountain's animation
-          
+
           // sphere.onCollide = function() {
           //   sphere.dispose();
           // };
@@ -133,14 +133,14 @@ class MazeRunner extends React.Component {
           // // light0.groundColor = new BABYLON.Color3(0, 0, 0);
           // light1.parent = plane;
           // light1.position.z = z;
-          // light1.position.x = x; 
-          // light1.position.y = 2; 
+          // light1.position.x = x;
+          // light1.position.y = 2;
           // sphere.actionManager = new BABYLON.ActionManager(scene);
           // var action = new BABYLON.SetValueAction({ trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger, parameter: camera }, sphere, "visibility", 0, 500, false, false, function() {sphere.dispose()});
           // sphere.actionManager.registerAction(action);
           // mesh.actionManager.registerAction(
 
-          // new BABYLON.SetValueAction({ trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger, parameter: otherMesh }, 
+          // new BABYLON.SetValueAction({ trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger, parameter: otherMesh },
 
           // mesh, "scaling", new BABYLON.Vector3(1.2, 1.2, 1.2)));
           // sphere.onCollide = function(collidedMesh) {
@@ -155,13 +155,13 @@ class MazeRunner extends React.Component {
           //   }
           // };
           // light0.position.z = -20;
-          // light0.position.y = 10; 
+          // light0.position.y = 10;
           // light0.diffuse = new BABYLON.Color3(1, 0, 0);
           // light0.specular = new BABYLON.Color3(1, 1, 1);
           boxes[sphere.uniqueId] = sphere;
         } else if (arr[i][j] === 3) {
-          scene.activeCamera.position.z = z + 200; 
-          scene.activeCamera.position.x = x - 200; 
+          scene.activeCamera.position.z = z + 200;
+          scene.activeCamera.position.x = x - 200;
           console.log('x:', camera.position.x, "z:", plane.position.z);
         }
         z -= 25;
@@ -173,7 +173,7 @@ class MazeRunner extends React.Component {
   };
   var createScene = function () {
 
-    // Now create a basic Babylon Scene object 
+    // Now create a basic Babylon Scene object
     var scene = new BABYLON.Scene(engine);
     scene.gravity = new BABYLON.Vector3(0, -0.9, 0);
     scene.collisionsEnabled = true;
@@ -191,12 +191,12 @@ class MazeRunner extends React.Component {
     // Activate gravity !
     //scene.gravity = new BABYLON.Vector3(0, -9.81, 0);
     camera.applyGravity = true;
-    //camera.rotation.y = Math.PI/2; 
+    //camera.rotation.y = Math.PI/2;
     camera.keysUp = [87]; // W
     camera.keysDown = [83]; // S
     camera.keysLeft = [65]; // Q
     camera.keysRight = [68]; // D
-    camera.speed = 1;
+    camera.speed = .4;
     camera.inertia = 0.9;
     camera.angularSensibility = 1000;
     scene.activeCameras.push(camera);
@@ -204,7 +204,7 @@ class MazeRunner extends React.Component {
     var skybox = BABYLON.Mesh.CreateBox("skyBox", 5000.0, scene);
     var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
     skyboxMaterial.backFaceCulling = false;
-    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture('./sky35/citysky', scene);
+    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture('assets/sky35/citysky', scene);
     skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
     skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
     skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
@@ -239,9 +239,9 @@ class MazeRunner extends React.Component {
     //       ghost.material.specularColor = new BABYLON.Color3(1, 1, 1);
     //       ghost.material.diffuseColor = new BABYLON.Color3(0.8, 0.8, 0.8);
     //     }
-         
+
     //   }
-      
+
     //   //ghost.material = new BABYLON.StandardMaterial("lol", scene);
     //   //x.material.emissiveColor = new BABYLON.Color3(0.1, 0.8, 0.8);
     // });
@@ -275,23 +275,23 @@ class MazeRunner extends React.Component {
     // var scoreTexture = new BABYLON.DynamicTexture("scoreTexture", 512, scene, true);
     // var scoreboard = BABYLON.Mesh.CreatePlane("scoreboard", 50, scene);
     // // Position the scoreboard after the lane.
-    // scoreboard.position.x = -200; 
+    // scoreboard.position.x = -200;
     // scoreboard.position.z = -50;
     // scoreboard.position.y = 30;
     // scoreboard.rotation.x = Math.PI;
-    // scoreboard.checkCollisions = true; 
+    // scoreboard.checkCollisions = true;
     // // Create a material for the scoreboard.
     // scoreboard.material = new BABYLON.StandardMaterial("scoradboardMat", scene);
     // scoreboard.material.diffuseTexture = scoreTexture;
     // Set the diffuse texture to be the dynamic texture.
     //scoreboard.material.diffuseTexture = scoreTexture;
     // Add the camera to the list of active cameras of the game
-    
+
     // scene.registerBeforeRender(function() {
     //   var newScore = score;
     //   if (newScore !== score) {
     //     score = newScore;
-    //     // Clear the canvas. 
+    //     // Clear the canvas.
     //     scoreTexture.clear();
     //     // Draw the text using a white font on black background.
     //     scoreTexture.drawText(score + " pins down", 40, 100,
@@ -312,25 +312,25 @@ class MazeRunner extends React.Component {
     // plane.position.x = 50;
     // plane.position.z = 50;
     //console.log('x:',plane.position.x, "y:", plane.position.y, "z:", plane.position.z)
-    plane.rotation.y = Math.PI/2; 
+    plane.rotation.y = Math.PI/2;
     plane.checkCollisions = true;
     plane.material = new BABYLON.StandardMaterial("texture1", scene);
     plane.material.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.8);
     plane.material.alpha = 0.2;
     //plane.material.backFaceCulling = false;
     var arr = mazemaker(that.props.maze, scene, plane, scene.activeCamera);
-   
+
     console.log(arr);
-    
+
     var plane2 = BABYLON.MeshBuilder.CreateBox("plane", { width: 400, height: 200}, scene);
     // plane.position.x = 50;
     // plane.position.z = 50;
 
     plane2.parent = plane;
-    plane2.position.z = -400; 
-    plane2.rotation.y = Math.PI; 
+    plane2.position.z = -400;
+    plane2.rotation.y = Math.PI;
     plane2.checkCollisions = true;
-    plane2.material = new BABYLON.StandardMaterial("grass.png", scene);
+    plane2.material = new BABYLON.StandardMaterial("./assets/grass.png", scene);
     plane2.material.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.8);
     plane2.material.alpha = 0.2;
     // var light0 = new BABYLON.PointLight("Omni0", new BABYLON.Vector3(-200, 50, -15), scene);
@@ -343,9 +343,9 @@ class MazeRunner extends React.Component {
     // plane.position.z = 50;
 
     plane3.parent = plane;
-    plane3.position.x = -200; 
+    plane3.position.x = -200;
     plane3.position.z = -200;
-    plane3.rotation.y = Math.PI/2; 
+    plane3.rotation.y = Math.PI/2;
     plane3.checkCollisions = true;
     plane3.material = new BABYLON.StandardMaterial("texture1", scene);
     plane3.material.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.8);
@@ -356,9 +356,9 @@ class MazeRunner extends React.Component {
     // plane.position.z = 50;
 
     plane4.parent = plane;
-    plane4.position.x = 200; 
+    plane4.position.x = 200;
     plane4.position.z = -200;
-    plane4.rotation.y = -Math.PI/2; 
+    plane4.rotation.y = -Math.PI/2;
     plane4.checkCollisions = true;
     plane4.material = new BABYLON.StandardMaterial("texture1", scene);
     plane4.material.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.8);
@@ -369,8 +369,8 @@ class MazeRunner extends React.Component {
 
     // sphere.parent = plane;
     // sphere.position.z = -200;
-    // sphere.position.x = -9; 
-    // sphere.position.y = 3; 
+    // sphere.position.x = -9;
+    // sphere.position.y = 3;
     // sphere.checkCollisions = true;
     // sphere.material = new BABYLON.StandardMaterial("wow", scene);
     //sphere.material.diffuseTexture  = new BABYLON.Texture("grass.jpg", scene);
@@ -378,8 +378,8 @@ class MazeRunner extends React.Component {
     // sphere.material.emissiveColor = new BABYLON.Color3(0, .2, .7);
     // sphere.actionManager = new BABYLON.ActionManager(scene);
     // var action = new BABYLON.ExecuteCodeAction({ trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger, parameter: camera.ellipsoid }, sphere.dispose, true);
-    //sphere.actionManager.registerAction(action); 
-    //sphere.actionManager.registerAction(new BABYLON.ExecuteCodeAction({ trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger, parameter: scene.activeCamera }, sphere.dispose, 1));  
+    //sphere.actionManager.registerAction(action);
+    //sphere.actionManager.registerAction(new BABYLON.ExecuteCodeAction({ trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger, parameter: scene.activeCamera }, sphere.dispose, 1));
     //arr[sphere.uniqueId] = sphere;
     //plane4.material.emissiveColor = new BABYLON.Color3(0, .2, .7);
     //plane2.material.emissiveTexture = new BABYLON.Texture("grass.jpg", scene);
@@ -389,9 +389,12 @@ class MazeRunner extends React.Component {
     // ground.position.y = -10;
     //ground.position = new BABYLON.Vector3(5, -10, -15);
     ground.material = new BABYLON.StandardMaterial("texture1", scene);
-    ground.material.emissiveColor = new BABYLON.Color3(1.0, 0.5, 0);
+    // ground.material.emissiveColor = new BABYLON.Color3(1.0, 0.5, 0);
+    ground.material.emissiveTexture = new BABYLON.Texture('../assets/ground2.jpg', scene);
+    ground.material.emissiveTexture.uScale = 100.0;
+    ground.material.emissiveTexture.vScale = 100.0;
     //ground.applyGravity = true;
-    var pellet = new BABYLON.Sound("pellet", "./pellet.wav", scene);
+    var pellet = new BABYLON.Sound("pellet", "./assets/pellet.wav", scene);
     //create(scene);
     var canvas2;
     camera.onCollide = function(collidedMesh) {
@@ -401,7 +404,7 @@ class MazeRunner extends React.Component {
         //console.log('gone');
         arr[collidedMesh.uniqueId].dispose();
         pellet.play();
-        score++;
+        score+= 10;
         if (canvas2 === undefined) {
           canvas2 = create(scene, score);
         } else {
@@ -434,7 +437,7 @@ class MazeRunner extends React.Component {
     // }
     scene.activeCamera.checkCollisions = true;
 
-    
+
     // Leave this function
     return scene;
 
