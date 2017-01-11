@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-var port = 3000;
+var port = process.env.PORT || 3000;
 
 var passport = require('passport');
 var flash = require('connect-flash');
@@ -12,30 +12,30 @@ var session = require('express-session');
 
 
 
-// // DATABASE
-// var mysql = require('mysql');
+// DATABASE
+var mysql = require('mysql');
 
-// mysql.createConnection({
-//   user: root,
-//   password: null,
-//   database: 'PacmanVR'
-// });
+mysql.createConnection({
+  user: root,
+  password: '',
+  database: 'PacmanVR'
+});
 
-// var Sequelize = require('sequelize');
-// var sequelize = new Sequelize('PacmanVR', 'root', '');
+var Sequelize = require('sequelize');
+var sequelize = new Sequelize('PacmanVR', 'root', '');
 
-// sequelize
-//   .authenticate()
-//   .then(function(err) {
-//     console.log('Connection established successfully!');
-//   })
-//   .catch(function(err) {
-//     console.log('Unable to connect to the database:', err);
-//   });
+sequelize
+  .authenticate()
+  .then(function(err) {
+    console.log('Connection established successfully!');
+  })
+  .catch(function(err) {
+    console.log('Unable to connect to the database:', err);
+  });
 
 
 
-// require('./config/passport')(passport); //pass passport for configuration
+require('./config/passport')(passport); //pass passport for configuration
 
 
 
@@ -44,18 +44,22 @@ app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({'extended': true}));
-app.use(express.static(path.join(__dirname, './client/')));
-// app.use(session({ secret: 'wells', resave: true, saveUninitialized: true}));
-// app.use(passport.initialize());
-// app.use(passport.session());
-// app.use(flash());
+app.use(express.static(path.join(__dirname, '/client')));
+app.use(session({ secret: 'wells', resave: true, saveUninitialized: true}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 
-
+app.get('*', function(req, res) {
+  res.send('hello');
+});
 
 // ROUTES
-// require('./app/routes.js')(app, passport);
+require('./app/routes.js')(app, passport);
 
 
 app.listen(port, function() {
-  console.log('Server is now connected on port 3000');
+  console.log('Server is now connected on port ' + port);
+}).on('error', function(err) {
+  console.log('err:', err);
 });
