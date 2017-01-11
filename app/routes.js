@@ -3,12 +3,6 @@ var Maps = require('../app/models/maps');
 
 module.exports = function(app, passport) {
 
-  app.get('/*', function(req, res) {
-    res.redirect('/');
-  });
-
-
-
   app.post('/login', passport.authenticate('local-login', {
     successRedirect: '/profile',
     failureRedirect: '/#/failure',
@@ -23,8 +17,13 @@ module.exports = function(app, passport) {
     })
   );
 
-  app.get('/profile', isLoggedIn, function(req, res) {
-    res.send(req.user);
+  app.get('/profile', function(req, res) {
+    if (!req.isAuthenticated()) {
+      res.redirect('/');
+      // res.send('unauthenticated');
+    } else {
+      res.send(req.session.passport);
+    }
   });
 
   app.post('/profileInfo', isLoggedIn, function(req, res) {
