@@ -50,9 +50,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-app.get('*', function(req, res) {
-  res.send('hello');
-});
 
 // ROUTES
 require('./app/routes.js')(app, passport);
