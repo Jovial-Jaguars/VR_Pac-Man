@@ -66,6 +66,7 @@ class LandingPage extends React.Component {
     $.ajax({
       type: 'GET',
       url: '/profile',
+      async: false,
       success: function(data) {
         if (!data.user) {
           console.log('hit not authenticated');

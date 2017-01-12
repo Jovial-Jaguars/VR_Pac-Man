@@ -20,7 +20,6 @@ module.exports = function(app, passport) {
   app.get('/profile', function(req, res) {
     if (!req.isAuthenticated()) {
       res.redirect('/');
-      // res.send('unauthenticated');
     } else {
       res.send(req.session.passport);
     }
