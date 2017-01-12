@@ -24,6 +24,23 @@ var MazeEditor = (props) => (
 
       </table>
     </div>
+    <div className="legend"> 
+    <h3>Legend</h3>
+      <table className="legend-table">
+        <tr className="legend-table-row" onClick={props.clickLegend.bind(this, 1)}>
+          <td className="legend-block1" ></td>
+          <td className="legend-empty">Empty</td>
+        </tr>
+        <tr className="legend-table-row" onClick={props.clickLegend.bind(this, 2)}>
+          <td className="legend-block2" ></td>
+          <td className="legend-block">block</td>
+        </tr>
+        <tr className="legend-table-row" onClick={props.clickLegend.bind(this, 3)}>
+          <td className="legend-block3" ></td>
+          <td className="legend-pellet">Pellet</td>
+        </tr>
+      </table>
+    </div>
     <table className="maze-editor-table">
     {
       props.maze.map((curr, indy)=> (
