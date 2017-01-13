@@ -588,6 +588,8 @@ class MazeRunner extends React.Component {
 
 
     engine.runRenderLoop(function () {
+      socket.emit('coordinates', {user: username, position: camera.position, rotation: camera.rotation});
+      // console.log('blabhlabhlabhlhbah');
       if(pelletRemover !== 0) {
         world.remove(pellets[pelletRemover]);
         pelletRemover = 0;
