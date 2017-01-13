@@ -594,11 +594,11 @@ class MazeRunner extends React.Component {
       }
       scene.render();
       world.step(1.0/60.0);
-      if(cam1 !== parseFloat(Math.cos(camera.rotationQuaternion.toEulerAngles().y)) || cam2 !== parseFloat(Math.sin(camera.rotationQuaternion.toEulerAngles().y))) {
+      if(cam1 !== parseFloat(Math.cos(camera.rotation.y)) || cam2 !== parseFloat(Math.sin(camera.rotation.y))) {
         // cam1 = parseFloat(Math.cos(camera.rotation.y));
         // cam2 = parseFloat(Math.sin(camera.rotation.y));
-        cam1 = parseFloat(Math.cos(camera.rotationQuaternion.y));
-        cam2 = parseFloat(Math.sin(camera.rotationQuaternion.y));   
+        cam1 = parseFloat(Math.cos(camera.rotation.y));
+        cam2 = parseFloat(Math.sin(camera.rotation.y));   
         sphereBody.velocity.z = cam1* 50;
         sphereBody.velocity.x = cam2* 50;
       }
