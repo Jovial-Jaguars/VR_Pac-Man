@@ -27,6 +27,10 @@ export default class MazeRunner extends React.Component {
     var camera;
     var pellets = [];
     var pelletMeshes = [];
+    var cameraFlag = false;
+    var cam1, cam2;
+    var posx = -250;
+    var posz = -150;
     // Load the BABYLON 3D engine
     var engine = new BABYLON.Engine(canvas, true);
      // This begins the creation of a function that we will 'call' just after it's built
@@ -47,9 +51,56 @@ export default class MazeRunner extends React.Component {
       return canvas;
     };
     // BABYLON.SceneLoader.ImportMesh("Plane", "", "ghost2.babylon", scene, function (newMeshes, particleSystems) {
-    // });
+    // });4
+    var switchCamera = function (cam) {
+        if (scene.activeCameras[0].rotation) {
+            cam.rotation = scene.activeCameras[0].rotation.clone();
+        }
+        cam.fov = scene.activeCameras[0].fov;
+        cam.minZ = scene.activeCameras[0].minZ;
+        cam.maxZ = scene.activeCameras[0].maxZ;
+
+        if (scene.activeCameras[0].ellipsoid) {
+            cam.ellipsoid = scene.activeCameras[0].ellipsoid.clone();
+        }
+        cam.checkCollisions = scene.activeCameras[0].checkCollisions;
+        cam.applyGravity = scene.activeCameras[0].applyGravity;
+
+        cam.speed = scene.activeCameras[0].speed;
+
+        cam.postProcesses = scene.activeCameras[0].postProcesses;
+        scene.activeCameras[0].postProcesses = [];
+        scene.activeCameras[0].detachControl(canvas);
+        if (scene.activeCameras[0].dispose) {
+          scene.activeCameras[0].dispose();
+        }
+        var cool = scene.activeCameras.pop();
+        scene.activeCameras.pop();
+        scene.activeCameras.push(camera);
+        scene.activeCameras.push(cool);
+
+
+        scene.activeCameras[0].attachControl(canvas);
+        cameraFlag = !cameraFlag;
+        //camera = scene.activeCameras[0];
+
+    };
+    var cameraToggle = document.getElementsByClassName("camera-toggle")[0];
+    cameraToggle.addEventListener("click", function () {
+      //console.log(scene.activeCameras[0] instanceof BABYLON.VRDeviceOrientationFreeCamera);
+        if (scene.activeCameras[0] instanceof BABYLON.FreeCamera && !(scene.activeCameras[0] instanceof BABYLON.VRDeviceOrientationFreeCamera)) {
+          camera = new BABYLON.VRDeviceOrientationFreeCamera("deviceOrientationCamera", scene.activeCameras[0].position, scene);
+          switchCamera(camera);
+        } else {
+          //console.log('yes');
+          camera = new BABYLON.FreeCamera("freeeCamera", scene.activeCameras[0].position, scene);
+          switchCamera(camera);
+        }
+        return;
+    });
   var mazemaker = function(arr, scene, plane, camera, ball, walls) {
     var boxes = [];
+
     var x = -387;
     var z = 187;
     for (var i = 0; i < arr.length; i++) {
@@ -211,8 +262,8 @@ export default class MazeRunner extends React.Component {
           //console.log(sphere.getBoundingInfo());
           pelletMeshes[sphere.uniqueId] = sphere;
         } else if (arr[i][j] === 3) {
-          camera.position.z = z;
-          camera.position.x = x;
+          posz = z; 
+          posx = x; 
           //console.log('x:', camera.position.x, "z:", plane.position.z);
         }
         x += 25;
@@ -516,7 +567,7 @@ export default class MazeRunner extends React.Component {
     var mass = 5, radius = 1.25;
     var sphereShape = new CANNON.Sphere(radius); // Step 1
     sphereBody = new CANNON.Body({mass: mass, shape: sphereShape}); // Step 2
-    sphereBody.position.set(-250,5,-150);
+    sphereBody.position.set(posx,5,posz);
     sphereBody.rotation = new CANNON.Vec3();
     sphereBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);
     sphereBody.addEventListener('collide', function(e){
@@ -590,8 +641,13 @@ export default class MazeRunner extends React.Component {
 
     var world = createWorld();
     var scene = createScene();
-    var cam1 = parseFloat(Math.cos(camera.rotation.y));
-    var cam2 = parseFloat(Math.sin(camera.rotation.y));
+    if(cameraFlag) {
+      cam1 = parseFloat(Math.cos(camera.rotationQuaternion.y));
+      cam2 = parseFloat(Math.sin(camera.rotationQuaternion.y));
+    } else {
+      cam1 = parseFloat(Math.cos(camera.rotation.y));
+      cam2 = parseFloat(Math.sin(camera.rotation.y));
+    }
     // var cam1 = parseFloat(Math.cos(camera.rotationQuaternion.y));
     // var cam2 = parseFloat(Math.sin(camera.rotationQuaternion.y));
 // 
@@ -603,17 +659,33 @@ export default class MazeRunner extends React.Component {
       }
       scene.render();
       world.step(1.0/60.0);
-      if(cam1 !== parseFloat(Math.cos(camera.rotation.y)) || cam2 !== parseFloat(Math.sin(camera.rotation.y))) {
-        // cam1 = parseFloat(Math.cos(camera.rotation.y));
-        // cam2 = parseFloat(Math.sin(camera.rotation.y));
-        cam1 = parseFloat(Math.cos(camera.rotation.y));
-        cam2 = parseFloat(Math.sin(camera.rotation.y));
-        sphereBody.velocity.z = cam1* 50;
-        sphereBody.velocity.x = cam2* 50;
+      if (cameraFlag && camera.rotationQuaternion !==undefined) {
+        if (cam1 !== parseFloat(Math.cos(camera.rotationQuaternion.y)) || cam2 !== parseFloat(Math.sin(camera.rotationQuaternion.y))) {
+          cam1 = parseFloat(Math.cos(camera.rotationQuaternion.y));
+          cam2 = parseFloat(Math.sin(camera.rotationQuaternion.y));   
+          sphereBody.velocity.z = cam1* 50;
+          sphereBody.velocity.x = cam2* 50;
+        }
+      } else {
+        if (cam1 !== parseFloat(Math.cos(camera.rotation.y)) || cam2 !== parseFloat(Math.sin(camera.rotation.y))) {
+          cam1 = parseFloat(Math.cos(camera.rotation.y));
+          cam2 = parseFloat(Math.sin(camera.rotation.y));   
+          sphereBody.velocity.z = cam1* 50;
+          sphereBody.velocity.x = cam2* 50;
+        }
       }
-      ball.position.x = sphereBody.position.x;
-      ball.position.y = sphereBody.position.y;
-      ball.position.z = sphereBody.position.z;
+      
+      // if(cam1 !== parseFloat(Math.cos(camera.rotationQuaternion.y)) || cam2 !== parseFloat(Math.sin(camera.rotationQuaternion.y))) {
+      //   // cam1 = parseFloat(Math.cos(camera.rotationQuaternion.y));
+      //   // cam2 = parseFloat(Math.sin(camera.rotationQuaternion.y));
+      //   cam1 = parseFloat(Math.cos(camera.rotationQuaternion.y));
+      //   cam2 = parseFloat(Math.sin(camera.rotationQuaternion.y));   
+      //   sphereBody.velocity.z = cam1* 50;
+      //   sphereBody.velocity.x = cam2* 50;
+      // }
+      ball.position.x = sphereBody.position.x; 
+      ball.position.y = sphereBody.position.y; 
+      ball.position.z = sphereBody.position.z; 
 
       camera.position.x = sphereBody.position.x + .4;
       camera.position.y = sphereBody.position.y

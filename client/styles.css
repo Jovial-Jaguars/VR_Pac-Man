@@ -883,6 +883,8 @@ a:link {
   height: 10%;
   width: 10%;
   position: absolute;
+  padding: 5px;
+  color: white;
   z-index: 10;
   background-color: rgba(15, 62, 137, 0.5);
 }
