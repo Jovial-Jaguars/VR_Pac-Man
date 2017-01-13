@@ -14,9 +14,19 @@ var session = require('express-session');
 
 io.on('connection', function(socket) {
   console.log('a user connected');
+
   socket.on('disconnect', function() {
     console.log('user disconnected');
-  })
+  });
+
+  socket.on('testing', function(data) {
+    console.log('hit test on server!', data);
+  });
+
+  socket.on('coordinates', function(coords) {
+    console.log('coords:', coords);
+  });
+
 });
 
 
@@ -64,7 +74,7 @@ app.use(flash());
 require('./app/routes.js')(app, passport);
 
 
-app.listen(port, function() {
+http.listen(port, function() {
   console.log('Server is now connected on port ' + port);
 }).on('error', function(err) {
   console.log('err:', err);
