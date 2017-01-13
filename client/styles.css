@@ -1,3 +1,4 @@
+
 @font-face {
     font-family: "Crackman Font";
     src: url(./assets/crackman.ttf) format("truetype");
@@ -401,7 +402,6 @@ button:active {
   /*margin-left: 10px;*/
 }
 
-<<<<<<< HEAD
 /*styling for the maze store*/
 
 @font-face {
@@ -870,4 +870,43 @@ a:link {
   color: #FEDC3D;
   font-size: 48px;
   margin: 0 0 15px 0;
+}
+}
+
+.canvas-container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.camera-toggle {
+  height: 10%;
+  width: 10%;
+  position: absolute;
+  z-index: 10;
+  background-color: rgba(15, 62, 137, 0.5);
+}
+
+html, body {
+  overflow: hidden;
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+#renderCanvas {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  touch-action: none;
+}
+#app {
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  padding-bottom: 1px;
+}
+.spacer {
+  height: 1px;
 }
