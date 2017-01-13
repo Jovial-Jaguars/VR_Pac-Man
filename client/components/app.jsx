@@ -4,6 +4,7 @@ class App extends React.Component {
     this.state = {
       pacFlag: 0,
       choice: 0,
+      legend: 0,
       maze: [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -41,6 +42,7 @@ class App extends React.Component {
     };
     this.amaze = this.amaze.bind(this);
     this.clickLevel = this.clickLevel.bind(this);
+    this.clickLegend = this.clickLegend.bind(this);
   }
   amaze() {
     console.log('Fetching pet status...');
@@ -56,8 +58,8 @@ class App extends React.Component {
   }
   clickLevel (arr, e) {
 
-    for (var i = 0; i < arr.length; i++){
-      if (arr[i].indexOf(3) !== -1){
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i].indexOf(3) !== -1) {
         this.setState({pacFlag: 1});
       }
     }
@@ -67,21 +69,32 @@ class App extends React.Component {
       })
     });
   }
+  clickLegend (num, e) {
+    this.setState({legend: num});
 
+  }
   click(indy, index, e) {
     var curr = this.state.maze;
-    if (curr[indy][index] === 0) {
+    if (this.state.legend === 1) {
+      curr[indy][index] = 0;
+    } else if (this.state.legend === 2) {
       curr[indy][index] = 1;
-    } else if (curr[indy][index] === 1) {
+    } else if (this.state.legend === 3) {
       curr[indy][index] = 2;
-    } else if (curr[indy][index] === 2 && this.state.pacFlag === 0){
-      curr[indy][index] = 3;
-      this.setState({pacFlag: 1});
-    } else if (curr[indy][index] === 3){
-      curr[indy][index] = 0;
-      this.setState({pacFlag: 0});
-    } else if (curr[indy][index] === 2 && this.state.pacFlag === 1){
-      curr[indy][index] = 0;
+    } else {
+      if (curr[indy][index] === 0) {
+        curr[indy][index] = 1;
+      } else if (curr[indy][index] === 1) {
+        curr[indy][index] = 2;
+      } else if (curr[indy][index] === 2 && this.state.pacFlag === 0) {
+        curr[indy][index] = 3;
+        this.setState({pacFlag: 1});
+      } else if (curr[indy][index] === 3) {
+        curr[indy][index] = 0;
+        this.setState({pacFlag: 0});
+      } else if (curr[indy][index] === 2 && this.state.pacFlag === 1) {
+        curr[indy][index] = 0;
+      }
     }
     this.setState({
       maze: curr
@@ -119,7 +132,7 @@ class App extends React.Component {
       <div className="maze">
       { this.state.choice ?
         <MazeRunner maze={this.state.maze} />
-        : <MazeEditor def={this.state.default1} clickLevel={this.clickLevel.bind(this)} click={this.click.bind(this)} maze={this.state.maze} amaze={this.amaze.bind(this)} saveMaze={this.saveMaze.bind(this)}/>
+        : <MazeEditor clickLegend={this.clickLegend} def={this.state.default1} clickLevel={this.clickLevel.bind(this)} click={this.click.bind(this)} maze={this.state.maze} amaze={this.amaze.bind(this)} saveMaze={this.saveMaze.bind(this)}/>
       }
       </div>
     );

@@ -76,21 +76,21 @@ h3{
 
 .block1 {
   display: inline-block;
-  width: 5.5%;
+  width: 5.2%;
   height: 100%;
   background-color: blue;
 
 }
 .block2 {
   display: inline-block;
-  width: 5.5%;
+  width: 5.2%;
   height: 100%;
   background-color: black;
 
 }
 .block3 {
   display: inline-block;
-  width: 5.5%;
+  width: 5.2%;
   height: 100%;
   background-image: url('assets/dot.png');
   background-size: contain;
@@ -99,7 +99,7 @@ h3{
 }
 .block4 {
   display: inline-block;
-  width: 5.5%;
+  width: 5.2%;
   height: 100%;
   background-image: url('assets/pacman.png');
   background-size: contain;
@@ -120,7 +120,7 @@ h3{
 
 .maze-editor-row {
   width: 100%;
-  height: 5.5%;
+  height: 5.2%;
   display: inline-block;
   margin-bottom: 5px;
 }
@@ -129,6 +129,73 @@ h3{
   display: inline-block;
   float: left;
   clear: both;
+}
+.legend {
+  display: inline-block;
+  float: center;
+  background-color: yellow;
+  height: 70%;
+  width: 10%;
+}
+
+.legend-table {
+  display: inline-block;
+  float: left;
+  width: 100%;
+  height: 40%;
+  background-color: purple;
+}
+.legend-table-row {
+  display: inline-block;
+  width: 100%;
+  height: 20%;
+  margin-bottom: 5px;
+}
+.legend-block1 {
+  display: inline-block;
+  border-radius: 5px;
+  width: 20%;
+  height: 100%;
+  background-color: blue;
+}
+.legend-block2 {
+  display: inline-block;
+  border-radius: 5px;
+  width: 20%;
+  height: 100%;
+  background-color: black;
+}
+.legend-empty {
+  display: inline-block;
+  width: 55%;
+  height: 100%;
+  padding: 2px;
+  text-align: center;
+}
+.legend-block {
+  display: inline-block;
+  width: 55%;
+  height: 100%;
+  padding: 2px;
+  text-align: center;
+}
+.legend-pellet {
+  display: inline-block;
+  width: 55%;
+  height: 100%;
+  padding: 2px;
+  text-align: center;
+}
+.legend-block3 {
+  display: inline-block;
+  width: 20%;
+  height: 100%;
+  border-radius: 5px;
+  background-image: url('dot.png');
+  background-size: cover;
+  background-repeat: none;
+  background-color: blue;
+  background-position: center;
 }
 
 .maze {
