@@ -1,5 +1,7 @@
 var express = require('express');
 var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 var port = process.env.PORT || 3000;
 
 var passport = require('passport');
@@ -9,6 +11,13 @@ var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+
+io.on('connection', function(socket) {
+  console.log('a user connected');
+  socket.on('disconnect', function() {
+    console.log('user disconnected');
+  })
+});
 
 
 
