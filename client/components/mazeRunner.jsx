@@ -237,6 +237,7 @@ export default class MazeRunner extends React.Component {
     scene.ambientColor = new BABYLON.Color3(0.3, 0.3, 0.3);
     //VRDeviceOrientationFreeCamera
     camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
+    // camera = new BABYLON.VRDeviceOrientationFreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
     //camera.inputs.addGamepad();
     camera.setTarget(BABYLON.Vector3.Zero());
     camera.attachControl(canvas, true);
@@ -346,7 +347,7 @@ export default class MazeRunner extends React.Component {
     mm.layerMask = 1;
     camera.layerMask = 2;
     //scene.activeCamera = camera;
-    var light0 = new BABYLON.SpotLight("Spot0", new BABYLON.Vector3(0, 50, 0), new BABYLON.Vector3(0, -1, 0), 0.4, 3, scene);
+    var light0 = new BABYLON.SpotLight("Spot0", new BABYLON.Vector3(0, 50, 0), new BABYLON.Vector3(0, -1, 0), 0.1, 3, scene);
     // light0.diffuse = new BABYLON.Color3(1, 0, 0);
     // light0.specular = new BABYLON.Color3(1, 1, 1);
     light0.parent = camera;
@@ -591,7 +592,9 @@ export default class MazeRunner extends React.Component {
     var scene = createScene();
     var cam1 = parseFloat(Math.cos(camera.rotation.y));
     var cam2 = parseFloat(Math.sin(camera.rotation.y));
-
+    // var cam1 = parseFloat(Math.cos(camera.rotationQuaternion.y));
+    // var cam2 = parseFloat(Math.sin(camera.rotationQuaternion.y));
+// 
 
     engine.runRenderLoop(function () {
       if(pelletRemover !== 0) {
@@ -650,6 +653,10 @@ export default class MazeRunner extends React.Component {
 
 
   render() {
-    return (<canvas id="renderCanvas"></canvas>);
+    return (
+            <div className="canvas-container">
+            <div className="camera-toggle">Camera Toggle</div>
+            <canvas id="renderCanvas"></canvas>
+            </div>);
   }
 }
