@@ -5,7 +5,7 @@ class MazeRunner extends React.Component {
   }
 
   componentDidMount() {
-
+    
   // Get the canvas element from our HTML above
     var that = this;
     var canvas = document.getElementById("renderCanvas");
@@ -61,7 +61,8 @@ class MazeRunner extends React.Component {
           //plane5.checkCollisions = true;
           plane5.material = new BABYLON.StandardMaterial("texture1", scene);
           // plane5.material.diffuseColor = new BABYLON.Color3(1, 0.9, 0);
-          plane5.material.emissiveTexture = new BABYLON.Texture('tron1.jpg', scene);
+          //plane5.material.emissiveTexture = new BABYLON.Texture('tron1.jpg', scene);
+          plane5.material.emissiveTexture = new BABYLON.Texture('../assets/tron1.jpg', scene);
           //console.log(plane5.getBoundingInfo().boundingBox.center);
           //var box = plane5.getBoundingInfo().boundingBox.center
           //console.log(plane5.getBoundingInfo());
@@ -159,7 +160,7 @@ class MazeRunner extends React.Component {
           // particleSystem.start();
 
           // Fountain's animation
-
+          
           // sphere.onCollide = function() {
           //   sphere.dispose();
           // };
@@ -176,14 +177,14 @@ class MazeRunner extends React.Component {
           // // light0.groundColor = new BABYLON.Color3(0, 0, 0);
           // light1.parent = plane;
           // light1.position.z = z;
-          // light1.position.x = x;
-          // light1.position.y = 2;
+          // light1.position.x = x; 
+          // light1.position.y = 2; 
           // sphere.actionManager = new BABYLON.ActionManager(scene);
           // var action = new BABYLON.SetValueAction({ trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger, parameter: camera }, sphere, "visibility", 0, 500, false, false, function() {sphere.dispose()});
           // sphere.actionManager.registerAction(action);
           // mesh.actionManager.registerAction(
 
-          // new BABYLON.SetValueAction({ trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger, parameter: otherMesh },
+          // new BABYLON.SetValueAction({ trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger, parameter: otherMesh }, 
 
           // mesh, "scaling", new BABYLON.Vector3(1.2, 1.2, 1.2)));
           // sphere.onCollide = function(collidedMesh) {
@@ -198,7 +199,7 @@ class MazeRunner extends React.Component {
           //   }
           // };
           // light0.position.z = -20;
-          // light0.position.y = 10;
+          // light0.position.y = 10; 
           // light0.diffuse = new BABYLON.Color3(1, 0, 0);
           // light0.specular = new BABYLON.Color3(1, 1, 1);
           //console.log(sphere.getBoundingInfo()); 
@@ -217,7 +218,7 @@ class MazeRunner extends React.Component {
   };
   var createScene = function () {
 
-    // Now create a basic Babylon Scene object
+    // Now create a basic Babylon Scene object 
     var scene = new BABYLON.Scene(engine);
     //var gravityVector = new BABYLON.Vector3(0,-9.81, 0);
     //scene.gravity = new BABYLON.Vector3(0, -0.9, 0);
@@ -302,9 +303,9 @@ class MazeRunner extends React.Component {
     //       ghost.material.specularColor = new BABYLON.Color3(1, 1, 1);
     //       ghost.material.diffuseColor = new BABYLON.Color3(0.8, 0.8, 0.8);
     //     }
-
+         
     //   }
-
+      
     //   //ghost.material = new BABYLON.StandardMaterial("lol", scene);
     //   //x.material.emissiveColor = new BABYLON.Color3(0.1, 0.8, 0.8);
     // });
@@ -357,7 +358,7 @@ class MazeRunner extends React.Component {
     //plane.checkCollisions = true;
     plane.material = new BABYLON.StandardMaterial("texture1", scene);
     plane.material.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.8);
-    plane.material.alpha = 1;
+    plane.material.alpha = 0.2;
     //plane.physicsImpostor = new BABYLON.PhysicsImpostor(plane, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 1, restitution: 0.9 }, scene);
     createWallBody(plane.getBoundingInfo().boundingBox.center, new CANNON.Vec3(plane.scaling.x, plane.scaling.y, plane.scaling.z), 0);
     var walls = [];
@@ -380,7 +381,7 @@ class MazeRunner extends React.Component {
     //plane2.checkCollisions = true;
     plane2.material = new BABYLON.StandardMaterial("grass.png", scene);
     plane2.material.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.8);
-    plane2.material.alpha = 1;
+    plane2.material.alpha = 0.2;
     // plane2.physicsImpostor = new BABYLON.PhysicsImpostor(plane2, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 1, restitution: 0.9 }, scene);
     createWallBody(plane2.getBoundingInfo().boundingBox.center, new CANNON.Vec3(plane2.scaling.x, plane2.scaling.y, plane2.scaling.z), 0);
     // var light0 = new BABYLON.PointLight("Omni0", new BABYLON.Vector3(-200, 50, -15), scene);
@@ -391,6 +392,7 @@ class MazeRunner extends React.Component {
     var plane3 = BABYLON.MeshBuilder.CreateBox("plane", 2, scene);
     // plane.position.x = 50;
     // plane.position.z = 50;
+
     //plane3.parent = plane;
     plane3.scaling.z = 400;
     plane3.scaling.y = 200;
@@ -402,13 +404,14 @@ class MazeRunner extends React.Component {
     //plane3.checkCollisions = true;
     plane3.material = new BABYLON.StandardMaterial("texture1", scene);
     plane3.material.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.8);
-    plane3.material.alpha = 1;
+    plane3.material.alpha = 0.2;
     // plane3.physicsImpostor = new BABYLON.PhysicsImpostor(plane3, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 1, restitution: 0.9 }, scene);
     createWallBody(plane3.getBoundingInfo().boundingBox.center, new CANNON.Vec3(plane3.scaling.x, plane3.scaling.y, plane3.scaling.z), 2);
     //plane3.material.emissiveColor = new BABYLON.Color3(0, .2, .7);
     var plane4 = BABYLON.MeshBuilder.CreateBox("plane", 2, scene);
     // plane.position.x = 50;
     // plane.position.z = 50;
+
     //plane4.parent = plane;
     plane4.scaling.z = 400;
     plane4.scaling.y = 200;
@@ -420,13 +423,17 @@ class MazeRunner extends React.Component {
     //plane4.checkCollisions = true;
     plane4.material = new BABYLON.StandardMaterial("texture1", scene);
     plane4.material.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.8);
-    plane4.material.alpha = 1;
+    plane4.material.alpha = 0.2;
     // plane4.physicsImpostor = new BABYLON.PhysicsImpostor(plane4, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 1, restitution: 0.9 }, scene);
     createWallBody(plane4.getBoundingInfo().boundingBox.center, new CANNON.Vec3(plane4.scaling.x, plane4.scaling.y, plane4.scaling.z), 2);
+
     var ground = BABYLON.Mesh.CreateGround("ground1", 1000, 1000, 2, scene);
     //ground.checkCollisions = true;
     ground.material = new BABYLON.StandardMaterial("texture1", scene);
-    ground.material.emissiveColor = new BABYLON.Color3(1.0, 0.5, 0);
+    //ground.material.emissiveColor = new BABYLON.Color3(1.0, 0.5, 0);
+    ground.material.emissiveTexture = new BABYLON.Texture('../assets/ground2.jpg', scene);
+    ground.material.emissiveTexture.uScale = 100.0;
+    ground.material.emissiveTexture.vScale = 100.0;
     // var groundShape = new CANNON.Plane();
     // var groundBody = new CANNON.Body({ mass: 0, shape: groundShape });
     // world.add(groundBody);
@@ -450,7 +457,7 @@ class MazeRunner extends React.Component {
     //   if (expression || expression2 || expression3 || expression4) {
     //     forwards = new BABYLON.Vector3(0, 0, 0);               
     //   } else {
-    //     forwards = new BABYLON.Vector3(parseFloat(Math.sin(camera.rotation.y)) * camSpeed, 0, parseFloat(Math.cos(camera.rotation.y)) * camSpeed);
+    //     forwards = new BABYLON.Vector3(parseFloat(Math.sin(camera.rotation.y)) * camSpeed, 0, parseFloat(Math.cos(camera.rotation.y)) * camSpeed);          
     //   }
     //   var cur = -1;
     //   for (var i = 0; i < arr.length; i++) {
@@ -587,11 +594,11 @@ class MazeRunner extends React.Component {
       }
       scene.render();
       world.step(1.0/60.0);
-      if(cam1 !== parseFloat(Math.cos(camera.rotation.y)) || cam2 !== parseFloat(Math.sin(camera.rotation.y))) {
+      if(cam1 !== parseFloat(Math.cos(camera.rotationQuaternion.toEulerAngles().y)) || cam2 !== parseFloat(Math.sin(camera.rotationQuaternion.toEulerAngles().y))) {
         // cam1 = parseFloat(Math.cos(camera.rotation.y));
         // cam2 = parseFloat(Math.sin(camera.rotation.y));
-        cam1 = parseFloat(Math.cos(camera.rotation.y));
-        cam2 = parseFloat(Math.cos(camera.rotation.y));   
+        cam1 = parseFloat(Math.cos(camera.rotationQuaternion.y));
+        cam2 = parseFloat(Math.sin(camera.rotationQuaternion.y));   
         sphereBody.velocity.z = cam1* 50;
         sphereBody.velocity.x = cam2* 50;
       }
