@@ -1,5 +1,5 @@
 var Sequelize = require('sequelize');
-var sequelize = new Sequelize('PacmanVR', 'root', 'UZUmaki1995,./');
+var sequelize = new Sequelize('PacmanVR', 'root', '');
 var bcrypt = require('bcrypt-nodejs');
 
 var Maps = require('./maps');
