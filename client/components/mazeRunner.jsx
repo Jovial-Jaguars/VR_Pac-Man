@@ -5,7 +5,7 @@ class MazeRunner extends React.Component {
   }
 
   componentDidMount() {
-    
+
   // Get the canvas element from our HTML above
     var that = this;
     var canvas = document.getElementById("renderCanvas");
@@ -56,8 +56,8 @@ class MazeRunner extends React.Component {
           plane5.scaling.x = 12.5;
           plane5.scaling.y = 100;
           plane5.scaling.z = 12.5;
-          plane5.position.z = z; 
-          plane5.position.x = x; 
+          plane5.position.z = z;
+          plane5.position.x = x;
           //plane5.checkCollisions = true;
           plane5.material = new BABYLON.StandardMaterial("texture1", scene);
           // plane5.material.diffuseColor = new BABYLON.Color3(1, 0.9, 0);
@@ -81,8 +81,8 @@ class MazeRunner extends React.Component {
           // plane.position.x = 50;
           // plane.position.z = 50;
           sphere.position.z = z;
-          sphere.position.x = x; 
-          sphere.position.y = 2; 
+          sphere.position.x = x;
+          sphere.position.y = 2;
           //sphere.checkCollisions = true;
           sphere.material = new BABYLON.StandardMaterial("wow", scene);
           //sphere.material.diffuseTexture  = new BABYLON.Texture("grass.jpg", scene);
@@ -160,7 +160,7 @@ class MazeRunner extends React.Component {
           // particleSystem.start();
 
           // Fountain's animation
-          
+
           // sphere.onCollide = function() {
           //   sphere.dispose();
           // };
@@ -177,14 +177,14 @@ class MazeRunner extends React.Component {
           // // light0.groundColor = new BABYLON.Color3(0, 0, 0);
           // light1.parent = plane;
           // light1.position.z = z;
-          // light1.position.x = x; 
-          // light1.position.y = 2; 
+          // light1.position.x = x;
+          // light1.position.y = 2;
           // sphere.actionManager = new BABYLON.ActionManager(scene);
           // var action = new BABYLON.SetValueAction({ trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger, parameter: camera }, sphere, "visibility", 0, 500, false, false, function() {sphere.dispose()});
           // sphere.actionManager.registerAction(action);
           // mesh.actionManager.registerAction(
 
-          // new BABYLON.SetValueAction({ trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger, parameter: otherMesh }, 
+          // new BABYLON.SetValueAction({ trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger, parameter: otherMesh },
 
           // mesh, "scaling", new BABYLON.Vector3(1.2, 1.2, 1.2)));
           // sphere.onCollide = function(collidedMesh) {
@@ -199,14 +199,14 @@ class MazeRunner extends React.Component {
           //   }
           // };
           // light0.position.z = -20;
-          // light0.position.y = 10; 
+          // light0.position.y = 10;
           // light0.diffuse = new BABYLON.Color3(1, 0, 0);
           // light0.specular = new BABYLON.Color3(1, 1, 1);
-          //console.log(sphere.getBoundingInfo()); 
+          //console.log(sphere.getBoundingInfo());
           pelletMeshes[sphere.uniqueId] = sphere;
         } else if (arr[i][j] === 3) {
-          camera.position.z = z; 
-          camera.position.x = x; 
+          camera.position.z = z;
+          camera.position.x = x;
           //console.log('x:', camera.position.x, "z:", plane.position.z);
         }
         x += 25;
@@ -218,7 +218,7 @@ class MazeRunner extends React.Component {
   };
   var createScene = function () {
 
-    // Now create a basic Babylon Scene object 
+    // Now create a basic Babylon Scene object
     var scene = new BABYLON.Scene(engine);
     //var gravityVector = new BABYLON.Vector3(0,-9.81, 0);
     //scene.gravity = new BABYLON.Vector3(0, -0.9, 0);
@@ -246,7 +246,7 @@ class MazeRunner extends React.Component {
 
     ball.position.y = 5;
     ball.position.z = -250;
-    ball.position.x = -125; 
+    ball.position.x = -125;
     ball.checkCollisions = true;
     //camera.parent = ball;
     //camera.position.y = 3;
@@ -259,7 +259,7 @@ class MazeRunner extends React.Component {
     // sphereBody = new CANNON.Body({mass: mass, shape: sphereShape}); // Step 2
     // sphereBody.position.set(0,1,-9);
     // sphereBody.rotation = new CANNON.Vec3();
-    //sphereBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);  
+    //sphereBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);
     //world.add(sphereBody);
     // camera.angularSensibility = 1000;
     scene.activeCameras.push(camera);
@@ -303,9 +303,9 @@ class MazeRunner extends React.Component {
     //       ghost.material.specularColor = new BABYLON.Color3(1, 1, 1);
     //       ghost.material.diffuseColor = new BABYLON.Color3(0.8, 0.8, 0.8);
     //     }
-         
+
     //   }
-      
+
     //   //ghost.material = new BABYLON.StandardMaterial("lol", scene);
     //   //x.material.emissiveColor = new BABYLON.Color3(0.1, 0.8, 0.8);
     // });
@@ -354,7 +354,7 @@ class MazeRunner extends React.Component {
     plane.scaling.z = 200;
     plane.scaling.y = 100;
     plane.scaling.x = .2;
-    //plane.rotation.y = Math.PI/2; 
+    //plane.rotation.y = Math.PI/2;
     //plane.checkCollisions = true;
     plane.material = new BABYLON.StandardMaterial("texture1", scene);
     plane.material.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.8);
@@ -364,9 +364,9 @@ class MazeRunner extends React.Component {
     var walls = [];
     //plane.material.backFaceCulling = false;
     var arr = mazemaker(that.props.maze, scene, plane, scene.activeCamera, ball, walls);
-   
+
     //console.log(arr);
-    
+
     var plane2 = BABYLON.Mesh.CreateBox("plane", 2, scene);
     // plane.position.x = 50;
     // plane.position.z = 50;
@@ -375,8 +375,8 @@ class MazeRunner extends React.Component {
     plane2.scaling.z = 200;
     plane2.scaling.y = 100;
     plane2.scaling.x = .2;
-    plane2.position.x = -400; 
-    //plane2.rotation.y = Math.PI; 
+    plane2.position.x = -400;
+    //plane2.rotation.y = Math.PI;
     //plane2.rotation.y = Math.PI/2;
     //plane2.checkCollisions = true;
     plane2.material = new BABYLON.StandardMaterial("grass.png", scene);
@@ -398,9 +398,9 @@ class MazeRunner extends React.Component {
     plane3.scaling.y = 200;
     plane3.scaling.x = .2;
     plane3.rotation.y = Math.PI/2;
-    plane3.position.x = -200; 
+    plane3.position.x = -200;
     plane3.position.z = 200;
-    //plane3.rotation.y = Math.PI/2; 
+    //plane3.rotation.y = Math.PI/2;
     //plane3.checkCollisions = true;
     plane3.material = new BABYLON.StandardMaterial("texture1", scene);
     plane3.material.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.8);
@@ -417,9 +417,9 @@ class MazeRunner extends React.Component {
     plane4.scaling.y = 200;
     plane4.scaling.x = 0.2;
     plane4.rotation.y = Math.PI/2;
-    plane4.position.x = -200; 
+    plane4.position.x = -200;
     plane4.position.z = -200;
-    //plane4.rotation.y = -Math.PI/2; 
+    //plane4.rotation.y = -Math.PI/2;
     //plane4.checkCollisions = true;
     plane4.material = new BABYLON.StandardMaterial("texture1", scene);
     plane4.material.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.8);
@@ -444,7 +444,7 @@ class MazeRunner extends React.Component {
     //ball.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(1,0,0));
     //ball.physicsImpostor.applyImpulse(new BABYLON.Vector3(1, 0, 0), new BABYLON.Vector3(-1,0, 0));
 
-    pelletSound = new BABYLON.Sound("pellet", "./pellet.wav", scene);
+    pelletSound = new BABYLON.Sound("pellet", "../assets/pellet.wav", scene);
     canvas2 = create(scene, score);
     //var forwards = new BABYLON.Vector3(0, 0, 0);
     //var curr = arr[0];
@@ -455,9 +455,9 @@ class MazeRunner extends React.Component {
     //   var expression3 = (ball.position.z - plane3.position.z > -4) && (parseFloat(Math.cos(camera.rotation.y)) > 0);
     //   var expression4 = (ball.position.z - plane4.position.z < 4) && (parseFloat(Math.cos(camera.rotation.y)) < 0);
     //   if (expression || expression2 || expression3 || expression4) {
-    //     forwards = new BABYLON.Vector3(0, 0, 0);               
+    //     forwards = new BABYLON.Vector3(0, 0, 0);
     //   } else {
-    //     forwards = new BABYLON.Vector3(parseFloat(Math.sin(camera.rotation.y)) * camSpeed, 0, parseFloat(Math.cos(camera.rotation.y)) * camSpeed);          
+    //     forwards = new BABYLON.Vector3(parseFloat(Math.sin(camera.rotation.y)) * camSpeed, 0, parseFloat(Math.cos(camera.rotation.y)) * camSpeed);
     //   }
     //   var cur = -1;
     //   for (var i = 0; i < arr.length; i++) {
@@ -479,7 +479,7 @@ class MazeRunner extends React.Component {
     //       arr = arr.splice(curr, 1);
     //       cur = -1;
     //     }
-        
+
     //   }
     //   for (var j = 0; j < walls.length; j++) {
     //     var express = ((walls[j].position.x - ball.position.x > 0) && (walls[j].position.x - ball.position.x < 14) && (parseFloat(Math.sin(camera.rotation.y)) > 0)) && (Math.abs(ball.position.z - walls[j].position.z) < 14);
@@ -487,11 +487,11 @@ class MazeRunner extends React.Component {
     //     var express3 = ((ball.position.z - walls[j].position.z > 0) && (ball.position.z - walls[j].position.z < 14) && (parseFloat(Math.cos(camera.rotation.y)) < 0)) && (Math.abs(ball.position.x - walls[j].position.x) < 14);
     //     var express4 = ((walls[j].position.z - ball.position.z > 0) && (walls[j].position.z - ball.position.z < 14) && (parseFloat(Math.cos(camera.rotation.y)) > 0)) && (Math.abs(ball.position.x - walls[j].position.x) < 14);
     //     if (express || express2 || express3 || express4 || expression || expression2 || expression3 || expression4) {
-    //       forwards = new BABYLON.Vector3(0, 0, 0); 
+    //       forwards = new BABYLON.Vector3(0, 0, 0);
     //     } else {
     //       forwards = new BABYLON.Vector3(parseFloat(Math.sin(camera.rotation.y)) * camSpeed, 0, parseFloat(Math.cos(camera.rotation.y)) * camSpeed);
     //     }
-        
+
     //   }
     //   ball.position = ball.position.add(forwards);
     // };
@@ -511,7 +511,7 @@ class MazeRunner extends React.Component {
     sphereBody = new CANNON.Body({mass: mass, shape: sphereShape}); // Step 2
     sphereBody.position.set(-250,5,-150);
     sphereBody.rotation = new CANNON.Vec3();
-    sphereBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);  
+    sphereBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);
     sphereBody.addEventListener('collide', function(e){
        if(e.body.isPellet){
          for (var p in pellets){
@@ -536,40 +536,40 @@ class MazeRunner extends React.Component {
     //       if (coins[c] === coins[e.body.coinID]){
     //         console.log("YEs please", coins[c]);
     //         coinMeshes[c].isVisible = false;
-           
+
     //       }
 
     //     }
     //   }
-      
+
     // });
-          
-      
+
+
 
       var groundShape = new CANNON.Plane();
       var groundBody = new CANNON.Body({ mass: 0, shape: groundShape });
       world.add(groundBody);
-      groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);  
+      groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);
 
 
-     // boxShape = new CANNON.Box(new CANNON.Vec3(2, 2, 4));     
+     // boxShape = new CANNON.Box(new CANNON.Vec3(2, 2, 4));
 
   return world;
 };
 
-    var createWallBody = function(position, size, flag){  
+    var createWallBody = function(position, size, flag){
       var boxShape = new CANNON.Box(size);
       var boxBody = new CANNON.Body({shape: boxShape, mass:0});
       boxBody.position = position;
       if(flag === 1) {
-        boxBody.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0),-Math.PI/2);  
+        boxBody.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0),-Math.PI/2);
       } else if(flag === 2) {
-        boxBody.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0),Math.PI/2); 
+        boxBody.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0),Math.PI/2);
       }
-      world.add(boxBody); 
+      world.add(boxBody);
      };
 
-    var createSphereBody = function(position, radius, id){  
+    var createSphereBody = function(position, radius, id){
       var pelletShape = new CANNON.Sphere(radius);
       var pelletBody = new CANNON.Body({mass: 0, shape: pelletShape});
       pelletBody.position = position;
@@ -577,11 +577,11 @@ class MazeRunner extends React.Component {
       pelletBody.collisionResponse = 0;
       pelletBody.pelletId = id;
       pellets[id] = pelletBody;
-      world.add(pelletBody); 
+      world.add(pelletBody);
      };
 
 
-    var world = createWorld();     
+    var world = createWorld();
     var scene = createScene();
     var cam1 = parseFloat(Math.cos(camera.rotation.y));
     var cam2 = parseFloat(Math.sin(camera.rotation.y));
@@ -598,13 +598,13 @@ class MazeRunner extends React.Component {
         // cam1 = parseFloat(Math.cos(camera.rotation.y));
         // cam2 = parseFloat(Math.sin(camera.rotation.y));
         cam1 = parseFloat(Math.cos(camera.rotation.y));
-        cam2 = parseFloat(Math.sin(camera.rotation.y));   
+        cam2 = parseFloat(Math.sin(camera.rotation.y));
         sphereBody.velocity.z = cam1* 50;
         sphereBody.velocity.x = cam2* 50;
       }
-      ball.position.x = sphereBody.position.x; 
-      ball.position.y = sphereBody.position.y; 
-      ball.position.z = sphereBody.position.z; 
+      ball.position.x = sphereBody.position.x;
+      ball.position.y = sphereBody.position.y;
+      ball.position.z = sphereBody.position.z;
 
       camera.position.x = sphereBody.position.x + .4;
       camera.position.y = sphereBody.position.y
@@ -629,12 +629,12 @@ class MazeRunner extends React.Component {
         quatY.setFromAxisAngle(new CANNON.Vec3(0,1,0), angleY);
         var quaternion = quatY.mult(quatX);
         quaternion.normalize();
-        
-        
-        
+
+
+
         var rotatedVelocity = quaternion.vmult(inputVelocity);
         sphereBody.velocity = rotatedVelocity;
-        
+
     });
     window.addEventListener("resize", function () {
       engine.resize();
