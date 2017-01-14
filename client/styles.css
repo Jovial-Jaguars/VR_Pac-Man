@@ -875,7 +875,7 @@ a:link {
 
 .canvas-container {
   position: relative;
-  height: 100%;
+  height: 90%;
   width: 100%;
 }
 
@@ -888,6 +888,7 @@ a:link {
   z-index: 10;
   background-color: rgba(15, 62, 137, 0.5);
 }
+<<<<<<< HEAD
 
 html, body {
   overflow: hidden;
@@ -912,3 +913,5 @@ html, body {
 .spacer {
   height: 1px;
 }
+=======
+>>>>>>> fix vr view and camera toggle
