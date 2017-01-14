@@ -96,6 +96,7 @@ h3{
   background-size: contain;
   background-color: blue;
   background-position: center;
+  background-repeat: no-repeat;
 }
 .block4 {
   display: inline-block;
@@ -105,6 +106,7 @@ h3{
   background-size: contain;
   background-color: blue;
   background-position: center;
+  background-repeat: no-repeat;
 }
 .maze-editor {
   height: 100%;
