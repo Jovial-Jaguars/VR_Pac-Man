@@ -11,11 +11,11 @@ import MultiplayerMazeRunner from './multiplayerMazeRunner';
 // React router
 var MainRouter = () => (
    <Router history={browserHistory}>
-    <Route path="/" component={LandingPage} />
     <Route path="/profile" component={ProfilePage} />
     <Route path="/mazebuilder" component={App} />
     <Route path="/multiplayer" component={MultiplayerMazeRunner} />
     <Route path="/mazestore" component={MazeStore} />
+    <Route path="/" component={App} />
   </Router>
 );
 
