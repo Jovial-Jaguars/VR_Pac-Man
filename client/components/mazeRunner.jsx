@@ -6,6 +6,10 @@ class MazeRunner extends React.Component {
 
   componentDidMount() {
 
+    var pacmanIntro = new Audio('../assets/pacman_beginning.wav');
+    pacmanIntro.loop = false;
+    pacmanIntro.play();
+
   // Get the canvas element from our HTML above
     var that = this;
     var canvas = document.getElementById("renderCanvas");

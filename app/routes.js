@@ -65,6 +65,17 @@ module.exports = function(app, passport) {
     });
   });
 
+  var roomNumber = 1;
+  var participants = 0;
+  app.get('/assignGameRoom', function(req, res) {
+    participants++;
+    if (participants > 2) {
+      roomNumber++;
+      participants = 1;
+    }
+    res.send(roomNumber.toString());
+  }.bind(this))
+
   app.get('/logout', function(req, res) {
     req.logout();
     res.redirect('/');
