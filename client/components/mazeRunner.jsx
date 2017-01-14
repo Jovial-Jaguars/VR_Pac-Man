@@ -247,6 +247,7 @@ export default class MazeRunner extends React.Component {
     scene.fogStart = -400.0;
     scene.fogEnd = 400.0;
     scene.fogColor = new BABYLON.Color3(0.3, 0.9, 0.85);
+<<<<<<< HEAD
     // BABYLON.SceneLoader.ImportMesh("", "../assets/", "ghostparent.babylon", scene, function (newMeshes, particleSystems, skeletons) {
     //   for (var i = 0; i < newMeshes.length; i++) {
     //     var ghosty = newMeshes[i];
@@ -276,10 +277,41 @@ export default class MazeRunner extends React.Component {
     //     }
 
     //   }
+=======
+    BABYLON.SceneLoader.ImportMesh("", "../assets/", "ghostparent.babylon", scene, function (newMeshes, particleSystems, skeletons) {
+      for (var i = 0; i < newMeshes.length; i++) {
+        var ghosty = newMeshes[i];
+        this.ghost = newMeshes[0];
+        var light0 = new BABYLON.SpotLight("Spot0", new BABYLON.Vector3(0, 50, 0), new BABYLON.Vector3(0, -1, 0), 0.4, 3, scene);
+        light0.parent = ghosty;
+        if (ghosty.name === 'Plane') {
+          ghosty.position.y = 50;
+          ghosty.position.x = -200;
+          ghosty.position.z = -10;
+          ghosty.scaling.x = 20;
+          ghosty.scaling.y = 10;
+          ghosty.scaling.z = 20;
+
+          ghosty.material = new BABYLON.StandardMaterial('ghosty', scene);
+          ghosty.material.emissiveColor = new BABYLON.Color3(0.2, 0.4, 0.8);
+        } else if (ghosty.name === 'Sphere' || ghosty.name === 'Sphere.001') {
+          ghosty.material = new BABYLON.StandardMaterial('ghosty', scene);
+          ghosty.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
+          ghosty.material.specularColor = new BABYLON.Color3(1, 1, 1);
+          ghosty.material.diffuseColor = new BABYLON.Color3(0.8, 0.8, 0.8);
+        } else if (ghosty.name === 'Sphere.002' || ghosty.name === 'Sphere.003') {
+          ghosty.material = new BABYLON.StandardMaterial('ghosty', scene);
+          ghosty.material.emissiveColor = new BABYLON.Color3(0, 0, 0);
+          ghosty.material.specularColor = new BABYLON.Color3(1, 1, 1);
+          ghosty.material.diffuseColor = new BABYLON.Color3(0.8, 0.8, 0.8);
+        }
+         
+      }
+>>>>>>> make ghost spin
       
-    //   ghosty.material = new BABYLON.StandardMaterial("lol", scene);
-    //   x.material.emissiveColor = new BABYLON.Color3(0.1, 0.8, 0.8);
-    // }.bind(obj));
+      ghosty.material = new BABYLON.StandardMaterial("lol", scene);
+      x.material.emissiveColor = new BABYLON.Color3(0.1, 0.8, 0.8);
+    }.bind(obj));
     var mm = new BABYLON.FreeCamera("minimap", new BABYLON.Vector3(0,1000,0), scene);
     mm.setTarget(new BABYLON.Vector3(0.1,0.1,0.1));
     // Activate the orthographic projection
@@ -391,8 +423,11 @@ export default class MazeRunner extends React.Component {
     ghostBody.rotation = new CANNON.Vec3();
     ghostBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);  
     ghostBody.addEventListener('collide', function(e){
-     ghostxvelocity = Math.floor(Math.random() * 50) - 25;
-     ghostzvelocity = Math.floor(Math.random() * 50) - 25;
+     ghostxvelocity = Math.floor(Math.random() * 100) - 50;
+     ghostzvelocity = Math.floor(Math.random() * 100) - 50;
+     if(obj.ghost !== undefined) {
+       obj.ghost.rotate(BABYLON.Axis.Y, 1.0, BABYLON.Space.WORLD);
+     }
      });
     world.add(ghostBody);
     // sphereBody.addEventListener('collide', function(e){
@@ -459,7 +494,7 @@ export default class MazeRunner extends React.Component {
     }
 
     engine.runRenderLoop(function () {
-      console.log('count', obj.ghost);
+      //console.log('count', obj.ghost);
       if(pelletRemover !== 0) {
         world.remove(pellets[pelletRemover]);
         pelletRemover = 0;
@@ -493,22 +528,26 @@ export default class MazeRunner extends React.Component {
         obj.ghost.position.x = ghostBody.position.x;
         obj.ghost.position.y = ghostBody.position.y + 40;
         obj.ghost.position.z = ghostBody.position.z;
+        obj.ghost.rotation.x = ghostBody.rotation.x;
+        obj.ghost.rotation.y = ghostBody.rotation.y + Math.PI/16;
+        obj.ghost.rotation.z = ghostBody.rotation.z;
+        console.log(ghostBody.rotation, obj.ghost.rotation, ghostBody.angularVelocity);
+       // inputVelocity = sphereBody.velocity;
+       //  var quatX = new CANNON.Quaternion();
+       //  var quatY = new CANNON.Quaternion();
+       //  quatX.setFromAxisAngle(new CANNON.Vec3(1,0,0), angleX);
+       //  quatY.setFromAxisAngle(new CANNON.Vec3(0,1,0), angleY);
+       //  var quaternion = quatY.mult(quatX);
+       //  quaternion.normalize();
+       //  var rotatedVelocity = quaternion.vmult(inputVelocity);
+       //  ghostBody.velocity = rotatedVelocity;
+        // obj.ghost.rotationQuaternion.x = ghostBody.rotationQuaternion.x;
+        // obj.ghost.rotationQuaternion.y = ghostBody.rotationQuaternion.y;
+        // obj.ghost.rotationQuaternion.z = ghostBody.rotationQuaternion.z;
         ghostBody.velocity.z = ghostxvelocity;
         ghostBody.velocity.x = ghostzvelocity;
+        //ghostBody.angularVelocity = new CANNON.Vec3(Math.PI,Math.PI,Math.PI);
       }  
-      inputVelocity = sphereBody.velocity;
-        var quatX = new CANNON.Quaternion();
-        var quatY = new CANNON.Quaternion();
-        quatX.setFromAxisAngle(new CANNON.Vec3(1,0,0), angleX);
-        quatY.setFromAxisAngle(new CANNON.Vec3(0,1,0), angleY);
-        var quaternion = quatY.mult(quatX);
-        quaternion.normalize();
-
-
-
-        var rotatedVelocity = quaternion.vmult(inputVelocity);
-        sphereBody.velocity = rotatedVelocity;
-
     });
     window.addEventListener("resize", function () {
       engine.resize();
@@ -520,7 +559,6 @@ export default class MazeRunner extends React.Component {
   render() {
     return (
             <div className="canvas-container">
-            <meta name="mobile-web-app-capable" content="yes" />
             <canvas id="renderCanvas"></canvas>
             <div className="camera-toggle">Camera Toggle</div>
             </div>);
