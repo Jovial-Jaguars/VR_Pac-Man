@@ -1,4 +1,4 @@
-class MazeRunner extends React.Component {
+class MultiplayerMazeRunner extends React.Component {
   constructor(props){
     super(props);
     this.count = 0;
@@ -23,7 +23,7 @@ class MazeRunner extends React.Component {
     var pelletMeshes = [];
     // Load the BABYLON 3D engine
     var engine = new BABYLON.Engine(canvas, true);
-     // This begins the creation of a function that we will 'call' just after it's built
+     // This begizs the creation of a function that we will 'call' just after it's built
     var create = function (scene, string) {
       var canvas = new BABYLON.ScreenSpaceCanvas2D(scene, {
         id: "ScreenCanvas",
@@ -363,7 +363,23 @@ class MazeRunner extends React.Component {
     createWallBody(plane.getBoundingInfo().boundingBox.center, new CANNON.Vec3(plane.scaling.x, plane.scaling.y, plane.scaling.z), 0);
     var walls = [];
     //plane.material.backFaceCulling = false;
-    var arr = mazemaker(that.props.maze, scene, plane, scene.activeCamera, ball, walls);
+    var defaultmaze = [[1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1],
+                 [1, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1],
+                 [1, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1],
+                 [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
+                 [1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1],
+                 [1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 1],
+                 [1, 1, 1, 1, 2, 1, 1, 1, 0, 1, 0, 1, 1, 1, 2, 1],
+                 [1, 1, 1, 1, 2, 1, 3, 0, 0, 0, 0, 0, 0, 1, 2, 1],
+                 [1, 0, 0, 0, 2, 0, 0, 1, 1, 0, 1, 1, 0, 0, 2, 1],
+                 [1, 1, 1, 1, 2, 1, 0, 1, 0, 0, 0, 1, 0, 1, 2, 1],
+                 [1, 1, 1, 1, 2, 1, 0, 1, 1, 1, 1, 1, 0, 1, 2, 1],
+                 [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
+                 [1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1],
+                 [1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 1],
+                 [1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1],
+                 [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1]];
+    var arr = mazemaker(defaultmaze, scene, plane, scene.activeCamera, ball, walls);
 
     //console.log(arr);
 
@@ -516,6 +532,8 @@ class MazeRunner extends React.Component {
        if(e.body.isPellet){
          for (var p in pellets){
            if (pellets[p] === pellets[e.body.pelletId]){
+            console.log('hit pellet collision');
+            socket.emit('pelletCollision', p);
              pelletMeshes[p].dispose();
              //world.remove(pellets[p]);
              pelletRemover = p;
@@ -586,8 +604,35 @@ class MazeRunner extends React.Component {
     var cam1 = parseFloat(Math.cos(camera.rotation.y));
     var cam2 = parseFloat(Math.sin(camera.rotation.y));
 
+    var player2 = BABYLON.Mesh.CreateSphere('player2', 16, 4, scene);
+    player2.material = new BABYLON.StandardMaterial("player2material", scene);
+    player2.material.emissiveColor = new BABYLON.Color3(1, 0, 0);
 
+    var otherPlayerSpotlight = new BABYLON.Spotlight("otherPlayerSpotlight",  new BABYLON.Vector3(0, 50, 0), new BABYLON.Vector3(0, -1, 0), 0.4, 3, scene);
+    otherPlayerSpotlight.diffuse = new BABYLON.color3(1, 0, 0);
+    otherPlayerSpotlight.parent = player2;
+
+    socket.on('otherPlayerCoords', function(data) {
+        console.log(JSON.stringify(data));
+        player2.position = data.position;
+        player2.rotation = data.rotation;
+      })
+
+    socket.on('otherPlayerPelletCollision', function(pelletId) {
+      console.log('other player collision pellet id:', pelletMeshes[pelletId]);
+        pelletMeshes[pelletId].dispose();
+    })
+    // });
     engine.runRenderLoop(function () {
+      socket.on('error', console.error.bind(console));
+      // socket.on('otherPlayerCoords', function(data) {
+      //   console.log(data);
+      // })
+    // socket.on('blah', function(data) {
+    //   console.log('blahdata:', data);
+    // })
+      socket.emit('coordinates', {user: username, position: camera.position, rotation: camera.rotation});
+      // socket.on('coordinates', )
       if(pelletRemover !== 0) {
         world.remove(pellets[pelletRemover]);
         pelletRemover = 0;
@@ -595,8 +640,6 @@ class MazeRunner extends React.Component {
       scene.render();
       world.step(1.0/60.0);
       if(cam1 !== parseFloat(Math.cos(camera.rotation.y)) || cam2 !== parseFloat(Math.sin(camera.rotation.y))) {
-        // cam1 = parseFloat(Math.cos(camera.rotation.y));
-        // cam2 = parseFloat(Math.sin(camera.rotation.y));
         cam1 = parseFloat(Math.cos(camera.rotation.y));
         cam2 = parseFloat(Math.sin(camera.rotation.y));
         sphereBody.velocity.z = cam1* 50;
@@ -610,18 +653,6 @@ class MazeRunner extends React.Component {
       camera.position.y = sphereBody.position.y
       camera.position.z = sphereBody.position.z;
 
-      // camera.rotation.x = sphereBody.rotation.x;
-      // camera.rotation.y = sphereBody.rotation.y;
-      // camera.rotation.z = sphereBody.rotation.z;
-      // inputVelocity = sphereBody.velocity;
-      // var quatX = new CANNON.Quaternion();
-      // var quatY = new CANNON.Quaternion();
-      // quatX.setFromAxisAngle(new CANNON.Vec3(1,0,0), angleX);
-      // quatY.setFromAxisAngle(new CANNON.Vec3(0,1,0), angleY);
-      // var quaternion = quatY.mult(quatX);
-      // quaternion.normalize();
-      // var rotatedVelocity = quaternion.vmult(inputVelocity);
-      // sphereBody.velocity = rotatedVelocity;
       inputVelocity = sphereBody.velocity;
         var quatX = new CANNON.Quaternion();
         var quatY = new CANNON.Quaternion();

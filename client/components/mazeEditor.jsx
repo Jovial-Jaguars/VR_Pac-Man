@@ -24,7 +24,7 @@ var MazeEditor = (props) => (
 
       </table>
     </div>
-    <div className="legend"> 
+    <div className="legend">
     <h3>Legend</h3>
       <table className="legend-table">
         <tr className="legend-table-row" onClick={props.clickLegend.bind(this, 1)}>
@@ -60,7 +60,7 @@ var MazeEditor = (props) => (
       ))
     }
     </table>
-    <button className="button" onClick={props.amaze}>Maze</button>
+    <button className="button" onClick={props.enterMaze}>Enter Maze</button>
     <button className="button" onClick ={props.saveMaze}>Save Maze!</button>
   </div>
 );

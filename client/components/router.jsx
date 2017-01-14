@@ -11,8 +11,8 @@ var MainRouter = () => (
     <Route path="/" component={LandingPage} />
     <Route path="/profile" component={ProfilePage} />
     <Route path="/mazebuilder" component={App} />
+    <Route path="/multiplayer" component={MultiplayerMazeRunner} />
   </Router>
 );
 
 ReactDOM.render(<MainRouter />, document.getElementById('app'));
-

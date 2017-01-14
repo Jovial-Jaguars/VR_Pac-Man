@@ -54,8 +54,7 @@ class ProfilePage extends React.Component {
   multiplayerClick() {
     console.log('clicked multiplayer mode');
     socket.emit('testing', {user: this.state.username});
-
-    // socket.emit('testing', {user: this.sate.username});
+    this.props.router.push({pathname: '/multiplayer'})
   }
 
 

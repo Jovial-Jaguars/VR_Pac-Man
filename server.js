@@ -14,18 +14,28 @@ var session = require('express-session');
 
 io.on('connection', function(socket) {
   console.log('a user connected');
+  socket.join('some room');
+  io.to('some room').emit('some event');
 
   socket.on('disconnect', function() {
     console.log('user disconnected');
   });
 
-  socket.on('testing', function(data) {
-    console.log('hit test on server!', data);
+  socket.on('coordinates', function(coords) {
+    socket.broadcast.emit('otherPlayerCoords', coords);
   });
 
-  socket.on('coordinates', function(coords) {
-    console.log('coords:', coords);
+  socket.on('pelletCollision', function(pelletId) {
+    console.log('hit pellet collision in server', pelletId);
+    socket.broadcast.emit('otherPlayerPelletCollision', pelletId)
   });
+
+
+
+  // socket.join('some room');
+  // io.to('some room').emit('some event');
+
+  // socket.emit('coordinates', 'testing');
 
 });
 
