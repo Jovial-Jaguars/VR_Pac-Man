@@ -6,6 +6,10 @@ class MultiplayerMazeRunner extends React.Component {
 
   componentDidMount() {
 
+    var pacmanIntro = new Audio('../assets/pacman_beginning.wav');
+    pacmanIntro.loop = false;
+    pacmanIntro.play();
+
   // Get the canvas element from our HTML above
     var that = this;
     var canvas = document.getElementById("renderCanvas");
@@ -608,15 +612,40 @@ class MultiplayerMazeRunner extends React.Component {
     player2.material = new BABYLON.StandardMaterial("player2material", scene);
     player2.material.emissiveColor = new BABYLON.Color3(1, 0, 0);
 
-    var otherPlayerSpotlight = new BABYLON.Spotlight("otherPlayerSpotlight",  new BABYLON.Vector3(0, 50, 0), new BABYLON.Vector3(0, -1, 0), 0.4, 3, scene);
-    otherPlayerSpotlight.diffuse = new BABYLON.color3(1, 0, 0);
+    var otherPlayerSpotlight = new BABYLON.SpotLight("otherPlayerSpotlight",  new BABYLON.Vector3(0, 50, 0), new BABYLON.Vector3(0, -1, 0), 0.4, 3, scene);
+    otherPlayerSpotlight.diffuse = new BABYLON.Color3(1, 0, 0);
     otherPlayerSpotlight.parent = player2;
 
+    var assignGameRoom = function() {
+      var room = null;
+      $.ajax({
+        type: 'GET',
+        url: '/assignGameRoom',
+        async: false,
+        success: function(number) {
+          room = 'room' + number;
+          console.log('successfully joined room:', room);
+        },
+        error: function() {
+          console.log('Erorr joining game room');
+        }
+      });
+      return room;
+    };
+
+
+    socket.emit('join', assignGameRoom());
+
     socket.on('otherPlayerCoords', function(data) {
-        console.log(JSON.stringify(data));
-        player2.position = data.position;
-        player2.rotation = data.rotation;
-      })
+        var decodeBuffer = new ArrayBuffer(data.length);
+        var decodeView   = new Uint8Array( decodeBuffer );
+        for (var i = 0; i < data.length; i++) {
+          decodeView[i] = data.charCodeAt( i );
+        }
+        var decodedState = new Float64Array(decodeBuffer);
+        player2.position = {x: decodedState[0], y: decodedState[1], z: decodedState[2]};
+        player2.rotation = {x: decodedState[3], y: decodedState[4], z: decodedState[5]};
+      });
 
     socket.on('otherPlayerPelletCollision', function(pelletId) {
       console.log('other player collision pellet id:', pelletMeshes[pelletId]);
@@ -631,7 +660,13 @@ class MultiplayerMazeRunner extends React.Component {
     // socket.on('blah', function(data) {
     //   console.log('blahdata:', data);
     // })
-      socket.emit('coordinates', {user: username, position: camera.position, rotation: camera.rotation});
+      var myCamPosition = camera.position, myCamRotation = camera.rotation;
+      var myCoords = new Float64Array([myCamPosition.x, myCamPosition.y, myCamPosition.z, myCamRotation.x, myCamRotation.y, myCamRotation.z]);
+      var ucharView  = new Uint8Array(myCoords.buffer);
+      var slimData = String.fromCharCode.apply(
+        String, [].slice.call( ucharView, 0 )
+      );
+      socket.emit('coordinates', slimData);
       // socket.on('coordinates', )
       if(pelletRemover !== 0) {
         world.remove(pellets[pelletRemover]);
