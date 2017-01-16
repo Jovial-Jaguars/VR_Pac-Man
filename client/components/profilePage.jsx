@@ -61,7 +61,8 @@ class ProfilePage extends React.Component {
   render() {
     return (
       <div>
-        <div>Welcome {this.state.username}</div>
+        <TopNav/>
+        <div id="profileStats">Welcome {this.state.username}</div>
         <button id="logout" onClick={this.logout.bind(this)}>Log Out</button>
         <div>
           <button id="mazebuilder" onClick={this.mazebuilderClick}>Maze Builder</button>

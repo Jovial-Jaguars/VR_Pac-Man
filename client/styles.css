@@ -1,3 +1,12 @@
+@font-face {
+    font-family: "Crackman Font";
+    src: url(./assets/crackman.ttf) format("truetype");
+}
+
+body {
+  background: #FEDC3D;
+}
+
 h3{
   text-align: center;
 }
@@ -284,4 +293,103 @@ h3{
 
 #modal-signupform {
   display:none;
+}
+
+
+#topnav {
+  height: 70px;
+  background-color: black;
+  color: #FEDC3D;
+  font-family: 'PT Mono', sans-serif;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: flex-start;
+  justify-content: space-around;
+}
+
+#topnav>li {
+  padding: ;
+}
+
+#topleft {
+  font-family: "Crackman Font";
+}
+
+#nav-login {
+  color: #FEDC3D;
+  background-color: black;
+  font-family: 'PT Mono', sans-serif;
+  font-size: 16px;
+  border: none;
+  position: fixed;
+  top: 3.5%;
+  right: 13%;
+}
+
+#nav-signup {
+  color: #FEDC3D;
+  background-color: black;
+  font-family: 'PT Mono', sans-serif;
+  font-size: 16px;
+  border: none;
+  position: fixed;
+  top: 3.5%;
+  right: 4%;
+}
+
+#profileStats {
+  color: #FEDC3D;
+  background-color: black;
+  font-family: 'PT Mono', sans-serif;
+  font-size: 16px;
+  border: none;
+  position: fixed;
+  top: 3.5%;
+  right: 4%;
+}
+
+#logout {
+  color: #FEDC3D;
+  background-color: black;
+  font-family: 'PT Mono', sans-serif;
+  font-size: 16px;
+  border: none;
+  position: fixed;
+  top: 10%;
+  right: 0;
+}
+
+.landingPageContent {
+}
+
+.playBtnContent {
+  text-align: center;
+  display: inline-block;
+  background-color: black;
+  border-radius: 25px;
+  color: white;
+  font-family: 'Quicksand';
+  font-size: 16px;
+  padding: 20px;
+  position: relative;
+  left: 25%;
+  top: 100px;
+}
+
+
+#demobutton {
+  background-color: #FEA680;
+  border-radius: 20px;
+  border: none;
+  font-family: 'PT Mono';
+  font-size: 16px;
+  color: black;
+  width: 70%;
+}
+
+#demobutton>.playText {
+  font-size: 50px;
 }
