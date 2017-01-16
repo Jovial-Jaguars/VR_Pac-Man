@@ -5,11 +5,6 @@ import SignupForm from './signup';
 export default class LandingPage extends React.Component {
   constructor(props) {
     super(props);
-    this.mazebuilderClick = this.mazebuilderClick.bind(this);
-    this.mazestoreClick = this.mazestoreClick.bind(this);
-  }
-
-  navClickHome() {
   }
 
   modalClickLogin() {
@@ -26,14 +21,6 @@ export default class LandingPage extends React.Component {
 
   modalClickExit() {
     $('.modal').css('display', 'none');
-  }
-
-  mazebuilderClick() {
-    this.props.router.push({pathname: '/mazebuilder'});
-  }
-
-  mazestoreClick() {
-    this.props.router.push({pathname: '/mazestore'});
   }
 
   signupFormSubmit(e) {
@@ -72,9 +59,10 @@ export default class LandingPage extends React.Component {
 
   componentWillMount() {
     console.log('testing');
+
     $.ajax({
       type: 'GET',
-      url: '/profile',
+      url: '/checkLoggedIn',
       async: false,
       success: function(data) {
         if (!data.user) {
@@ -90,21 +78,17 @@ export default class LandingPage extends React.Component {
       error: function() {
         console.log('Error!');
       }
-    })
+    });
   }
 
   render() {
     return (
     <div>
+      <TopNav router={this.props.router}/>
       <nav>
-        <button id="nav-home" onClick={this.navClickHome.bind(this)}>Home</button>
         <button id="nav-login" onClick={this.modalClickLogin}>Login</button>
         <button id="nav-signup" onClick={this.modalClickSignup}>Signup</button>
       </nav>
-      <div>
-        <button id="mazebuilder" onClick={this.mazebuilderClick}>Maze Builder2</button>
-        <button id="mazestore" onClick={this.mazestoreClick}>MazeStore</button>
-      </div>
       <div id="myModal" className="modal">
         <div className="modal-content">
           <div className="modal-header">
@@ -125,6 +109,13 @@ export default class LandingPage extends React.Component {
             <h3> </h3>
           </div>
         </div>
+      </div>
+      <div className="landingPageContent">
+        <div className="playBtnContent">
+          <button id="demobutton"><span className="playText">Play</span><br/>Demo Version</button>
+          <p>For multiplayer mode, high scores, custom mazes and more, create a FREE account!</p>
+        </div>
+        <p className="howtoplay">How to Play: Blah blah blah, blah blah blah.</p>
       </div>
     </div>
     );

@@ -11,13 +11,13 @@ module.exports = function(app, passport) {
   );
 
   app.post('/signup', passport.authenticate('local-signup', {
-    successRedirect: '/profile',
+    successRedirect: '/gsdfhprofile',
     failureRedirect: '/#/failure',
     failureFlash: true
     })
   );
 
-  app.get('/profile', function(req, res) {
+  app.get('/checkLoggedIn', function(req, res) {
     if (!req.isAuthenticated()) {
       res.redirect('/');
     } else {
@@ -80,7 +80,12 @@ module.exports = function(app, passport) {
     req.logout();
     res.redirect('/');
     });
-  };
+
+  app.get('*', function(req, res) {
+    res.redirect('/');
+  })
+};
+
 
 
 
