@@ -1,3 +1,12 @@
+@font-face {
+    font-family: "Crackman Font";
+    src: url(./assets/crackman.ttf) format("truetype");
+}
+
+body {
+  background: #FEDC3D;
+}
+
 h3{
   text-align: center;
 }
@@ -289,6 +298,7 @@ h3{
   display:none;
 }
 
+
 /*styling for the maze store*/
 
 @font-face {
@@ -308,7 +318,7 @@ h3{
 
 html {
   font-family : sans-serif;
-  
+
   text-align : center;
 
   height: 100%;
@@ -318,17 +328,17 @@ html {
 
 
 html {
-     background-repeat: repeat; 
+     background-repeat: repeat;
     /* background-image: ;*/
     /*background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 14, 177, .75)), url('background.jpg'));*/
     background:     linear-gradient(
-      rgba(0, 0, 0, 0), 
+      rgba(0, 0, 0, 0),
       rgba(10, 15, 68, .85)
     ), url('assets/background.jpg');
 }
 
 .title-container {
-    position: fixed; 
+    position: fixed;
     background-color: blue;
     width: 100%;
     z-index: 10;
@@ -370,20 +380,20 @@ html {
 
 .maps-container{
     display: relative;
-    justify-content: space-around; 
+    justify-content: space-around;
     flex-wrap: wrap;
     margin-top: 203px;
-    
+
 }
 
 
 .maps {
     display: flex;
-    justify-content: space-around; 
+    justify-content: space-around;
     flex-wrap: wrap;
     align-items: stretch;
     /*flex-direction: row;
-    align-items: flex-start; 
+    align-items: flex-start;
     align-content: space-between;
     background-color: red;
     background: #fff;
@@ -458,7 +468,7 @@ tbody {
   height: 2.2vmin;
 }
 .pacmanmaze {
-  
+
   flex-grow: 1;
   background-image: url('assets/pacman.png');
   background-size: contain;
@@ -471,7 +481,7 @@ tbody {
 }
 
 .insertcoin {
-  
+
   position: absolute;
   display: inline-block;
   background-image: url('assets/insertcoin.png');
@@ -489,7 +499,7 @@ tbody {
 
 }
 .onecredit {
-  
+
   position: absolute;
   display: inline-block;
   background-image: url('assets/onecredit.png');
@@ -522,4 +532,104 @@ tbody {
   font-family: icons; /* BYO icon font, mapped smartly */
   content: attr(data-icon);
   speak: none; /* Not to be trusted, but hey. */
+}
+
+/*end styling for maze store*/
+
+#topnav {
+  height: 70px;
+  background-color: black;
+  color: #FEDC3D;
+  font-family: 'PT Mono', sans-serif;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: flex-start;
+  justify-content: space-around;
+}
+
+#topnav>li {
+  padding: ;
+}
+
+#topleft {
+  font-family: "Crackman Font";
+}
+
+#nav-login {
+  color: #FEDC3D;
+  background-color: black;
+  font-family: 'PT Mono', sans-serif;
+  font-size: 16px;
+  border: none;
+  position: fixed;
+  top: 3.5%;
+  right: 13%;
+}
+
+#nav-signup {
+  color: #FEDC3D;
+  background-color: black;
+  font-family: 'PT Mono', sans-serif;
+  font-size: 16px;
+  border: none;
+  position: fixed;
+  top: 3.5%;
+  right: 4%;
+}
+
+#profileStats {
+  color: #FEDC3D;
+  background-color: black;
+  font-family: 'PT Mono', sans-serif;
+  font-size: 16px;
+  border: none;
+  position: fixed;
+  top: 3.5%;
+  right: 4%;
+}
+
+#logout {
+  color: #FEDC3D;
+  background-color: black;
+  font-family: 'PT Mono', sans-serif;
+  font-size: 16px;
+  border: none;
+  position: fixed;
+  top: 10%;
+  right: 0;
+}
+
+.landingPageContent {
+}
+
+.playBtnContent {
+  text-align: center;
+  display: inline-block;
+  background-color: black;
+  border-radius: 25px;
+  color: white;
+  font-family: 'Quicksand';
+  font-size: 16px;
+  padding: 20px;
+  position: relative;
+  left: 25%;
+  top: 100px;
+}
+
+
+#demobutton {
+  background-color: #FEA680;
+  border-radius: 20px;
+  border: none;
+  font-family: 'PT Mono';
+  font-size: 16px;
+  color: black;
+  width: 70%;
+}
+
+#demobutton>.playText {
+  font-size: 50px;
 }
