@@ -1,4 +1,5 @@
 import React from 'react';
+import TopNav from './topNav';
 
 export default class ProfilePage extends React.Component {
   constructor(props) {
@@ -65,7 +66,7 @@ export default class ProfilePage extends React.Component {
   render() {
     return (
       <div>
-        <TopNav/>
+        <TopNav router={this.props.router}/>
         <div id="profileStats">
           <p id="welcomeMessage">Welcome {this.state.username}</p>
           <p>SP High Score: {this.state.spHighScore}</p>

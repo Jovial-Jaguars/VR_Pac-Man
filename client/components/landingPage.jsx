@@ -1,6 +1,7 @@
 import React from 'react';
 import LoginForm from './login';
 import SignupForm from './signup';
+import TopNav from './topNav';
 
 export default class LandingPage extends React.Component {
   constructor(props) {
