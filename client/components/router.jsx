@@ -10,7 +10,8 @@ import MultiplayerMazeRunner from './multiplayerMazeRunner';
 import MazeRunner from './mazeRunner';
 import About from './about';
 
-// React router
+
+// React router that switches between signin, signup, and pet app
 var MainRouter = () => (
    <Router history={browserHistory}>
     <Route path="/" component={LandingPage} />

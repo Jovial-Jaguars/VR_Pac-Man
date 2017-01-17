@@ -222,6 +222,7 @@ purchaseThisMap (mapId){
 }
 
 
+<<<<<<< HEAD
 
 
 
@@ -234,6 +235,8 @@ purchaseThisMap (mapId){
 
 
 
+=======
+>>>>>>> added server changes for store
 class MapList extends React.Component{
   constructor(props){
     super(props);
@@ -261,10 +264,44 @@ class MapList extends React.Component{
   //   });
   // }
 
+<<<<<<< HEAD
+=======
+
+componentWillMount(){
+    this.setState({
+      loading : true
+    });
+    $.ajax({
+      type: 'GET',
+      url: '/maps',
+      success: function(data) {
+        console.log('success', data);
+      }
+    });
+    $.ajax({
+      type: 'POST',
+      url: '/maps',
+      data: {
+      mapData: '1234',
+      shareable: true,
+      username: 'test',
+      },
+      success: function() {
+        console.log('success');
+      }
+    });
+  }
+
+
+>>>>>>> added server changes for store
    onSetSidebarOpen (open) {
     this.setState({sidebarOpen: open});
   }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> added server changes for store
   convertArray (string) {
     var oneMap = [];
     var oneArray = [];
