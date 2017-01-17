@@ -3,12 +3,6 @@ var Maps = require('../app/models/maps');
 
 module.exports = function(app, passport) {
 
-  app.get('/*', function(req, res) {
-    res.redirect('/');
-  });
-
-
-
   app.post('/login', passport.authenticate('local-login', {
     successRedirect: '/profile',
     failureRedirect: '/#/failure',
@@ -23,8 +17,12 @@ module.exports = function(app, passport) {
     })
   );
 
-  app.get('/profile', isLoggedIn, function(req, res) {
-    res.send(req.user);
+  app.get('/profile', function(req, res) {
+    if (!req.isAuthenticated()) {
+      res.redirect('/');
+    } else {
+      res.send(req.session.passport);
+    }
   });
 
   app.post('/profileInfo', isLoggedIn, function(req, res) {
@@ -66,6 +64,17 @@ module.exports = function(app, passport) {
       })
     });
   });
+
+  var roomNumber = 1;
+  var participants = 0;
+  app.get('/assignGameRoom', function(req, res) {
+    participants++;
+    if (participants > 2) {
+      roomNumber++;
+      participants = 1;
+    }
+    res.send(roomNumber.toString());
+  }.bind(this))
 
   app.get('/logout', function(req, res) {
     req.logout();

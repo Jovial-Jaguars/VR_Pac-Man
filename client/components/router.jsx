@@ -5,14 +5,14 @@ var Link = window.ReactRouter.Link;
 var browserHistory = window.ReactRouter.browserHistory;
 
 
-// React router that switches between signin, signup, and pet app
+// React router
 var MainRouter = () => (
    <Router history={browserHistory}>
     <Route path="/" component={LandingPage} />
     <Route path="/profile" component={ProfilePage} />
     <Route path="/mazebuilder" component={App} />
+    <Route path="/multiplayer" component={MultiplayerMazeRunner} />
   </Router>
 );
 
 ReactDOM.render(<MainRouter />, document.getElementById('app'));
-

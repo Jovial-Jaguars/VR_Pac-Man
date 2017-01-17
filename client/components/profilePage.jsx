@@ -30,7 +30,8 @@ class ProfilePage extends React.Component {
         console.log('data:', JSON.stringify(data));
         this.setState({
           username: data.user.username
-        })
+        });
+        window.username = data.user.username; //hacky
       }.bind(this)
     });
   }
@@ -50,6 +51,12 @@ class ProfilePage extends React.Component {
     });
   }
 
+  multiplayerClick() {
+    console.log('clicked multiplayer mode');
+    socket.emit('testing', {user: this.state.username});
+    this.props.router.push({pathname: '/multiplayer'})
+  }
+
 
   render() {
     return (
@@ -59,6 +66,7 @@ class ProfilePage extends React.Component {
         <div>
           <button id="mazebuilder" onClick={this.mazebuilderClick}>Maze Builder</button>
           <button id="getmazes" onClick={this.getMazeClick}>Get Mazes Wow</button>
+          <button id="multiplayer" onClick={this.multiplayerClick.bind(this)}>Multiplayer Mode</button>
         </div>
       </div>
     )
