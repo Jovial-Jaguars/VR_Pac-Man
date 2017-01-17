@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "babel ./client/components --out-dir client/compiled --presets=es2015,react --ignore=node_modules,compiled,bower_components --source-maps inline && nodemon server.js"
+    "start": "babel ./client/components --out-dir client/compiled --presets=es2015,react --ignore=node_modules,compiled,bower_components --source-maps inline && webpack && nodemon server.js"
   },
   "author": "",
   "license": "ISC",
@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "babel-cli": "^6.18.0",
+    "babel-loader": "^6.2.10",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.2",
     "connect-flash": "^0.1.1",
@@ -31,9 +32,12 @@
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
-    "react": "^15.4.1",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
     "react-router": "^3.0.0",
     "sequelize": "^3.28.0",
-    "socket.io": "^1.7.2"
+    "socket.io": "^1.7.2",
+    "react-sidebar": "^2.2.1",
+    "webpack": "^1.14.0"
   }
 }
