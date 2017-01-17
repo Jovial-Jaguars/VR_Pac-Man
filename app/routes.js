@@ -11,7 +11,7 @@ module.exports = function(app, passport) {
   );
 
   app.post('/signup', passport.authenticate('local-signup', {
-    successRedirect: '/gsdfhprofile',
+    successRedirect: '/profile',
     failureRedirect: '/#/failure',
     failureFlash: true
     })
