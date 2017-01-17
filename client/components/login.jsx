@@ -1,3 +1,5 @@
+import React from 'react';
+
 var LoginForm = (props) => (
   <form id="loginForm">
     <div>
@@ -16,4 +18,4 @@ var LoginForm = (props) => (
 );
 
 
-window.LoginForm = LoginForm;
+export default LoginForm;
