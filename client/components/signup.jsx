@@ -1,3 +1,5 @@
+import React from 'react';
+
 var SignupForm = (props) => (
   <form id="signupForm">
     <div>
@@ -21,4 +23,4 @@ var SignupForm = (props) => (
 );
 
 
-window.SignupForm = SignupForm;
+export default SignupForm;
