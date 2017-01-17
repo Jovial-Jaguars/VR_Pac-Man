@@ -1,4 +1,5 @@
 import React from 'react';
+import TopNav from './topNav';
 
 export default class ProfilePage extends React.Component {
   constructor(props) {
@@ -6,7 +7,8 @@ export default class ProfilePage extends React.Component {
     this.state = {
       username: null,
       savedMaps: null,
-      highScore: null,
+      spHighScore: 0,
+      mpHighScore: 0
     }
     this.mazebuilderClick = this.mazebuilderClick.bind(this);
   }
@@ -36,13 +38,14 @@ export default class ProfilePage extends React.Component {
         window.username = data.user.username; //hacky
       }.bind(this)
     });
+    this.getMyMazes();
   }
 
   mazebuilderClick() {
     this.props.router.push({pathname: '/mazebuilder'});
   }
 
-  getMazeClick() {
+  getMyMazes() {
     $.ajax({
       type: 'GET',
       url: '/maps',
@@ -63,13 +66,28 @@ export default class ProfilePage extends React.Component {
   render() {
     return (
       <div>
-        <div>Welcome {this.state.username}</div>
-        <button id="logout" onClick={this.logout.bind(this)}>Log Out</button>
-        <div>
-          <button id="mazebuilder" onClick={this.mazebuilderClick}>Maze Builder</button>
-          <button id="getmazes" onClick={this.getMazeClick}>Get Mazes Wow</button>
-          <button id="multiplayer" onClick={this.multiplayerClick.bind(this)}>Multiplayer Mode</button>
+        <TopNav router={this.props.router}/>
+        <div id="profileStats">
+          <p id="welcomeMessage">Welcome {this.state.username}</p>
+          <p>SP High Score: {this.state.spHighScore}</p>
+          <p>MP High Score: {this.state.mpHighScore}</p>
+          <button id="logout" onClick={this.logout.bind(this)}>Log Out</button>
+          </div>
+        <div className="profilePageContent">
+          <div className="playScreen">
+            <h1 className="headers">Play</h1>
+            <button id="singleplayerBtn">Single Player</button><br/>
+            <button id="multiplayerBtn" onClick={this.multiplayerClick.bind(this)}>Multiplayer</button><br/>
+            <button id="customGameBtn">Custom Game</button><br/>
+            <br/><a>How To Play</a>
+          </div><br/>
+          <div className="myMazesScreen">
+            <h1 className="headers">My Mazes</h1>
+            <div>mazes here...</div>
+          </div>
         </div>
+        <img id="ghostBackgroundPic" src="../assets/pac-man-ghost.png"/>
+        <img id="pacmanBackgroundPic" src="../assets/pac-man.png"/>
       </div>
     )
   }

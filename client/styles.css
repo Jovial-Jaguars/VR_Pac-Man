@@ -1,5 +1,45 @@
+@font-face {
+    font-family: "Crackman Font";
+    src: url(./assets/crackman.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: "Joystix";
+    src: url(./assets/joystix.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: "cp7";
+    src: url(./assets/computer_pixel-7.ttf) format("truetype");
+}
+
+body {
+  background: #FFF7D2;
+  /*background-color: #01ABAA;*/
+  /*background-color: black;*/
+  text-align: center;
+}
+
 h3{
   text-align: center;
+}
+
+li:hover {
+  cursor: pointer;
+  color: #FFF7D2;
+}
+
+button {
+  outline: none;
+}
+
+button:hover {
+  cursor: pointer;
+  color: #FFF7D2;
+}
+
+button:active {
+  border: none;
 }
 
 .element {
@@ -229,16 +269,20 @@ h3{
 /* Modal Content */
 .modal-content {
     position: relative;
-    background-color: #fefefe;
+    background-color: black;
+    font-family: 'Quicksand';
     margin: auto;
     padding: 0;
-    border: 1px solid #888;
+    border: 1px solid #FFF7D2;
     width: 80%;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
     animation-name: animatetop;
-    animation-duration: 0.4s
+    animation-duration: 0.4s;
+    border-radius: 35px;
+    max-width: 30%;
+    color: #FFF7D2;
 }
 
 /* Add Animation */
@@ -254,10 +298,11 @@ h3{
 
 /* The Close Button */
 .close {
-    color: white;
+    color: #FFF7D2;
     float: right;
     font-size: 28px;
     font-weight: bold;
+    transform: translateY(-90%);
 }
 
 .close:hover,
@@ -269,26 +314,94 @@ h3{
 
 .modal-header {
     padding: 2px 16px;
-    background-color: #5cb85c;
+    background-color: #FEDC3D;
     color: white;
+    border-radius: 30px 30px 0 0;
+    min-height: 50px;
+    /*vertical-align: middle;*/
 }
 
-.modal-body {padding: 2px 16px;}
+.modal-header-flexbox {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+  /*vertical-align: middle;*/
+}
 
-.modal-footer {
-    padding: 2px 16px;
-    background-color: #5cb85c;
-    color: white;
+.modal-header-flexbox>button {
+  background: none;
+  border: none;
+  font-family: 'Joystix';
+  font-size: 20px;
+  transform: translateY(50%);
 }
 
 #modal-loginform {
   display: none;
+  text-align: right;
 }
 
-#modal-signupform {
+#modal-loginform {
   display:none;
+  text-align: right;
+  /*padding-right: 50%;*/
+  min-height: 140px;
 }
 
+#modal-loginform label {
+  text-align: left;
+  width: 30%;
+}
+
+#modal-loginform input {
+  float: right;
+  margin-right: 20%;
+  margin-left: 10px;
+}
+
+#modal-loginform #submitInput {
+  background-color: #01ABAA;
+  /*background-color: black;*/
+  border-radius: 10px;
+  border: none;
+  font-family: 'PT Mono';
+  font-size: 16px;
+  /*color: #FEDC3D;*/
+  color: #FFF7D2;
+  min-width: 100px;
+}
+
+
+#modal-signupform label {
+  /*text-align: left;*/
+  width: 30%;
+}
+
+#modal-signupform input {
+  float: right;
+  margin-right: 20%;
+  margin-left: 10px;
+}
+
+#modal-signupform #submitInput {
+  background-color: #01ABAA;
+  /*background-color: black;*/
+  border-radius: 10px;
+  border: none;
+  font-family: 'PT Mono';
+  font-size: 16px;
+  /*color: #FEDC3D;*/
+  color: #FFF7D2;
+  min-width: 100px;
+}
+
+#modal-signupform>p {
+  text-align: center;
+  /*margin-left: 10px;*/
+}
+
+<<<<<<< HEAD
 /*styling for the maze store*/
 
 @font-face {
@@ -308,7 +421,7 @@ h3{
 
 html {
   font-family : sans-serif;
-  
+
   text-align : center;
 
   height: 100%;
@@ -318,17 +431,17 @@ html {
 
 
 html {
-     background-repeat: repeat; 
+     background-repeat: repeat;
     /* background-image: ;*/
     /*background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 14, 177, .75)), url('background.jpg'));*/
     background:     linear-gradient(
-      rgba(0, 0, 0, 0), 
+      rgba(0, 0, 0, 0),
       rgba(10, 15, 68, .85)
     ), url('assets/background.jpg');
 }
 
 .title-container {
-    position: fixed; 
+    position: fixed;
     background-color: blue;
     width: 100%;
     z-index: 10;
@@ -370,20 +483,20 @@ html {
 
 .maps-container{
     display: relative;
-    justify-content: space-around; 
+    justify-content: space-around;
     flex-wrap: wrap;
     margin-top: 203px;
-    
+
 }
 
 
 .maps {
     display: flex;
-    justify-content: space-around; 
+    justify-content: space-around;
     flex-wrap: wrap;
     align-items: stretch;
     /*flex-direction: row;
-    align-items: flex-start; 
+    align-items: flex-start;
     align-content: space-between;
     background-color: red;
     background: #fff;
@@ -458,7 +571,7 @@ tbody {
   height: 2.2vmin;
 }
 .pacmanmaze {
-  
+
   flex-grow: 1;
   background-image: url('assets/pacman.png');
   background-size: contain;
@@ -471,7 +584,7 @@ tbody {
 }
 
 .insertcoin {
-  
+
   position: absolute;
   display: inline-block;
   background-image: url('assets/insertcoin.png');
@@ -489,7 +602,7 @@ tbody {
 
 }
 .onecredit {
-  
+
   position: absolute;
   display: inline-block;
   background-image: url('assets/onecredit.png');
@@ -522,4 +635,239 @@ tbody {
   font-family: icons; /* BYO icon font, mapped smartly */
   content: attr(data-icon);
   speak: none; /* Not to be trusted, but hey. */
+}
+
+/*end styling for maze store*/
+
+
+#signupForm div {
+  margin: 4px;
+}
+
+#loginForm div {
+  margin: 4px;
+}
+
+#topnav {
+  height: 70px;
+  background-color: black;
+  color: #FEDC3D;
+  font-family: 'cp7';
+  /*font-family: 'Joystix';*/
+  /*font-family: 'PT Mono', sans-serif;*/
+  font-size: 30px;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: flex-start;
+  justify-content: space-around;
+}
+
+#topnav>li {
+
+}
+
+#topleft {
+  font-family: "Crackman Font";
+  font-size: 35px;
+}
+
+#nav-login {
+  color: #FEDC3D;
+  background-color: black;
+  font-family: 'cp7';
+  /*font-family: 'Joystix';*/
+  /*font-family: 'PT Mono', sans-serif;*/
+  font-size: 30px;
+  border: none;
+  position: fixed;
+  top: 2.5%;
+  right: 13%;
+}
+
+#nav-login:hover {
+  color: #FFF7D2;
+}
+
+#nav-signup {
+  color: #FEDC3D;
+  background-color: black;
+  font-family: 'cp7';
+  /*font-family: 'Joystix';*/
+  /*font-family: 'PT Mono', sans-serif;*/
+  font-size: 30px;
+  border: none;
+  position: fixed;
+  top: 2.5%;
+  right: 4%;
+}
+
+#nav-signup:hover {
+  color: #FFF7D2;
+}
+
+#profileStats {
+  border: 4px solid #01ABAA;
+  background-color: black;
+  color: #FFF7D2;
+  font-family: 'joystix', sans-serif;
+  font-size: 16px;
+  position: fixed;
+  top: 0%;
+  right: 0%;
+  text-align: right;
+  padding: 20px 30px 10px 30px;
+  border-radius: 25px;
+  min-width: 15%;
+  max-width: 20%;
+  min-height: 13%;
+}
+
+#profileStats>button:hover {
+  color: #FFF7D2;
+}
+
+#profileStats>p {
+  margin: 0;
+}
+
+#profileStats>#welcomeMessage {
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+#logout {
+  color: #FEDC3D;
+  /*background-color: #01ABAA;*/
+  background-color: black;
+  border-radius: 15px;
+  font-family: 'cp7';
+  font-size: 30px;
+  border: none;
+  /*position: fixed;*/
+  right: 2%;
+  top: 13.5%;
+}
+
+.profilePageContent {
+  font-family: 'Quicksand';
+  font-size: 16px;
+  color: #FFF7D2;
+}
+
+.playScreen {
+  padding: 25px;
+  display: inline-block;
+  border-radius: 45px;
+  background-color: rgba(0,0,0,1);
+  text-align: center;
+  padding: 25px 50px 25px 50px;
+  margin: 15px;
+  max-width: 55%;
+}
+
+.playScreen button {
+  background-color: #01ABAA;
+  border-radius: 20px;
+  border: none;
+  font-family: 'PT Mono';
+  font-size: 24px;
+  color: #FFF7D2;
+  width: 220px;
+  height: 40px;
+  margin: 4px;
+}
+
+.myMazesScreen {
+  padding: 25px;
+  display: inline-block;
+  border-radius: 45px;
+  background-color: rgba(0,0,0,1);
+  text-align: center;
+  padding: 25px 50px 25px 50px;
+  margin: 15px;
+  max-width: 55%;
+}
+
+.landingPageContent {
+  display: inline-block;
+  border-radius: 45px;
+  background-color: rgba(0,0,0,1);
+  text-align: center;
+  padding: 10px 50px;
+  margin: 15px;
+  color: #FFF7D2;
+  font-size: 16px;
+  font-family: 'Quicksand';
+  max-width: 55%;
+}
+
+.playBtnContent {
+  text-align: center;
+  display: inline-block;
+  /*background-color: black;*/
+  padding: 25px;
+  border-radius: 30px;
+}
+
+
+#demobutton {
+  background-color: #01ABAA;
+  /*background-color: black;*/
+  border-radius: 20px;
+  border: none;
+  font-family: 'PT Mono';
+  font-size: 16px;
+  /*color: #FEDC3D;*/
+  color: #FFF7D2;
+  width: 70%;
+}
+
+#demobutton>.playText {
+  font-size: 50px;
+}
+
+.headers {
+  color: #FEDC3D;
+  font-family: 'joystix';
+}
+
+#ghostBackgroundPic {
+  position: fixed;
+  bottom: 4%;
+  right: 4%;
+  z-index: -1;
+}
+
+#pacmanBackgroundPic {
+  position: fixed;
+  bottom: 4%;
+  left: 4%;
+  z-index: -1;
+}
+
+a:link {
+  color: #FFF7D2;
+  text-decoration: none;
+}
+
+.legalnotice {
+  font-size: 10px;
+}
+
+#formheader {
+  font-family: "Crackman Font";
+  color: #FEDC3D;
+  font-size: 32px;
+  margin: 10px;
+  text-align: left;
+}
+
+#playtext {
+  font-family: "Crackman Font";
+  color: #FEDC3D;
+  font-size: 48px;
+  margin: 0 0 15px 0;
 }
