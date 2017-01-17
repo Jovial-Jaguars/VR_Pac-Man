@@ -6,7 +6,8 @@ export default class ProfilePage extends React.Component {
     this.state = {
       username: null,
       savedMaps: null,
-      highScore: null,
+      spHighScore: 0,
+      mpHighScore: 0
     }
     this.mazebuilderClick = this.mazebuilderClick.bind(this);
   }
@@ -64,13 +65,28 @@ export default class ProfilePage extends React.Component {
     return (
       <div>
         <TopNav/>
-        <div id="profileStats">Welcome {this.state.username}</div>
-        <button id="logout" onClick={this.logout.bind(this)}>Log Out</button>
-        <div>
-          <button id="mazebuilder" onClick={this.mazebuilderClick}>Maze Builder</button>
-          <button id="getmazes" onClick={this.getMazeClick}>Get Mazes Wow</button>
-          <button id="multiplayer" onClick={this.multiplayerClick.bind(this)}>Multiplayer Mode</button>
+        <div id="profileStats">
+          <p id="welcomeMessage">Welcome {this.state.username}</p>
+          <p>SP High Score: {this.state.spHighScore}</p>
+          <p>MP High Score: {this.state.mpHighScore}</p>
+          <button id="logout" onClick={this.logout.bind(this)}>Log Out</button>
+          </div>
+        <div className="profilePageContent">
+          <div className="playScreen">
+            <p id="playtext">Play</p>
+            <button id="singleplayerBtn">Single Player Mode</button><br/>
+            <button id="multiplayerBtn" onClick={this.multiplayerClick.bind(this)}>Multiplayer Mode</button><br/>
+            <button id="customGameBtn">Custom Game</button><br/>
+            <button id="getmazes" onClick={this.getMazeClick}>Get Mazes Wow</button><br/>
+            <br/><a>How To Play</a>
+          </div><br/>
+          <div className="myMazesScreen">
+            <p>My Mazes</p>
+            <div>mazes here...</div>
+          </div>
         </div>
+        <img id="ghostBackgroundPic" src="../assets/pac-man-ghost.png"/>
+        <img id="pacmanBackgroundPic" src="../assets/pac-man.png"/>
       </div>
     )
   }

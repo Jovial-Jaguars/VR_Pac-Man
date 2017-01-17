@@ -709,32 +709,92 @@ tbody {
 }
 
 #profileStats {
-  color: #FEDC3D;
+  border: 4px solid #01ABAA;
   background-color: black;
-  font-family: 'PT Mono', sans-serif;
+  color: #FFF7D2;
+  font-family: 'joystix', sans-serif;
   font-size: 16px;
-  border: none;
   position: fixed;
-  top: 3.5%;
-  right: 4%;
+  top: 0%;
+  right: 0%;
+  text-align: right;
+  padding: 20px 30px 10px 30px;
+  border-radius: 25px;
+  min-width: 15%;
+  max-width: 20%;
+  min-height: 13%;
+}
+
+#profileStats>button:hover {
+  color: #FFF7D2;
+}
+
+#profileStats>p {
+  margin: 0;
+}
+
+#profileStats>#welcomeMessage {
+  text-align: left;
+  margin-bottom: 10px;
 }
 
 #logout {
   color: #FEDC3D;
+  /*background-color: #01ABAA;*/
   background-color: black;
-  /*font-family: 'PT Mono', sans-serif;*/
-  font-size: 20px;
+  border-radius: 15px;
+  font-family: 'cp7';
+  font-size: 30px;
   border: none;
-  position: fixed;
-  top: 10%;
-  right: 0;
+  /*position: fixed;*/
+  right: 2%;
+  top: 13.5%;
+}
+
+.profilePageContent {
+  font-family: 'Quicksand';
+  font-size: 16px;
+  color: #FFF7D2;
+}
+
+.playScreen {
+  padding: 25px;
+  display: inline-block;
+  border-radius: 45px;
+  background-color: rgba(0,0,0,1);
+  text-align: center;
+  padding: 25px 50px 25px 50px;
+  margin: 15px;
+  max-width: 55%;
+}
+
+.playScreen button {
+  background-color: #01ABAA;
+  border-radius: 20px;
+  border: none;
+  font-family: 'PT Mono';
+  font-size: 16px;
+  color: #FFF7D2;
+  width: 220px;
+  height: 40px;
+  margin: 4px;
+}
+
+.myMazesScreen {
+  padding: 25px;
+  display: inline-block;
+  border-radius: 45px;
+  background-color: rgba(0,0,0,1);
+  text-align: center;
+  padding: 25px 50px 25px 50px;
+  margin: 15px;
+  max-width: 55%;
 }
 
 .landingPageContent {
   display: inline-block;
   border-radius: 45px;
   background-color: rgba(0,0,0,1);
-  /*background-color: #FEDC3D;*/
   text-align: center;
   padding: 10px 50px;
   margin: 15px;
@@ -803,5 +863,11 @@ a:link {
   font-size: 32px;
   margin: 10px;
   text-align: left;
+}
 
+#playtext {
+  font-family: "Crackman Font";
+  color: #FEDC3D;
+  font-size: 48px;
+  margin: 0 0 15px 0;
 }
