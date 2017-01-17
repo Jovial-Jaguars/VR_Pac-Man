@@ -105,7 +105,7 @@ export default class LandingPage extends React.Component {
           <div id="modal-signupform">
             <h2 id="formheader">Signup</h2>
             <SignupForm signupFormSubmit={this.signupFormSubmit.bind(this)}/><br/>
-            <p>Already have an account? <a>Login</a></p>
+            <p>Already have an account? <a onClick={this.modalClickLogin}>Login</a></p>
           </div>
           <div className="modal-footer">
             <h3> </h3>
