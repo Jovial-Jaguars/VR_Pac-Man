@@ -1,4 +1,6 @@
-class ProfilePage extends React.Component {
+import React from 'react';
+
+export default class ProfilePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -64,5 +66,3 @@ class ProfilePage extends React.Component {
     )
   }
 }
-
-window.ProfilePage = ProfilePage;

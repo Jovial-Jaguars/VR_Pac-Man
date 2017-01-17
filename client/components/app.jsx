@@ -1,4 +1,9 @@
-class App extends React.Component {
+import React from 'react';
+import MazeRunner from './mazeRunner';
+import MazeEditor from './mazeEditor';
+
+
+export default class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
@@ -138,5 +143,3 @@ class App extends React.Component {
     );
   }
 }
-
-window.App = App;
