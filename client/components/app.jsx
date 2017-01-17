@@ -40,12 +40,12 @@ class App extends React.Component {
                  [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1]]
 
     };
-    this.amaze = this.amaze.bind(this);
+    this.enterMaze = this.enterMaze.bind(this);
     this.clickLevel = this.clickLevel.bind(this);
     this.clickLegend = this.clickLegend.bind(this);
   }
-  amaze() {
-    console.log('Fetching pet status...');
+  enterMaze() {
+    console.log('Entering maze...');
     this.setState({
       choice: !this.state.choice
     });
@@ -132,7 +132,7 @@ class App extends React.Component {
       <div className="maze">
       { this.state.choice ?
         <MazeRunner maze={this.state.maze} />
-        : <MazeEditor clickLegend={this.clickLegend} def={this.state.default1} clickLevel={this.clickLevel.bind(this)} click={this.click.bind(this)} maze={this.state.maze} amaze={this.amaze.bind(this)} saveMaze={this.saveMaze.bind(this)}/>
+        : <MazeEditor clickLegend={this.clickLegend} def={this.state.default1} clickLevel={this.clickLevel.bind(this)} click={this.click.bind(this)} maze={this.state.maze} enterMaze={this.enterMaze.bind(this)} saveMaze={this.saveMaze.bind(this)}/>
       }
       </div>
     );

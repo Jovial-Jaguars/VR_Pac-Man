@@ -62,7 +62,7 @@ module.exports = function(passport) {
           })
           .then(function(user) {
             //signup success
-            newUser = user.dataValues.username;
+            var newUser = user.dataValues.username;
             return done(null, newUser);
           })
           .catch(function(err) {
