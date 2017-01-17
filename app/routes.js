@@ -17,7 +17,7 @@ module.exports = function(app, passport) {
     })
   );
 
-  app.get('/profile', function(req, res) {
+  app.get('/checkLoggedIn', function(req, res) {
     if (!req.isAuthenticated()) {
       res.redirect('/');
     } else {
@@ -80,7 +80,12 @@ module.exports = function(app, passport) {
     req.logout();
     res.redirect('/');
     });
-  };
+
+  app.get('*', function(req, res) {
+    res.redirect('/');
+  })
+};
+
 
 
 

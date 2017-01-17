@@ -1,15 +1,11 @@
 import React from 'react';
 import LoginForm from './login';
 import SignupForm from './signup';
+import TopNav from './topNav';
 
 export default class LandingPage extends React.Component {
   constructor(props) {
     super(props);
-    this.mazebuilderClick = this.mazebuilderClick.bind(this);
-    this.mazestoreClick = this.mazestoreClick.bind(this);
-  }
-
-  navClickHome() {
   }
 
   modalClickLogin() {
@@ -26,14 +22,6 @@ export default class LandingPage extends React.Component {
 
   modalClickExit() {
     $('.modal').css('display', 'none');
-  }
-
-  mazebuilderClick() {
-    this.props.router.push({pathname: '/mazebuilder'});
-  }
-
-  mazestoreClick() {
-    this.props.router.push({pathname: '/mazestore'});
   }
 
   signupFormSubmit(e) {
@@ -72,9 +60,10 @@ export default class LandingPage extends React.Component {
 
   componentWillMount() {
     console.log('testing');
+
     $.ajax({
       type: 'GET',
-      url: '/profile',
+      url: '/checkLoggedIn',
       async: false,
       success: function(data) {
         if (!data.user) {
@@ -90,46 +79,60 @@ export default class LandingPage extends React.Component {
       error: function() {
         console.log('Error!');
       }
-    })
+    });
   }
 
   render() {
     return (
     <div>
+      <TopNav router={this.props.router}/>
       <nav>
-        <button id="nav-home" onClick={this.navClickHome.bind(this)}>Home</button>
         <button id="nav-login" onClick={this.modalClickLogin}>Login</button>
         <button id="nav-signup" onClick={this.modalClickSignup}>Signup</button>
       </nav>
-      <div>
-        <button id="mazebuilder" onClick={this.mazebuilderClick}>Maze Builder2</button>
-        <button id="mazestore" onClick={this.mazestoreClick}>MazeStore</button>
-      </div>
       <div id="myModal" className="modal">
         <div className="modal-content">
           <div className="modal-header">
-            <button id="modal-login" onClick={this.modalClickLogin}>Login</button>
-            <button id="modal-signup" onClick={this.modalClickSignup}>Signup</button>
+            <div className="modal-header-flexbox">
+              <button id="modal-login" onClick={this.modalClickLogin}>Login</button>
+              <button id="modal-signup" onClick={this.modalClickSignup}>Signup</button>
+            </div>
             <span className="close" onClick={this.modalClickExit}>&times;</span>
           </div>
           <div id="modal-loginform">
-            <p>Login</p>
+            <h2 id="formheader">Login</h2>
             <LoginForm loginFormSubmit={this.loginFormSubmit.bind(this)}/>
           </div>
           <div id="modal-signupform">
-            <p>Signup</p>
-            <SignupForm signupFormSubmit={this.signupFormSubmit.bind(this)}/>
-            <p>Already have an account?<a>Login</a></p>
+            <h2 id="formheader">Signup</h2>
+            <SignupForm signupFormSubmit={this.signupFormSubmit.bind(this)}/><br/>
+            <p>Already have an account? <a onClick={this.modalClickLogin}>Login</a></p>
           </div>
           <div className="modal-footer">
             <h3> </h3>
           </div>
         </div>
       </div>
+      <div className="landingPageContent">
+          <h1 className="headers">Welcome to VR Pacman!</h1>
+        <div className="playBtnContent">
+          <button id="demobutton"><span className="playText">Play</span><br/>Demo Version</button>
+          <p>For multiplayer mode, high scores, custom mazes and more, create a FREE account!</p>
+        </div>
+        <h1 className="headers">How to Play:</h1>
+        <p>VR: Insert mobile phone into a VR headset. Align to center. Look around to change your direction! Collect the pellets while avoiding the ghosts!<br/>
+          PC: Click and drag to change your direction! Collect the pellets while avoiding the ghosts!
+        </p>
+        <p className="legalnotice">Legal notice: This website is not related or endorsed by the registered trademark owners Namco, Inc.</p>
+        <div>Background Pacman and ghost icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> and <a href="http://www.flaticon.com/authors/tutsplus" title="TutsPlus">TutsPlus</a> respectively and is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+      </div>
+      <img id="ghostBackgroundPic" src="../assets/pac-man-ghost.png"/>
+      <img id="pacmanBackgroundPic" src="../assets/pac-man.png"/>
     </div>
     );
   }
 }
+
 
 window.onclick = function(event) {
   var modal = document.getElementById('myModal');
