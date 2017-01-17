@@ -3,8 +3,21 @@
     src: url(./assets/crackman.ttf) format("truetype");
 }
 
+@font-face {
+    font-family: "Joystix";
+    src: url(./assets/joystix.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: "cp7";
+    src: url(./assets/computer_pixel-7.ttf) format("truetype");
+}
+
 body {
-  background: #FEDC3D;
+  background: #FFF7D2;
+  /*background-color: #01ABAA;*/
+  /*background-color: black;*/
+  text-align: center;
 }
 
 h3{
@@ -238,16 +251,20 @@ h3{
 /* Modal Content */
 .modal-content {
     position: relative;
-    background-color: #fefefe;
+    background-color: black;
+    font-family: 'Quicksand';
     margin: auto;
     padding: 0;
-    border: 1px solid #888;
+    border: 1px solid #FFF7D2;
     width: 80%;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
     animation-name: animatetop;
-    animation-duration: 0.4s
+    animation-duration: 0.4s;
+    border-radius: 30px;
+    max-width: 30%;
+    color: #FFF7D2;
 }
 
 /* Add Animation */
@@ -263,10 +280,11 @@ h3{
 
 /* The Close Button */
 .close {
-    color: white;
+    color: #FFF7D2;
     float: right;
     font-size: 28px;
     font-weight: bold;
+    transform: translateY(-90%);
 }
 
 .close:hover,
@@ -278,16 +296,27 @@ h3{
 
 .modal-header {
     padding: 2px 16px;
-    background-color: #5cb85c;
+    background-color: #FEDC3D;
     color: white;
+    border-radius: 30px 30px 0 0;
+    min-height: 50px;
+    /*vertical-align: middle;*/
 }
 
-.modal-body {padding: 2px 16px;}
+.modal-header-flexbox {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  /*vertical-align: middle;*/
+}
 
-.modal-footer {
-    padding: 2px 16px;
-    background-color: #5cb85c;
-    color: white;
+.modal-header-flexbox>button {
+  background: none;
+  border: none;
+  font-family: 'Joystix';
+  font-size: 20px;
+  transform: translateY(50%);
 }
 
 #modal-loginform {
@@ -296,8 +325,37 @@ h3{
 
 #modal-signupform {
   display:none;
+  text-align: right;
+  /*padding-right: 50%;*/
 }
 
+#modal-signupform label {
+  text-align: right;
+  width: 30%;
+}
+
+#modal-signupform input {
+  float: right;
+  margin-right: 20%;
+  margin-left: 10px;
+}
+
+#modal-signupform #submitInput {
+  background-color: #01ABAA;
+  /*background-color: black;*/
+  border-radius: 10px;
+  border: none;
+  font-family: 'PT Mono';
+  font-size: 16px;
+  /*color: #FEDC3D;*/
+  color: #FFF7D2;
+  min-width: 100px;
+}
+
+#modal-signupform>p {
+  text-align: center;
+  /*margin-left: 10px;*/
+}
 
 /*styling for the maze store*/
 
@@ -540,7 +598,10 @@ tbody {
   height: 70px;
   background-color: black;
   color: #FEDC3D;
-  font-family: 'PT Mono', sans-serif;
+  font-family: 'cp7';
+  /*font-family: 'Joystix';*/
+  /*font-family: 'PT Mono', sans-serif;*/
+  font-size: 30px;
   margin: 0;
   list-style: none;
   display: flex;
@@ -551,32 +612,37 @@ tbody {
 }
 
 #topnav>li {
-  padding: ;
+
 }
 
 #topleft {
   font-family: "Crackman Font";
+  font-size: 35px;
 }
 
 #nav-login {
   color: #FEDC3D;
   background-color: black;
-  font-family: 'PT Mono', sans-serif;
-  font-size: 16px;
+  font-family: 'cp7';
+  /*font-family: 'Joystix';*/
+  /*font-family: 'PT Mono', sans-serif;*/
+  font-size: 30px;
   border: none;
   position: fixed;
-  top: 3.5%;
+  top: 2.5%;
   right: 13%;
 }
 
 #nav-signup {
   color: #FEDC3D;
   background-color: black;
-  font-family: 'PT Mono', sans-serif;
-  font-size: 16px;
+  font-family: 'cp7';
+  /*font-family: 'Joystix';*/
+  /*font-family: 'PT Mono', sans-serif;*/
+  font-size: 30px;
   border: none;
   position: fixed;
-  top: 3.5%;
+  top: 2.5%;
   right: 4%;
 }
 
@@ -594,8 +660,8 @@ tbody {
 #logout {
   color: #FEDC3D;
   background-color: black;
-  font-family: 'PT Mono', sans-serif;
-  font-size: 16px;
+  /*font-family: 'PT Mono', sans-serif;*/
+  font-size: 20px;
   border: none;
   position: fixed;
   top: 10%;
@@ -603,33 +669,77 @@ tbody {
 }
 
 .landingPageContent {
+  display: inline-block;
+  border-radius: 45px;
+  background-color: rgba(0,0,0,1);
+  /*background-color: #FEDC3D;*/
+  text-align: center;
+  padding: 10px 50px;
+  margin: 15px;
+  color: #FFF7D2;
+  font-size: 16px;
+  font-family: 'Quicksand';
+  max-width: 55%;
 }
 
 .playBtnContent {
   text-align: center;
   display: inline-block;
-  background-color: black;
-  border-radius: 25px;
-  color: white;
-  font-family: 'Quicksand';
-  font-size: 16px;
-  padding: 20px;
-  position: relative;
-  left: 25%;
-  top: 100px;
+  /*background-color: black;*/
+  padding: 25px;
+  border-radius: 30px;
 }
 
 
 #demobutton {
-  background-color: #FEA680;
+  background-color: #01ABAA;
+  /*background-color: black;*/
   border-radius: 20px;
   border: none;
   font-family: 'PT Mono';
   font-size: 16px;
-  color: black;
+  /*color: #FEDC3D;*/
+  color: #FFF7D2;
   width: 70%;
 }
 
 #demobutton>.playText {
   font-size: 50px;
+}
+
+.headers {
+  color: #FEDC3D;
+  font-family: 'joystix';
+}
+
+#ghostBackgroundPic {
+  position: fixed;
+  bottom: 4%;
+  right: 4%;
+  z-index: -1;
+}
+
+#pacmanBackgroundPic {
+  position: fixed;
+  bottom: 4%;
+  left: 4%;
+  z-index: -1;
+}
+
+a:link {
+  color: #FFF7D2;
+  text-decoration: none;
+}
+
+.legalnotice {
+  font-size: 10px;
+}
+
+#formheader {
+  font-family: "Crackman Font";
+  color: #FEDC3D;
+  font-size: 32px;
+  margin: 10px;
+  text-align: left;
+
 }
