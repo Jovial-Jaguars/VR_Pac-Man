@@ -1,4 +1,6 @@
-class MultiplayerMazeRunner extends React.Component {
+import React from 'react';
+
+export default class MultiplayerMazeRunner extends React.Component {
   constructor(props){
     super(props);
     this.count = 0;
@@ -713,5 +715,3 @@ class MultiplayerMazeRunner extends React.Component {
     return (<canvas id="renderCanvas"></canvas>);
   }
 }
-
-window.MazeRunner = MazeRunner;

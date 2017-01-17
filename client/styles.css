@@ -72,6 +72,7 @@ h3{
   width: 100%;
   height: 25%;
   background-color: blue;
+
 }
 
 .block1 {
@@ -96,6 +97,7 @@ h3{
   background-size: contain;
   background-color: blue;
   background-position: center;
+  background-repeat: no-repeat;
 }
 .block4 {
   display: inline-block;
@@ -105,6 +107,7 @@ h3{
   background-size: contain;
   background-color: blue;
   background-position: center;
+  background-repeat: no-repeat;
 }
 .maze-editor {
   height: 100%;
@@ -191,7 +194,7 @@ h3{
   width: 20%;
   height: 100%;
   border-radius: 5px;
-  background-image: url('dot.png');
+  background-image: url('assets/dot.png');
   background-size: cover;
   background-repeat: none;
   background-color: blue;
@@ -284,4 +287,239 @@ h3{
 
 #modal-signupform {
   display:none;
+}
+
+/*styling for the maze store*/
+
+@font-face {
+    font-family: 'pacfont_front';
+    src: url('assets/crackman_front.ttf');
+}
+
+@font-face {
+    font-family: 'pacfont_back';
+    src: url('assets/crackman_back.ttf');
+}
+
+@font-face {
+    font-family: 'icons';
+    src: url('assets/icons.woff');
+}
+
+html {
+  font-family : sans-serif;
+  
+  text-align : center;
+
+  height: 100%;
+  width: 100%;
+
+}
+
+
+html {
+     background-repeat: repeat; 
+    /* background-image: ;*/
+    /*background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 14, 177, .75)), url('background.jpg'));*/
+    background:     linear-gradient(
+      rgba(0, 0, 0, 0), 
+      rgba(10, 15, 68, .85)
+    ), url('assets/background.jpg');
+}
+
+.title-container {
+    position: fixed; 
+    background-color: blue;
+    width: 100%;
+    z-index: 10;
+    box-shadow: 5px 5px 5px #00004C;
+
+}
+
+.title-parent{
+    position: relative;
+    top: 5px;
+    left: 5px;
+    max-width: 1190px;
+}
+
+.title {
+    font: 5em 'pacfont_back';
+    color: red;
+    margin-left: .5em;
+    text-shadow: 2px 2px 2px #00004C;
+}
+
+.title::before {
+    position: absolute;
+    content: attr(data-text);
+    top: 0;
+    left: 0;
+    margin-left: .5em;
+    font-family: 'pacfont_front';
+    color: yellow;
+}
+
+.maps-sub-container {
+    display: block;
+    margin-top: 120px;
+
+
+
+}
+
+.maps-container{
+    display: relative;
+    justify-content: space-around; 
+    flex-wrap: wrap;
+    margin-top: 203px;
+    
+}
+
+
+.maps {
+    display: flex;
+    justify-content: space-around; 
+    flex-wrap: wrap;
+    align-items: stretch;
+    /*flex-direction: row;
+    align-items: flex-start; 
+    align-content: space-between;
+    background-color: red;
+    background: #fff;
+    border-radius: .5em;
+    margin: 10vmin;
+    padding: 1vmin;
+    height: 50vh;*/
+}
+
+.singleMap-container {
+  justify-content: space-between;
+  position: relative;
+  align-items: stretch;
+  margin-bottom: 40px;
+
+}
+
+.singleMap {
+  justify-content: space-between;
+  display: flex;
+  align-items: stretch;
+  background-color: /*#FFCC00*/ #EB5200;
+
+  box-shadow: 10px 10px 5px #00004C;
+
+
+
+}
+
+tbody {
+    diplay: flex;
+    margin: 15px;
+    align-items: stretch:;
+    flex-grow: 1
+}
+
+.tablerow-mapstore {
+  display: flex;
+  background-color: blue;
+  align-items: stretch;
+}
+
+
+.blank {
+
+  flex-grow: 1;
+  background-color: blue;
+  align-items: stretch;
+  width: 2.2vmin;
+  height: 2.2vmin;
+
+}
+.wall {
+
+  flex-grow: 1;
+  background-color: black;
+  align-items: stretch;
+  width: 2.2vmin;
+  height: 2.2vmin;
+
+}
+.pellet {
+
+  flex-grow: 1;
+  background-image: url('assets/dot.png');
+  background-size: contain;
+  background-color: blue;
+  background-position: center;
+  background-repeat: no-repeat;
+  align-items: stretch;
+  width: 2.2vmin;
+  height: 2.2vmin;
+}
+.pacmanmaze {
+  
+  flex-grow: 1;
+  background-image: url('assets/pacman.png');
+  background-size: contain;
+  background-color: blue;
+  background-position: center;
+  background-repeat: no-repeat;
+  align-items: stretch;
+  width: 2.2vmin;
+  height: 2.2vmin;
+}
+
+.insertcoin {
+  
+  position: absolute;
+  display: inline-block;
+  background-image: url('assets/insertcoin.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  align-items: stretch;
+  width:100px;
+  height: 100px;
+  box-shadow: 0 2px 5px 1px rgba(0,0,0,0.4);
+  margin-top: 3px;
+  margin-left: 3px;
+  left: 0;
+  top: 0;
+
+}
+.onecredit {
+  
+  position: absolute;
+  display: inline-block;
+  background-image: url('assets/onecredit.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  align-items: stretch;
+  width:150px;
+  height: 80px;
+  box-shadow: 0 2px 5px 1px rgba(0,0,0,0.4);
+  margin-top: 3px;
+  margin-left: 3px;
+  left: 0;
+  top: 0;
+
+}
+
+.hamburger {
+    font-size: 50px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 20;
+    margin-top: 10px;
+    margin-left: 10px;
+    text-shadow: 2px 2px 2px #00004C;
+}
+
+[data-icon]:before {
+  font-family: icons; /* BYO icon font, mapped smartly */
+  content: attr(data-icon);
+  speak: none; /* Not to be trusted, but hey. */
 }

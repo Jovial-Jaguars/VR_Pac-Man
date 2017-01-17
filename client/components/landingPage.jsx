@@ -1,7 +1,12 @@
-class LandingPage extends React.Component {
+import React from 'react';
+import LoginForm from './login';
+import SignupForm from './signup';
+
+export default class LandingPage extends React.Component {
   constructor(props) {
     super(props);
     this.mazebuilderClick = this.mazebuilderClick.bind(this);
+    this.mazestoreClick = this.mazestoreClick.bind(this);
   }
 
   navClickHome() {
@@ -25,6 +30,10 @@ class LandingPage extends React.Component {
 
   mazebuilderClick() {
     this.props.router.push({pathname: '/mazebuilder'});
+  }
+
+  mazestoreClick() {
+    this.props.router.push({pathname: '/mazestore'});
   }
 
   signupFormSubmit(e) {
@@ -93,7 +102,8 @@ class LandingPage extends React.Component {
         <button id="nav-signup" onClick={this.modalClickSignup}>Signup</button>
       </nav>
       <div>
-        <button id="mazebuilder" onClick={this.mazebuilderClick}>Maze Builder</button>
+        <button id="mazebuilder" onClick={this.mazebuilderClick}>Maze Builder2</button>
+        <button id="mazestore" onClick={this.mazestoreClick}>MazeStore</button>
       </div>
       <div id="myModal" className="modal">
         <div className="modal-content">
@@ -128,4 +138,3 @@ window.onclick = function(event) {
     }
 }
 
-window.LandingPage = LandingPage;
