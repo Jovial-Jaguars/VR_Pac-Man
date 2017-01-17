@@ -24,6 +24,24 @@ h3{
   text-align: center;
 }
 
+li:hover {
+  cursor: pointer;
+  color: #FFF7D2;
+}
+
+button {
+  outline: none;
+}
+
+button:hover {
+  cursor: pointer;
+  color: #FFF7D2;
+}
+
+button:active {
+  border: none;
+}
+
 .element {
   display: inline-block;
   width: 4.5%;
@@ -259,7 +277,7 @@ h3{
     -webkit-animation-duration: 0.4s;
     animation-name: animatetop;
     animation-duration: 0.4s;
-    border-radius: 30px;
+    border-radius: 35px;
     max-width: 30%;
     color: #FFF7D2;
 }
@@ -304,7 +322,7 @@ h3{
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   /*vertical-align: middle;*/
 }
 
@@ -318,16 +336,42 @@ h3{
 
 #modal-loginform {
   display: none;
+  text-align: right;
 }
 
-#modal-signupform {
+#modal-loginform {
   display:none;
   text-align: right;
   /*padding-right: 50%;*/
+  min-height: 140px;
 }
 
+#modal-loginform label {
+  text-align: left;
+  width: 30%;
+}
+
+#modal-loginform input {
+  float: right;
+  margin-right: 20%;
+  margin-left: 10px;
+}
+
+#modal-loginform #submitInput {
+  background-color: #01ABAA;
+  /*background-color: black;*/
+  border-radius: 10px;
+  border: none;
+  font-family: 'PT Mono';
+  font-size: 16px;
+  /*color: #FEDC3D;*/
+  color: #FFF7D2;
+  min-width: 100px;
+}
+
+
 #modal-signupform label {
-  text-align: right;
+  /*text-align: left;*/
   width: 30%;
 }
 
@@ -352,6 +396,14 @@ h3{
 #modal-signupform>p {
   text-align: center;
   /*margin-left: 10px;*/
+}
+
+#signupForm div {
+  margin: 4px;
+}
+
+#loginForm div {
+  margin: 4px;
 }
 
 #topnav {
@@ -393,6 +445,10 @@ h3{
   right: 13%;
 }
 
+#nav-login:hover {
+  color: #FFF7D2;
+}
+
 #nav-signup {
   color: #FEDC3D;
   background-color: black;
@@ -404,6 +460,10 @@ h3{
   position: fixed;
   top: 2.5%;
   right: 4%;
+}
+
+#nav-signup:hover {
+  color: #FFF7D2;
 }
 
 #profileStats {
