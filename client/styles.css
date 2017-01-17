@@ -599,6 +599,7 @@ button:active {
 
 #modal-loginform {
   display:none;
+<<<<<<< HEAD
   text-align: right;
   /*padding-right: 50%;*/
   min-height: 140px;
@@ -678,6 +679,7 @@ html {
   text-align : center;
   height: 100%;
   width: 100%;
+<<<<<<< HEAD
 }
 */
 html, body {
@@ -687,6 +689,7 @@ html, body {
   margin: 0;
   padding: 0;
 }
+
 
 .title-container {
     position: fixed;
@@ -741,6 +744,13 @@ html, body {
     align-items: stretch;
     /*flex-direction: row;
     align-items: flex-start;
+
+    justify-content: space-around; 
+    flex-wrap: wrap;
+    align-items: stretch;
+    /*flex-direction: row;
+    align-items: flex-start; 
+
     align-content: space-between;
     background-color: red;
     background: #fff;
