@@ -5,10 +5,11 @@ class TopNav extends React.Component {
 
   navClickHome() {
     console.log('clicked home')
+    this.props.router.push({pathname: '/'});
   }
 
   navClickMazeBuilder() {
-    console.log('clicked mazebuilder')
+    this.props.router.push({pathname: '/mazebuilder'});
   }
 
   navClickStore() {
@@ -21,12 +22,16 @@ class TopNav extends React.Component {
 
   render() {
     return (
-      <nav id="topnav">
-        <ul>
-          <li id="nav-home" onClick={this.navClickHome}>Home</li>
-          <li onClick={this.navClickMazeBuilder}>MazeBuilder</li>
-          <li onClick={this.navClickStore}>Store</li>
-          <li onClick={this.navClickAbout}>About</li>
+      <nav>
+        <ul id="topnav">
+          <li id="topleft">VR Pacman</li>
+          <li id="nav-home" onClick={this.navClickHome.bind(this)}>Home</li>
+          <li onClick={this.navClickMazeBuilder.bind(this)}>MazeBuilder</li>
+          <li onClick={this.navClickStore.bind(this)}>Store</li>
+          <li onClick={this.navClickAbout.bind(this)}>About</li>
+          <li></li>
+          <li></li>
+          <li></li>
         </ul>
       </nav>
       );
