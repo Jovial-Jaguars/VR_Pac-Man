@@ -118,12 +118,12 @@ export default class LandingPage extends React.Component {
           <button id="demobutton"><span className="playText">Play</span><br/>Demo Version</button>
           <p>For multiplayer mode, high scores, custom mazes and more, create a FREE account!</p>
         </div>
-        <p className="howtoplay"><h1 className="headers">How to Play:</h1>
-          VR: Insert mobile phone into a VR headset. Align to center. Look around to change your direction! Collect the pellets while avoiding the ghosts!<br/>
+        <h1 className="headers">How to Play:</h1>
+        <p>VR: Insert mobile phone into a VR headset. Align to center. Look around to change your direction! Collect the pellets while avoiding the ghosts!<br/>
           PC: Click and drag to change your direction! Collect the pellets while avoiding the ghosts!
         </p>
-        <p className="legalnotice">Legal notice: This website is not related or endorsed by the registered trademark owners Namco, Inc.
-        <div>Background Pacman and ghost icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> and <a href="http://www.flaticon.com/authors/tutsplus" title="TutsPlus">TutsPlus</a> respectively and is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div></p>
+        <p className="legalnotice">Legal notice: This website is not related or endorsed by the registered trademark owners Namco, Inc.</p>
+        <div>Background Pacman and ghost icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> and <a href="http://www.flaticon.com/authors/tutsplus" title="TutsPlus">TutsPlus</a> respectively and is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
       </div>
       <img id="ghostBackgroundPic" src="../assets/pac-man-ghost.png"/>
       <img id="pacmanBackgroundPic" src="../assets/pac-man.png"/>
