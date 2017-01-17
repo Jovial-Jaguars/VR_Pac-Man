@@ -37,13 +37,14 @@ export default class ProfilePage extends React.Component {
         window.username = data.user.username; //hacky
       }.bind(this)
     });
+    this.getMyMazes();
   }
 
   mazebuilderClick() {
     this.props.router.push({pathname: '/mazebuilder'});
   }
 
-  getMazeClick() {
+  getMyMazes() {
     $.ajax({
       type: 'GET',
       url: '/maps',
@@ -73,15 +74,14 @@ export default class ProfilePage extends React.Component {
           </div>
         <div className="profilePageContent">
           <div className="playScreen">
-            <p id="playtext">Play</p>
-            <button id="singleplayerBtn">Single Player Mode</button><br/>
-            <button id="multiplayerBtn" onClick={this.multiplayerClick.bind(this)}>Multiplayer Mode</button><br/>
+            <h1 className="headers">Play</h1>
+            <button id="singleplayerBtn">Single Player</button><br/>
+            <button id="multiplayerBtn" onClick={this.multiplayerClick.bind(this)}>Multiplayer</button><br/>
             <button id="customGameBtn">Custom Game</button><br/>
-            <button id="getmazes" onClick={this.getMazeClick}>Get Mazes Wow</button><br/>
             <br/><a>How To Play</a>
           </div><br/>
           <div className="myMazesScreen">
-            <p>My Mazes</p>
+            <h1 className="headers">My Mazes</h1>
             <div>mazes here...</div>
           </div>
         </div>
