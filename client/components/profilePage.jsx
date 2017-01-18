@@ -129,6 +129,7 @@ export default class ProfilePage extends React.Component {
             <h1 className="headers">My Mazes</h1>
             <div>mazes here...</div>
           </div>
+        </div>  
         <div>Welcome {this.state.username}</div>
         <button id="logout" onClick={this.logout.bind(this)}>Log Out</button>
         <div>

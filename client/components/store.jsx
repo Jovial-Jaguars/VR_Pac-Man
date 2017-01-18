@@ -221,22 +221,6 @@ purchaseThisMap (mapId){
     }
 }
 
-
-<<<<<<< HEAD
-
-
-
-
-
-
-
-
-
-
-
-
-=======
->>>>>>> added server changes for store
 class MapList extends React.Component{
   constructor(props){
     super(props);
@@ -264,8 +248,6 @@ class MapList extends React.Component{
   //   });
   // }
 
-<<<<<<< HEAD
-=======
 
 componentWillMount(){
     this.setState({
@@ -293,15 +275,11 @@ componentWillMount(){
   }
 
 
->>>>>>> added server changes for store
+
    onSetSidebarOpen (open) {
     this.setState({sidebarOpen: open});
   }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> added server changes for store
   convertArray (string) {
     var oneMap = [];
     var oneArray = [];
