@@ -16,6 +16,7 @@ export default class TopNav extends React.Component {
 
   navClickStore() {
     console.log('clicked store')
+    this.props.router.push({pathname: '/mazestore'});
   }
 
   navClickAbout() {

@@ -38,7 +38,7 @@ var allMaps2 =  [[
 [1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1],
 [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1]
 ]];
-  
+
 
 var allMaps =  [[
 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -181,7 +181,7 @@ class Map extends React.Component{
   }
 
 purchaseThisMap (mapId){
-  
+
   if (this.state.purchaseMap === 'insertcoin'){
     this.setState({purchaseMap: 'onecredit'});
     this.props.purchaseOne(mapId);
@@ -208,7 +208,7 @@ purchaseThisMap (mapId){
               return (<td key = {''+index} className="pellet" ></td>);
             } else if (num === 3) {
               return (<td key = {''+index} className="pacmanmaze"></td>);
-            } 
+            }
           })}
           </tr>
         ))
@@ -269,7 +269,7 @@ class MapList extends React.Component{
     var oneMap = [];
     var oneArray = [];
     for (var i = 0; string.length > i; i++){
-      
+
       oneArray.push(Number(string[i]));
       if ((i+1) % 16 === 0){
         oneMap.push(oneArray.slice());
@@ -292,7 +292,7 @@ class MapList extends React.Component{
     console.log(object);
     object[mapId] = this.state.maps[mapId];
     this.setState({mapsPurchased: object});
-    
+
   }
 
   returnOne (mapId) {
@@ -316,7 +316,7 @@ class MapList extends React.Component{
       content = <div/>;
     }
     return  <div className="maps-container">
-      
+
       {console.log(this.state.mapsPurchased)}
 
       <Sidebar sidebar={sidebarContent}
@@ -379,7 +379,7 @@ class MapList extends React.Component{
           <div className='title' data-text="Welcome to the MapStore">Welcome to the MapStore</div>
         </div>
       </div>
-      <div className='maps-sub-container'>  
+      <div className='maps-sub-container'>
       {content}
       </div>
       </Sidebar>
@@ -391,6 +391,29 @@ class MapList extends React.Component{
 
 //This is the root component
 export default class MazeStore extends React.Component{
+
+  componentWillMount() {
+    $.ajax({
+      type: 'GET',
+      url: '/checkLoggedIn',
+      async: false,
+      success: function(data) {
+        if (!data.user) {
+          console.log('hit not authenticated');
+          this.props.router.push({pathname: '/'});
+        } else {
+          console.log("hit authenticated");
+          console.log(data.user);
+          window.username = data.user;
+          this.props.router.push({pathname: '/profile'});
+        }
+      }.bind(this),
+      error: function() {
+        console.log('Error!');
+      }
+    });
+  }
+
   render(){
     return <div className="pacmanapp">
       <MapList/>
