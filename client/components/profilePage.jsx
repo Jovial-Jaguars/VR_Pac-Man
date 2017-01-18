@@ -79,6 +79,11 @@ export default class ProfilePage extends React.Component {
 
   modalClickExit() {
     $('.modal').css('display', 'none');
+    $('.howToPlayModal').css('display', 'none');
+  }
+
+  howToPlayClick() {
+    $('.howToPlayModal').css('display', 'block');
   }
 
   render() {
@@ -97,7 +102,7 @@ export default class ProfilePage extends React.Component {
             <button id="singleplayerBtn" onClick={this.singlePlayerClick.bind(this)}>Single Player</button><br/>
             <button id="multiplayerBtn" onClick={this.multiplayerClick.bind(this)}>Multiplayer</button><br/>
             <button id="customGameBtn" onClick={this.customGameClick}>Custom Game</button><br/>
-            <br/><a>How To Play</a>
+            <br/><a onClick={this.howToPlayClick}>How To Play</a>
           </div><br/>
           <div className="myMazesScreen">
             <h1 className="headers">My Mazes</h1>
@@ -126,9 +131,26 @@ export default class ProfilePage extends React.Component {
             </div>
           </div>
         </div>
+        <div id="htpModal" className="howToPlayModal">
+          <div className="modal-content htp">
+            <div className="howToPlayModalHeader">
+              <span id="howToPlaytext">How to Play</span>
+            </div>
+            <span id="customGameModalClose" className="close" onClick={this.modalClickExit}>&times;</span>
+            <p>VR: Insert mobile phone into a VR headset. Align to center. Look around to change your direction! Collect the pellets while avoiding the ghosts!<br/>
+                PC: Click and drag to change your direction! Collect the pellets while avoiding the ghosts!</p>
+          </div>
+        </div>
         <img id="ghostBackgroundPic" src="../assets/pac-man-ghost.png"/>
         <img id="pacmanBackgroundPic" src="../assets/pac-man.png"/>
       </div>
     )
   }
+}
+
+window.onclick = function(event) {
+  var htpModal = document.getElementById('htpModal');
+    if (event.target == htpModal) {
+        htpModal.style.display = 'none';
+    }
 }
