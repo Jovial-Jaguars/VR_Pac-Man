@@ -1,3 +1,4 @@
+
 @font-face {
     font-family: "Crackman Font";
     src: url(./assets/crackman.ttf) format("truetype");
@@ -15,8 +16,6 @@
 
 body {
   background: #FFF7D2;
-  /*background-color: #01ABAA;*/
-  /*background-color: black;*/
   text-align: center;
 }
 
@@ -401,7 +400,6 @@ button:active {
   /*margin-left: 10px;*/
 }
 
-<<<<<<< HEAD
 /*styling for the maze store*/
 
 @font-face {
@@ -418,7 +416,7 @@ button:active {
     font-family: 'icons';
     src: url('assets/icons.woff');
 }
-
+/*
 html {
   font-family : sans-serif;
 
@@ -428,17 +426,7 @@ html {
   width: 100%;
 
 }
-
-
-html {
-     background-repeat: repeat;
-    /* background-image: ;*/
-    /*background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 14, 177, .75)), url('background.jpg'));*/
-    background:     linear-gradient(
-      rgba(0, 0, 0, 0),
-      rgba(10, 15, 68, .85)
-    ), url('assets/background.jpg');
-}
+*/
 
 .title-container {
     position: fixed;
@@ -870,4 +858,43 @@ a:link {
   color: #FEDC3D;
   font-size: 48px;
   margin: 0 0 15px 0;
+}
+}
+
+.container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+
+.camera-toggle {
+  position: absolute;
+  z-index: 10;
+  height: 10%;
+  width: 10%;
+  padding: 5px;
+  color: white;
+  background-color: rgba(15, 62, 137, 0.5);
+}
+
+html, body {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#renderCanvas {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+}
+#app {
+  width: 100%;
+  height: 100%;
+  touch-action: none;
 }
