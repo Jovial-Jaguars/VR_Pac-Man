@@ -1,4 +1,21 @@
+html, body {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 
+#renderCanvas {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+#app {
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
 @font-face {
     font-family: "Crackman Font";
     src: url(./assets/crackman.ttf) format("truetype");
@@ -16,8 +33,6 @@
 
 body {
   background: #FFF7D2;
-  /*background-color: #01ABAA;*/
-  /*background-color: black;*/
   text-align: center;
 }
 
@@ -873,41 +888,19 @@ a:link {
 }
 }
 
-.canvas-container {
+.container {
   position: relative;
   height: 100%;
   width: 100%;
 }
 
+
 .camera-toggle {
+  position: absolute;
+  z-index: 10;
   height: 10%;
   width: 10%;
-  position: absolute;
   padding: 5px;
   color: white;
-  z-index: 10;
   background-color: rgba(15, 62, 137, 0.5);
-}
-html, body {
-  overflow: hidden;
-  width: 100%;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-}
-
-#renderCanvas {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  touch-action: none;
-}
-#app {
-  width: 100%;
-  height: 100%;
-  touch-action: none;
-  padding-bottom: 1px;
-}
-.spacer {
-  height: 1px;
 }
