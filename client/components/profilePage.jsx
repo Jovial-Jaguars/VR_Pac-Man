@@ -57,11 +57,29 @@ export default class ProfilePage extends React.Component {
   }
 
   multiplayerClick() {
-    console.log('clicked multiplayer mode');
     socket.emit('testing', {user: this.state.username});
     this.props.router.push({pathname: '/multiplayer'})
   }
 
+  singlePlayerClick() {
+    this.props.router.push({pathname: '/singleplayer'})
+  }
+
+  customGameClick() {
+    $('.modal').css('display', 'block');
+  }
+
+  customMultiplayerClick() {
+    $('#multiplayerSelected').css('display', 'flex');
+  }
+
+  customSinglePlayerClick() {
+    $('#multiplayerSelected').css('display', 'none');
+  }
+
+  modalClickExit() {
+    $('.modal').css('display', 'none');
+  }
 
   render() {
     return (
@@ -72,18 +90,40 @@ export default class ProfilePage extends React.Component {
           <p>SP High Score: {this.state.spHighScore}</p>
           <p>MP High Score: {this.state.mpHighScore}</p>
           <button id="logout" onClick={this.logout.bind(this)}>Log Out</button>
-          </div>
+        </div>
         <div className="profilePageContent">
           <div className="playScreen">
             <h1 className="headers">Play</h1>
-            <button id="singleplayerBtn">Single Player</button><br/>
+            <button id="singleplayerBtn" onClick={this.singlePlayerClick.bind(this)}>Single Player</button><br/>
             <button id="multiplayerBtn" onClick={this.multiplayerClick.bind(this)}>Multiplayer</button><br/>
-            <button id="customGameBtn">Custom Game</button><br/>
+            <button id="customGameBtn" onClick={this.customGameClick}>Custom Game</button><br/>
             <br/><a>How To Play</a>
           </div><br/>
           <div className="myMazesScreen">
             <h1 className="headers">My Mazes</h1>
             <div>mazes here...</div>
+          </div>
+        </div>
+        <div id="myModal" className="modal">
+          <div className="modal-content custom">
+            <div className="customGameModalHeader">
+              <span id="customGametext">Custom Game</span>
+            </div>
+            <span id="customGameModalClose" className="close" onClick={this.modalClickExit}>&times;</span>
+            <p className="customGameHeaders">Select a mode:</p>
+            <div className="customGameModeFlexContainer">
+              <button onClick={this.customSinglePlayerClick}>Single Player</button>
+              <button onClick={this.customMultiplayerClick}>Multiplayer</button>
+            </div>
+            <div id="multiplayerSelected">
+              <span>Join a room:&nbsp;<input type="text"/></span>
+              <span>OR</span>
+              <span>Create a Room:&nbsp;<input type="text"/></span>
+            </div>
+            <div id="customMazeSelection">
+              <p className="customGameHeaders">Choose a maze:</p>
+              <br/>mazes here...
+            </div>
           </div>
         </div>
         <img id="ghostBackgroundPic" src="../assets/pac-man-ghost.png"/>
