@@ -746,9 +746,9 @@ export default class MazeRunner extends React.Component {
 
 render() {
   return (
-          <div className="canvas-container">
-          <canvas id="renderCanvas"></canvas>
+          <div className="container">
           <div className="camera-toggle">Camera Toggle</div>
+          <canvas id="renderCanvas"></canvas>
           </div>);
 }
 }
