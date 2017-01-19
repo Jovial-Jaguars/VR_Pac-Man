@@ -7,8 +7,8 @@ export default class ProfilePage extends React.Component {
     this.state = {
       username: null,
       savedMaps: null,
-      spHighScore: 0,
-      mpHighScore: 0
+      spHighScore: null,
+      mpHighScore: null
     }
     this.mazebuilderClick = this.mazebuilderClick.bind(this);
   }
@@ -19,6 +19,7 @@ export default class ProfilePage extends React.Component {
       url: '/logout',
       success: function() {
         console.log('logged out!');
+        window.username = null;
         this.props.router.push({pathname: '/'});
       }.bind(this)
     })
@@ -29,13 +30,21 @@ export default class ProfilePage extends React.Component {
       type: 'POST',
       url: 'profileInfo',
       data: {user: username},
+      async: false,
       success: function(data) {
-        console.log('ajax get profile info success');
-        console.log('data:', JSON.stringify(data));
-        this.setState({
-          username: data.user.username
-        });
-        window.username = data.user.username; //hacky
+        if (!data.username) {
+          // console.log('compwillmount profpage data', data);
+          this.props.router.push({pathname: '/'});
+        } else {
+          console.log('reset high scores state');
+          console.log(data);
+          this.setState({
+            username: data.username,
+            spHighScore: data.spHighScores_VR,
+            mpHighScore: data.mpHighScores_VR
+          });
+          window.username = data.user;
+        }
       }.bind(this)
     });
     this.getMyMazes();
@@ -57,11 +66,41 @@ export default class ProfilePage extends React.Component {
   }
 
   multiplayerClick() {
-    console.log('clicked multiplayer mode');
     socket.emit('testing', {user: this.state.username});
     this.props.router.push({pathname: '/multiplayer'})
   }
 
+  singlePlayerClick() {
+    this.props.router.push({pathname: '/singleplayer'})
+  }
+
+  customGameClick() {
+    $('.modal').css('display', 'block');
+  }
+
+  customMultiplayerClick() {
+    // $('#multiplayerSelected').css('display', 'flex');
+    $('#multiplayerSelected').slideDown("fast");
+    var toggle = false;
+    $('#spModeButton').css('box-shadow', 'none');
+    $('#mpModeButton').css('box-shadow', 'inset 0 0 0 1px #27496d,inset 0 5px 30px #193047');
+  }
+
+  customSinglePlayerClick() {
+    // $('#multiplayerSelected').css('display', 'none');
+    $('#multiplayerSelected').slideUp("fast");
+    $('#mpModeButton').css('box-shadow', 'none');
+    $('#spModeButton').css('box-shadow', 'inset 0 0 0 1px #27496d,inset 0 5px 30px #193047');
+  }
+
+  modalClickExit() {
+    $('.modal').css('display', 'none');
+    $('.howToPlayModal').css('display', 'none');
+  }
+
+  howToPlayClick() {
+    $('.howToPlayModal').css('display', 'block');
+  }
 
   render() {
     return (
@@ -72,18 +111,50 @@ export default class ProfilePage extends React.Component {
           <p>SP High Score: {this.state.spHighScore}</p>
           <p>MP High Score: {this.state.mpHighScore}</p>
           <button id="logout" onClick={this.logout.bind(this)}>Log Out</button>
-          </div>
+        </div>
         <div className="profilePageContent">
           <div className="playScreen">
             <h1 className="headers">Play</h1>
-            <button id="singleplayerBtn">Single Player</button><br/>
+            <button id="singleplayerBtn" onClick={this.singlePlayerClick.bind(this)}>Single Player</button><br/>
             <button id="multiplayerBtn" onClick={this.multiplayerClick.bind(this)}>Multiplayer</button><br/>
-            <button id="customGameBtn">Custom Game</button><br/>
-            <br/><a>How To Play</a>
+            <button id="customGameBtn" onClick={this.customGameClick}>Custom Game</button><br/>
+            <br/><a onClick={this.howToPlayClick}>How To Play</a>
           </div><br/>
           <div className="myMazesScreen">
             <h1 className="headers">My Mazes</h1>
             <div>mazes here...</div>
+          </div>
+        </div>
+        <div id="customModal" className="modal">
+          <div className="modal-content custom">
+            <div className="customGameModalHeader">
+              <span id="customGametext">Custom Game</span>
+            </div>
+            <span id="customGameModalClose" className="close" onClick={this.modalClickExit}>&times;</span>
+            <p className="customGameHeaders">Select a mode:</p>
+            <div className="customGameModeFlexContainer">
+              <button id="spModeButton" onClick={this.customSinglePlayerClick}>Single Player</button>
+              <button id="mpModeButton" onClick={this.customMultiplayerClick}>Multiplayer</button>
+            </div>
+            <div id="multiplayerSelected">
+              <span>Join a room:&nbsp;<input type="text"/></span>
+              <span>OR</span>
+              <span>Create a Room:&nbsp;<input type="text"/></span>
+            </div>
+            <div id="customMazeSelection">
+              <p className="customGameHeaders">Choose a maze:</p>
+              <br/>mazes here...
+            </div>
+          </div>
+        </div>
+        <div id="htpModal" className="howToPlayModal">
+          <div className="modal-content htp">
+            <div className="howToPlayModalHeader">
+              <span id="howToPlaytext">How to Play</span>
+            </div>
+            <span id="customGameModalClose" className="close" onClick={this.modalClickExit}>&times;</span>
+            <p>VR: Insert mobile phone into a VR headset. Align to center. Look around to change your direction! Collect the pellets while avoiding the ghosts!<br/>
+                PC: Click and drag to change your direction! Collect the pellets while avoiding the ghosts!</p>
           </div>
         </div>
         <img id="ghostBackgroundPic" src="../assets/pac-man-ghost.png"/>

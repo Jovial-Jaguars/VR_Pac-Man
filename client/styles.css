@@ -17,13 +17,19 @@
 body {
   background: #FFF7D2;
   text-align: center;
+  margin: 0px;
 }
 
 h3{
   text-align: center;
 }
 
-li:hover {
+a:link {
+  color: #FFF7D2;
+  text-decoration: none;
+}
+
+li:hover,a:hover {
   cursor: pointer;
   color: #FFF7D2;
 }
@@ -91,6 +97,7 @@ button:active {
   background-position: center;
 
 }
+
 .side-bar {
   display: inline-block;
   float: right;
@@ -100,18 +107,19 @@ button:active {
   background: linear-gradient(to bottom right, rgba(56, 132, 255, 0.5), rgba(13, 49, 147, 0.2));
   color: white;
 }
+
 .default1 {
   display: inline-block;
   width: 100%;
   height: 25%;
   background-color: blue;
 }
+
 .tablerow {
   display: inline-block;
   width: 100%;
   height: 25%;
   background-color: blue;
-
 }
 
 .block1 {
@@ -121,13 +129,14 @@ button:active {
   background-color: blue;
 
 }
+
 .block2 {
   display: inline-block;
   width: 5.2%;
   height: 100%;
   background-color: black;
-
 }
+
 .block3 {
   display: inline-block;
   width: 5.2%;
@@ -138,6 +147,7 @@ button:active {
   background-position: center;
   background-repeat: no-repeat;
 }
+
 .block4 {
   display: inline-block;
   width: 5.2%;
@@ -148,10 +158,12 @@ button:active {
   background-position: center;
   background-repeat: no-repeat;
 }
+
 .maze-editor {
   height: 100%;
   width: 100%;
 }
+
 .maze-editor-table {
   width: 50%;
   height: 70%;
@@ -172,6 +184,7 @@ button:active {
   float: left;
   clear: both;
 }
+
 .legend {
   display: inline-block;
   float: center;
@@ -187,12 +200,14 @@ button:active {
   height: 40%;
   background-color: purple;
 }
+
 .legend-table-row {
   display: inline-block;
   width: 100%;
   height: 20%;
   margin-bottom: 5px;
 }
+
 .legend-block1 {
   display: inline-block;
   border-radius: 5px;
@@ -200,6 +215,7 @@ button:active {
   height: 100%;
   background-color: blue;
 }
+
 .legend-block2 {
   display: inline-block;
   border-radius: 5px;
@@ -207,6 +223,7 @@ button:active {
   height: 100%;
   background-color: black;
 }
+
 .legend-empty {
   display: inline-block;
   width: 55%;
@@ -214,6 +231,7 @@ button:active {
   padding: 2px;
   text-align: center;
 }
+
 .legend-block {
   display: inline-block;
   width: 55%;
@@ -221,6 +239,7 @@ button:active {
   padding: 2px;
   text-align: center;
 }
+
 .legend-pellet {
   display: inline-block;
   width: 55%;
@@ -228,6 +247,7 @@ button:active {
   padding: 2px;
   text-align: center;
 }
+
 .legend-block3 {
   display: inline-block;
   width: 20%;
@@ -317,7 +337,6 @@ button:active {
     color: white;
     border-radius: 30px 30px 0 0;
     min-height: 50px;
-    /*vertical-align: middle;*/
 }
 
 .modal-header-flexbox {
@@ -419,12 +438,9 @@ button:active {
 /*
 html {
   font-family : sans-serif;
-
   text-align : center;
-
   height: 100%;
   width: 100%;
-
 }
 */
 
@@ -464,9 +480,6 @@ html {
 .maps-sub-container {
     display: block;
     margin-top: 120px;
-
-
-
 }
 
 .maps-container{
@@ -474,7 +487,6 @@ html {
     justify-content: space-around;
     flex-wrap: wrap;
     margin-top: 203px;
-
 }
 
 
@@ -507,11 +519,7 @@ html {
   display: flex;
   align-items: stretch;
   background-color: /*#FFCC00*/ #EB5200;
-
   box-shadow: 10px 10px 5px #00004C;
-
-
-
 }
 
 tbody {
@@ -527,9 +535,7 @@ tbody {
   align-items: stretch;
 }
 
-
 .blank {
-
   flex-grow: 1;
   background-color: blue;
   align-items: stretch;
@@ -537,17 +543,16 @@ tbody {
   height: 2.2vmin;
 
 }
-.wall {
 
+.wall {
   flex-grow: 1;
   background-color: black;
   align-items: stretch;
   width: 2.2vmin;
   height: 2.2vmin;
-
 }
-.pellet {
 
+.pellet {
   flex-grow: 1;
   background-image: url('assets/dot.png');
   background-size: contain;
@@ -558,8 +563,8 @@ tbody {
   width: 2.2vmin;
   height: 2.2vmin;
 }
-.pacmanmaze {
 
+.pacmanmaze {
   flex-grow: 1;
   background-image: url('assets/pacman.png');
   background-size: contain;
@@ -572,7 +577,6 @@ tbody {
 }
 
 .insertcoin {
-
   position: absolute;
   display: inline-block;
   background-image: url('assets/insertcoin.png');
@@ -587,10 +591,9 @@ tbody {
   margin-left: 3px;
   left: 0;
   top: 0;
-
 }
-.onecredit {
 
+.onecredit {
   position: absolute;
   display: inline-block;
   background-image: url('assets/onecredit.png');
@@ -605,7 +608,6 @@ tbody {
   margin-left: 3px;
   left: 0;
   top: 0;
-
 }
 
 .hamburger {
@@ -641,8 +643,6 @@ tbody {
   background-color: black;
   color: #FEDC3D;
   font-family: 'cp7';
-  /*font-family: 'Joystix';*/
-  /*font-family: 'PT Mono', sans-serif;*/
   font-size: 30px;
   margin: 0;
   list-style: none;
@@ -775,11 +775,11 @@ tbody {
   background-color: rgba(0,0,0,1);
   text-align: center;
   padding: 25px 50px 25px 50px;
-  margin: 15px;
+  margin: 15px 30px;
   max-width: 55%;
 }
 
-.landingPageContent {
+.landingPageContent, .aboutPageContent{
   display: inline-block;
   border-radius: 45px;
   background-color: rgba(0,0,0,1);
@@ -795,7 +795,6 @@ tbody {
 .playBtnContent {
   text-align: center;
   display: inline-block;
-  /*background-color: black;*/
   padding: 25px;
   border-radius: 30px;
 }
@@ -803,12 +802,10 @@ tbody {
 
 #demobutton {
   background-color: #01ABAA;
-  /*background-color: black;*/
   border-radius: 20px;
   border: none;
   font-family: 'PT Mono';
   font-size: 16px;
-  /*color: #FEDC3D;*/
   color: #FFF7D2;
   width: 70%;
 }
@@ -836,11 +833,6 @@ tbody {
   z-index: -1;
 }
 
-a:link {
-  color: #FFF7D2;
-  text-decoration: none;
-}
-
 .legalnotice {
   font-size: 10px;
 }
@@ -853,12 +845,18 @@ a:link {
   text-align: left;
 }
 
+.modal-content.custom {
+  max-width: 70%;
+  padding-bottom: 35px;
+}
+
 #playtext {
   font-family: "Crackman Font";
   color: #FEDC3D;
   font-size: 48px;
   margin: 0 0 15px 0;
 }
+
 }
 
 .container {
@@ -878,14 +876,6 @@ a:link {
   background-color: rgba(15, 62, 137, 0.5);
 }
 
-html, body {
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
 #renderCanvas {
   position: absolute;
   width: 100%;
@@ -893,8 +883,123 @@ html, body {
   top: 0px;
   left: 0px;
 }
+
 #app {
   width: 100%;
   height: 100%;
   touch-action: none;
+}
+
+#multiplayerSelected {
+  display: none;
+  justify-content: center;
+}
+
+#multiplayerSelected>span {
+  margin: 10px 10px 0px 10px;
+}
+
+#customGametext,#howToPlaytext {
+  color: black;
+  font-family: 'Joystix';
+  font-size: 25px;
+}
+
+#customGameModalClose {
+  transform: translateY(-160%);
+  margin-right: 14px;
+}
+
+.customGameModalHeader,.howToPlayModalHeader {
+    padding: 2px 16px;
+    background-color: #FEDC3D;
+    color: white;
+    border-radius: 30px 30px 0 0;
+    min-height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.customGameHeaders {
+  font-family: 'PT Mono', sans-serif;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.customGameModeFlexContainer {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.customGameModeFlexContainer button {
+  background-color: #01ABAA;
+  border-radius: 20px;
+  border: none;
+  font-family: 'PT Mono';
+  font-size: 24px;
+  color: #FFF7D2;
+  width: 220px;
+  height: 40px;
+  margin: 5px 20px 20px 20px;
+}
+
+.howToPlayModal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content.htp {
+  max-width: 70%;
+}
+
+.modal-content.htp>p {
+  margin: 20px 45px;
+}
+
+.creatorsFlexBox {
+  display: flex;
+  text-align: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.creatorsFlexBox>div {
+  display: inline;
+  width: 20%;
+  text-align: center;
+  margin: 30px;
+}
+
+#creatorPics {
+  width: 90%;
+  border-radius: 20px;
+  /*margin: 0px;*/
+}
+
+.aboutPageContent {
+  max-width: 70%;
+  /*padding: 100px;*/
+}
+
+#linkedInIcon {
+  height: 25px;
+  margin: 1.5px;
+}
+
+#gitIcon {
+  height: 25px;
+  transform: scale(0.8);
+  margin: 1.5px;
 }

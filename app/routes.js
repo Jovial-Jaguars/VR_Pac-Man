@@ -1,5 +1,6 @@
 var User = require('../app/models/user');
 var Maps = require('../app/models/maps');
+var HighScores = require('../app/models/highscores');
 
 module.exports = function(app, passport) {
 
@@ -31,9 +32,9 @@ module.exports = function(app, passport) {
     User.findOne({
       where: {
         username: req.body.user
-      }
+      }, raw:true
     }).then(function(user) {
-      res.send({user: user.dataValues});
+      res.send(user);
     });
   });
 
@@ -74,7 +75,61 @@ module.exports = function(app, passport) {
       participants = 1;
     }
     res.send(roomNumber.toString());
-  }.bind(this))
+  }.bind(this));
+
+  app.post('/submitScore', function(req, res) {
+    if (!req.session.passport || !req.session.passport.user) {
+      res.end('authentication error');
+    } else {
+      var table = req.body.table;
+      var score = Number(req.body.score);
+      var username = req.session.passport.user;
+      HighScores[table].create({
+        username: username,
+        score: score
+      }).then(function() {
+        res.send('Score posted!');
+      })
+    }
+  });
+
+  app.get('/highScoreTable', function(req, res) {
+    var table = req.query.table;
+    HighScores[table].findAll({raw:true}).then(function(arr) {
+      var sorted = arr.sort(function(a,b) {
+        return b.score-a.score;
+      });
+      res.send(sorted);
+    })
+  });
+
+  app.post('/updateMyHighScores', function(req, res) {
+
+    User.findOne({
+      where: {
+        username: req.session.passport.user
+      }, raw:true
+    })
+    .then(function(user) {
+      var table = req.body.table;
+      console.log('table', table);
+      console.log(user);
+      console.log('req.body.score', req.body.score);
+      console.log('user[table]', user[table]);
+      // compare user.table high score with req.body.score
+      if (req.body.score > user[table]) {
+        console.log('hit');
+        User.update(
+          {[table]: req.body.score},
+          {
+            where: {username: req.session.passport.user}
+          }
+        )
+      }
+      res.send(user);
+    });
+  })
+
 
   app.get('/logout', function(req, res) {
     req.logout();
