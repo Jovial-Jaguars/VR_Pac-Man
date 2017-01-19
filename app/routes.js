@@ -32,9 +32,9 @@ module.exports = function(app, passport) {
     User.findOne({
       where: {
         username: req.body.user
-      }
+      }, raw:true
     }).then(function(user) {
-      res.send({user: user.dataValues});
+      res.send(user);
     });
   });
 
@@ -97,11 +97,39 @@ module.exports = function(app, passport) {
     var table = req.query.table;
     HighScores[table].findAll({raw:true}).then(function(arr) {
       var sorted = arr.sort(function(a,b) {
-        return a.score-b.score;
+        return b.score-a.score;
       });
       res.send(sorted);
     })
+  });
+
+  app.post('/updateMyHighScores', function(req, res) {
+
+    User.findOne({
+      where: {
+        username: req.session.passport.user
+      }, raw:true
+    })
+    .then(function(user) {
+      var table = req.body.table;
+      console.log('table', table);
+      console.log(user);
+      console.log('req.body.score', req.body.score);
+      console.log('user[table]', user[table]);
+      // compare user.table high score with req.body.score
+      if (req.body.score > user[table]) {
+        console.log('hit');
+        User.update(
+          {[table]: req.body.score},
+          {
+            where: {username: req.session.passport.user}
+          }
+        )
+      }
+      res.send(user);
+    });
   })
+
 
   app.get('/logout', function(req, res) {
     req.logout();
