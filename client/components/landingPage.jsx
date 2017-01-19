@@ -33,10 +33,13 @@ export default class LandingPage extends React.Component {
       url: '/signup',
       data: dataString,
       success: function(data) {
-        console.log('successfully signed up!');
-        console.log('data: ', data);
-        window.username = username;
-        this.props.router.push({pathname: '/profile'});
+        console.log('successfully signed up!', data);
+        if (!username) {
+          this.props.router.push({pathname: '/'});
+        } else {
+          window.username = username;
+          this.props.router.push({pathname: '/profile'});
+        }
       }.bind(this)
     })
   }
@@ -50,10 +53,14 @@ export default class LandingPage extends React.Component {
       type: 'POST',
       url: '/login',
       data: dataString,
-      success: function() {
-        console.log('successfully logged in!');
-        window.username = username;
-        this.props.router.push({pathname: '/profile'});
+      success: function(data) {
+        console.log('successfully logged in!', data);
+        if (!username) {
+          this.props.router.push({pathname: '/'});
+        } else {
+          window.username = username;
+          this.props.router.push({pathname: '/profile'});
+        }
       }.bind(this)
     })
   }
@@ -134,8 +141,16 @@ export default class LandingPage extends React.Component {
 
 window.onclick = function(event) {
   var modal = document.getElementById('myModal');
+  var htpModal = document.getElementById('htpModal');
+  var customModal = document.getElementById('customModal');
     if (event.target == modal) {
         modal.style.display = 'none';
+    }
+    if (event.target == htpModal) {
+        htpModal.style.display = 'none';
+    }
+    if (event.target == customModal) {
+        customModal.style.display = 'none';
     }
 }
 

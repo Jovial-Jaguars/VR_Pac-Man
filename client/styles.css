@@ -779,7 +779,7 @@ tbody {
   max-width: 55%;
 }
 
-.landingPageContent {
+.landingPageContent, .aboutPageContent{
   display: inline-block;
   border-radius: 45px;
   background-color: rgba(0,0,0,1);
@@ -965,4 +965,41 @@ tbody {
 
 .modal-content.htp>p {
   margin: 20px 45px;
+}
+
+.creatorsFlexBox {
+  display: flex;
+  text-align: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.creatorsFlexBox>div {
+  display: inline;
+  width: 20%;
+  text-align: center;
+  margin: 30px;
+}
+
+#creatorPics {
+  width: 90%;
+  border-radius: 20px;
+  /*margin: 0px;*/
+}
+
+.aboutPageContent {
+  max-width: 70%;
+  /*padding: 100px;*/
+}
+
+#linkedInIcon {
+  height: 25px;
+  margin: 1.5px;
+}
+
+#gitIcon {
+  height: 25px;
+  transform: scale(0.8);
+  margin: 1.5px;
 }
