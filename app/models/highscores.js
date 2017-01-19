@@ -93,6 +93,28 @@ spHighScores_VR.sync({force: true}).then(function () {
   });
 });
 
+spHighScores_PC.sync({force: true}).then(function () {
+  spHighScores_PC.create({
+    username: 'wells',
+    score: 9999
+  });
+});
+
+mpHighScores_VR.sync({force: true}).then(function () {
+  mpHighScores_VR.create({
+    username: 'wells',
+    score: 9999
+  });
+});
+
+mpHighScores_PC.sync({force: true}).then(function () {
+  mpHighScores_PC.create({
+    username: 'wells',
+    score: 9999
+  });
+});
+
+
 module.exports = {
   spHighScores_PC: spHighScores_PC,
   spHighScores_VR: spHighScores_VR,
