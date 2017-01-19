@@ -27,6 +27,22 @@ var User = sequelize.define('User', {
   password: {
     type: Sequelize.STRING,
     allowNull: false
+  },
+  spHighScores_PC: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0
+  },
+  spHighScores_VR: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0
+  },
+  mpHighScores_PC: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0
+  },
+  mpHighScores_VR: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0
   }
 }, {
   freezeTableName: true,

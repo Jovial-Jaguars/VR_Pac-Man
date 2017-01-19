@@ -7,8 +7,8 @@ export default class ProfilePage extends React.Component {
     this.state = {
       username: null,
       savedMaps: null,
-      spHighScore: 0,
-      mpHighScore: 0
+      spHighScore: null,
+      mpHighScore: null
     }
     this.mazebuilderClick = this.mazebuilderClick.bind(this);
   }
@@ -19,6 +19,7 @@ export default class ProfilePage extends React.Component {
       url: '/logout',
       success: function() {
         console.log('logged out!');
+        window.username = null;
         this.props.router.push({pathname: '/'});
       }.bind(this)
     })
@@ -31,15 +32,19 @@ export default class ProfilePage extends React.Component {
       data: {user: username},
       async: false,
       success: function(data) {
-        if (!data.user) {
+        if (!data.username) {
+          // console.log('compwillmount profpage data', data);
           this.props.router.push({pathname: '/'});
         } else {
+          console.log('reset high scores state');
+          console.log(data);
           this.setState({
-            username: data.user.username
+            username: data.username,
+            spHighScore: data.spHighScores_VR,
+            mpHighScore: data.mpHighScores_VR
           });
-          window.username = data.user.username; //hacky
+          window.username = data.user;
         }
-
       }.bind(this)
     });
     this.getMyMazes();

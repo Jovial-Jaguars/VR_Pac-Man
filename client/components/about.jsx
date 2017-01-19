@@ -28,9 +28,17 @@ export default class About extends React.Component {
     $.ajax({
       type: 'POST',
       url: '/submitScore',
-      data: {table: 'spHighScores_PC', score: 9},
+      data: {table: 'spHighScores_VR', score: 9},
       success: function(data) {
         console.log(data);
+        $.ajax({
+          type: 'POST',
+          url: '/updateMyHighScores',
+          data: {table: 'spHighScores_VR', score: 9},
+          success: function(data) {
+            console.log(data);
+          }
+        })
       }
     })
   }

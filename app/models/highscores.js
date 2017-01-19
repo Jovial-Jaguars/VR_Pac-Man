@@ -50,44 +50,44 @@ var mpHighScores_VR = sequelize.define('mpHighScores_VR', {
 });
 
 // force: true will drop the table if it already exists
-spHighScores_PC.sync({force: true}).then(function () {
-  spHighScores_PC.create({
+spHighScores_VR.sync({force: true}).then(function () {
+  spHighScores_VR.create({
     username: 'wells',
     score: 999999
   });
-  spHighScores_PC.create({
+  spHighScores_VR.create({
     username: 'don',
     score: 4
   });
-  spHighScores_PC.create({
+  spHighScores_VR.create({
     username: 'humaid',
     score: 2
   });
-  spHighScores_PC.create({
+  spHighScores_VR.create({
     username: 'hk2',
     score: 9
   });
-  spHighScores_PC.create({
+  spHighScores_VR.create({
     username: 'newb2435',
     score: 42
   });
-  spHighScores_PC.create({
+  spHighScores_VR.create({
     username: 'newbie123',
     score: 522
   });
-  spHighScores_PC.create({
+  spHighScores_VR.create({
     username: 'beginner',
     score: 1010
   });
-  spHighScores_PC.create({
+  spHighScores_VR.create({
     username: 'dknguyen',
     score: 6
   });
-  spHighScores_PC.create({
+  spHighScores_VR.create({
     username: 'trash',
     score: 5
   });
-  spHighScores_PC.create({
+  spHighScores_VR.create({
     username: 'wellswannabe',
     score: 9999
   });
@@ -97,5 +97,5 @@ module.exports = {
   spHighScores_PC: spHighScores_PC,
   spHighScores_VR: spHighScores_VR,
   mpHighScores_PC: mpHighScores_PC,
-  mpHighScores_PC: mpHighScores_VR
+  mpHighScores_VR: mpHighScores_VR
 }
