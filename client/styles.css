@@ -362,6 +362,7 @@ button:active {
 
 #modal-loginform {
   display:none;
+<<<<<<< HEAD
   text-align: right;
   /*padding-right: 50%;*/
   min-height: 140px;
@@ -441,8 +442,10 @@ html {
   text-align : center;
   height: 100%;
   width: 100%;
+<<<<<<< HEAD
 }
 */
+
 
 .title-container {
     position: fixed;
@@ -497,6 +500,13 @@ html {
     align-items: stretch;
     /*flex-direction: row;
     align-items: flex-start;
+
+    justify-content: space-around; 
+    flex-wrap: wrap;
+    align-items: stretch;
+    /*flex-direction: row;
+    align-items: flex-start; 
+
     align-content: space-between;
     background-color: red;
     background: #fff;
@@ -576,7 +586,7 @@ tbody {
   height: 2.2vmin;
 }
 
-.insertcoin {
+.insertcoin, .onecredit, .public, .private{
   position: absolute;
   display: inline-block;
   background-image: url('assets/insertcoin.png');
@@ -584,30 +594,27 @@ tbody {
   background-position: center;
   background-repeat: no-repeat;
   align-items: stretch;
-  width:100px;
-  height: 100px;
+  width: 5em;
+  height: 5em;
   box-shadow: 0 2px 5px 1px rgba(0,0,0,0.4);
   margin-top: 3px;
   margin-left: 3px;
-  left: 0;
-  top: 0;
+  bottom: 3px;
+  right: 3px;
+  border-radius: 8px
+
 }
 
 .onecredit {
-  position: absolute;
-  display: inline-block;
-  background-image: url('assets/onecredit.png');
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  align-items: stretch;
-  width:150px;
-  height: 80px;
-  box-shadow: 0 2px 5px 1px rgba(0,0,0,0.4);
-  margin-top: 3px;
-  margin-left: 3px;
-  left: 0;
-  top: 0;
+  background-image: url('assets/goldcoin.png');
+}
+
+.public {
+  background-image: url('assets/public.png');
+}
+
+.private {
+  background-image: url('assets/private.png');
 }
 
 .hamburger {
@@ -621,10 +628,45 @@ tbody {
     text-shadow: 2px 2px 2px #00004C;
 }
 
+.sidebar-title {
+  font-family: "Joystix";
+  margin-left: 15px;
+  margin-right: 15px;
+  font-size: 1.5em;
+  color: yellow;
+  text-shadow: 2px 2px #ff0000;
+  padding-bottom: .6em
+
+
+
+}
+
+.sidebar-options {
+  font-family: 'cp7';
+  font-size: 2em;
+  text-align: left;
+  padding: 0em 1em .4em .5em;
+  text-shadow: 2px 2px #ff0000;
+  letter-spacing: 1px;
+  font-weight: bold;
+  box-shadow: inset 0 -1px rgba(0,0,0,0.2);
+  transition: background 0.3s, box-shadow 0.3s;
+  color: #f3efe0;
+
+}
+
+.sidebar-options:hover {
+  opacity: 0.5; 
+  color: DodgerBlue;
+}
+
 [data-icon]:before {
   font-family: icons; /* BYO icon font, mapped smartly */
   content: attr(data-icon);
-  speak: none; /* Not to be trusted, but hey. */
+  vertical-align: bottom;
+  margin-right: 0.8em;
+  font-size: 1em;
+  -webkit-font-smoothing: antialiased;
 }
 
 /*end styling for maze store*/

@@ -6,6 +6,11 @@ import TopNav from './topNav';
 export default class LandingPage extends React.Component {
   constructor(props) {
     super(props);
+    this.mazebuilderClick = this.mazebuilderClick.bind(this);
+    this.mazestoreClick = this.mazestoreClick.bind(this);
+  }
+
+  navClickHome() {
   }
 
   modalClickLogin() {
@@ -22,6 +27,14 @@ export default class LandingPage extends React.Component {
 
   modalClickExit() {
     $('.modal').css('display', 'none');
+  }
+
+  mazebuilderClick() {
+    this.props.router.push({pathname: '/mazebuilder'});
+  }
+
+  mazestoreClick() {
+    this.props.router.push({pathname: '/mazestore'});
   }
 
   signupFormSubmit(e) {
