@@ -33,10 +33,13 @@ export default class LandingPage extends React.Component {
       url: '/signup',
       data: dataString,
       success: function(data) {
-        console.log('successfully signed up!');
-        console.log('data: ', data);
-        window.username = username;
-        this.props.router.push({pathname: '/profile'});
+        console.log('successfully signed up!', data);
+        if (!username) {
+          this.props.router.push({pathname: '/'});
+        } else {
+          window.username = username;
+          this.props.router.push({pathname: '/profile'});
+        }
       }.bind(this)
     })
   }
@@ -50,17 +53,19 @@ export default class LandingPage extends React.Component {
       type: 'POST',
       url: '/login',
       data: dataString,
-      success: function() {
-        console.log('successfully logged in!');
-        window.username = username;
-        this.props.router.push({pathname: '/profile'});
+      success: function(data) {
+        console.log('successfully logged in!', data);
+        if (!username) {
+          this.props.router.push({pathname: '/'});
+        } else {
+          window.username = username;
+          this.props.router.push({pathname: '/profile'});
+        }
       }.bind(this)
     })
   }
 
   componentWillMount() {
-    console.log('testing');
-
     $.ajax({
       type: 'GET',
       url: '/checkLoggedIn',
@@ -108,7 +113,7 @@ export default class LandingPage extends React.Component {
             <SignupForm signupFormSubmit={this.signupFormSubmit.bind(this)}/><br/>
             <p>Already have an account? <a onClick={this.modalClickLogin}>Login</a></p>
           </div>
-          <div className="modal-footer">
+          <div>
             <h3> </h3>
           </div>
         </div>
@@ -123,8 +128,8 @@ export default class LandingPage extends React.Component {
         <p>VR: Insert mobile phone into a VR headset. Align to center. Look around to change your direction! Collect the pellets while avoiding the ghosts!<br/>
           PC: Click and drag to change your direction! Collect the pellets while avoiding the ghosts!
         </p>
-        <p className="legalnotice">Legal notice: This website is not related or endorsed by the registered trademark owners Namco, Inc.</p>
-        <div>Background Pacman and ghost icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> and <a href="http://www.flaticon.com/authors/tutsplus" title="TutsPlus">TutsPlus</a> respectively and is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+        <p className="legalnotice">Legal notice: This website is not related or endorsed by the registered trademark owners Namco, Inc.<br/>
+          Background Pacman and ghost icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> and <a href="http://www.flaticon.com/authors/tutsplus" title="TutsPlus">TutsPlus</a> respectively and is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></p>
       </div>
       <img id="ghostBackgroundPic" src="../assets/pac-man-ghost.png"/>
       <img id="pacmanBackgroundPic" src="../assets/pac-man.png"/>
@@ -136,8 +141,16 @@ export default class LandingPage extends React.Component {
 
 window.onclick = function(event) {
   var modal = document.getElementById('myModal');
+  var htpModal = document.getElementById('htpModal');
+  var customModal = document.getElementById('customModal');
     if (event.target == modal) {
         modal.style.display = 'none';
+    }
+    if (event.target == htpModal) {
+        htpModal.style.display = 'none';
+    }
+    if (event.target == customModal) {
+        customModal.style.display = 'none';
     }
 }
 
