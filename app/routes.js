@@ -1,5 +1,6 @@
 var User = require('../app/models/user');
 var Maps = require('../app/models/maps');
+var HighScores = require('../app/models/highscores');
 
 module.exports = function(app, passport) {
 
@@ -74,7 +75,33 @@ module.exports = function(app, passport) {
       participants = 1;
     }
     res.send(roomNumber.toString());
-  }.bind(this))
+  }.bind(this));
+
+  app.post('/submitScore', function(req, res) {
+    if (!req.session.passport || !req.session.passport.user) {
+      res.end('authentication error');
+    } else {
+      var table = req.body.table;
+      var score = Number(req.body.score);
+      var username = req.session.passport.user;
+      HighScores[table].create({
+        username: username,
+        score: score
+      }).then(function() {
+        res.send('Score posted!');
+      })
+    }
+  });
+
+  app.get('/highScoreTable', function(req, res) {
+    var table = req.query.table;
+    HighScores[table].findAll({raw:true}).then(function(arr) {
+      var sorted = arr.sort(function(a,b) {
+        return a.score-b.score;
+      });
+      res.send(sorted);
+    })
+  })
 
   app.get('/logout', function(req, res) {
     req.logout();
