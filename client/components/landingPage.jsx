@@ -32,9 +32,9 @@ export default class LandingPage extends React.Component {
       type: 'POST',
       url: '/signup',
       data: dataString,
-      success: function(data) {
-        console.log('successfully signed up!', data);
+      success: function() {
         if (!username) {
+          console.log('signup !username', username);
           this.props.router.push({pathname: '/'});
         } else {
           window.username = username;
