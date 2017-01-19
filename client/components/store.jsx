@@ -8,6 +8,27 @@ export default class MazeStore extends React.Component{
   constructor(props){
     super(props);
   };
+
+  componentWillMount() {
+    $.ajax({
+      type: 'GET',
+      url: '/checkLoggedIn',
+      async: false,
+      success: function(data) {
+        if (!data.user) {
+          console.log('hit not authenticated');
+          this.props.router.push({pathname: '/'});
+        } else {
+          console.log('hit authenticated');
+          window.username = data.user;
+        }
+      }.bind(this),
+      error: function() {
+        console.log('Error!');
+      }
+    });
+  }
+  
   render(){
     return <div className="pacmanapp">
       <MapList router={this.props.router}/>
