@@ -8,6 +8,7 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import MultiplayerMazeRunner from './multiplayerMazeRunner';
 import MazeRunner from './mazeRunner';
+import About from './about';
 
 // React router
 var MainRouter = () => (
@@ -18,6 +19,7 @@ var MainRouter = () => (
     <Route path="/multiplayer" component={MultiplayerMazeRunner} />
     <Route path="/mazestore" component={MazeStore} />
     <Route path="/singleplayer" component={MazeRunner}/>
+    <Route path="/about" component={About}/>
   </Router>
 );
 

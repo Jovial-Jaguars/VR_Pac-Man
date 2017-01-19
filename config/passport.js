@@ -25,13 +25,15 @@ module.exports = function(passport) {
     .then(function(user) {
       if (!user) {
         console.log('hit !user');
-        return done(err);
+        // return done(err);
+        return done(null, false, {message: 'Invalid username.'});
         // return done(null, false, req.flash('loginMessage', 'User not found.'));
       }
       var hash = user.dataValues.password;
       if (!User.validPassword(password, hash)) {
         console.log('***Enter valid password condition***');
-        return done(err);
+        // return done(err);
+        return done(null, false, {message: 'Invalid password.'});
         // return done(null, false, req.flash('loginMessage', 'Invalid password.'));
       }
       //login success
@@ -51,7 +53,8 @@ module.exports = function(passport) {
       User.find({ where: {username: username} })
       .then(function(user) {
         if (user) {
-          return done(err);
+          // return done(err);
+          return done(null, false, {message: 'Username already exists.'});
           // return done(null, false, req.flash('signupMessage', 'That username is already taken!'));
         }
         else if (!user) {
@@ -66,7 +69,8 @@ module.exports = function(passport) {
             return done(null, newUser);
           })
           .catch(function(err) {
-            return done(err);
+            // return done(err);
+            return done(null, false, {message: 'Error.'});
           });
         }
       })

@@ -20,7 +20,7 @@ export default class TopNav extends React.Component {
   }
 
   navClickAbout() {
-    console.log('clicked about')
+    this.props.router.push({pathname: '/about'});
   }
 
   render() {

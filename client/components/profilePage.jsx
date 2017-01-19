@@ -29,13 +29,17 @@ export default class ProfilePage extends React.Component {
       type: 'POST',
       url: 'profileInfo',
       data: {user: username},
+      async: false,
       success: function(data) {
-        console.log('ajax get profile info success');
-        console.log('data:', JSON.stringify(data));
-        this.setState({
-          username: data.user.username
-        });
-        window.username = data.user.username; //hacky
+        if (!data.user) {
+          this.props.router.push({pathname: '/'});
+        } else {
+          this.setState({
+            username: data.user.username
+          });
+          window.username = data.user.username; //hacky
+        }
+
       }.bind(this)
     });
     this.getMyMazes();
@@ -70,11 +74,18 @@ export default class ProfilePage extends React.Component {
   }
 
   customMultiplayerClick() {
-    $('#multiplayerSelected').css('display', 'flex');
+    // $('#multiplayerSelected').css('display', 'flex');
+    $('#multiplayerSelected').slideDown("fast");
+    var toggle = false;
+    $('#spModeButton').css('box-shadow', 'none');
+    $('#mpModeButton').css('box-shadow', 'inset 0 0 0 1px #27496d,inset 0 5px 30px #193047');
   }
 
   customSinglePlayerClick() {
-    $('#multiplayerSelected').css('display', 'none');
+    // $('#multiplayerSelected').css('display', 'none');
+    $('#multiplayerSelected').slideUp("fast");
+    $('#mpModeButton').css('box-shadow', 'none');
+    $('#spModeButton').css('box-shadow', 'inset 0 0 0 1px #27496d,inset 0 5px 30px #193047');
   }
 
   modalClickExit() {
@@ -109,7 +120,7 @@ export default class ProfilePage extends React.Component {
             <div>mazes here...</div>
           </div>
         </div>
-        <div id="myModal" className="modal">
+        <div id="customModal" className="modal">
           <div className="modal-content custom">
             <div className="customGameModalHeader">
               <span id="customGametext">Custom Game</span>
@@ -117,8 +128,8 @@ export default class ProfilePage extends React.Component {
             <span id="customGameModalClose" className="close" onClick={this.modalClickExit}>&times;</span>
             <p className="customGameHeaders">Select a mode:</p>
             <div className="customGameModeFlexContainer">
-              <button onClick={this.customSinglePlayerClick}>Single Player</button>
-              <button onClick={this.customMultiplayerClick}>Multiplayer</button>
+              <button id="spModeButton" onClick={this.customSinglePlayerClick}>Single Player</button>
+              <button id="mpModeButton" onClick={this.customMultiplayerClick}>Multiplayer</button>
             </div>
             <div id="multiplayerSelected">
               <span>Join a room:&nbsp;<input type="text"/></span>
@@ -146,11 +157,4 @@ export default class ProfilePage extends React.Component {
       </div>
     )
   }
-}
-
-window.onclick = function(event) {
-  var htpModal = document.getElementById('htpModal');
-    if (event.target == htpModal) {
-        htpModal.style.display = 'none';
-    }
 }
