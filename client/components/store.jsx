@@ -405,7 +405,6 @@ export default class MazeStore extends React.Component{
           console.log("hit authenticated");
           console.log(data.user);
           window.username = data.user;
-          this.props.router.push({pathname: '/profile'});
         }
       }.bind(this),
       error: function() {
