@@ -15,12 +15,12 @@ export default class MazeStore extends React.Component{
       url: '/checkLoggedIn',
       async: false,
       success: function(data) {
-        if (!data.user) {
+        if (!data.username) {
           console.log('hit not authenticated');
           this.props.router.push({pathname: '/'});
         } else {
           console.log('hit authenticated');
-          window.username = data.user;
+          window.username = data.username;
         }
       }.bind(this),
       error: function() {

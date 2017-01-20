@@ -42,7 +42,7 @@ export default class ProfilePage extends React.Component {
         if (!data.username) {
           // console.log('compwillmount profpage data', data);
 
-          alert('Authentication error!!!');
+          alert('Authentication error!');
           console.log('data.username', data.username)
           this.props.router.push({pathname: '/'});
         } else {
