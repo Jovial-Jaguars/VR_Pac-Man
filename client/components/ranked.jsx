@@ -675,7 +675,6 @@ export default class Ranked extends React.Component {
     $(".back-to-menu").addClass("none");
     that.engine.stopRenderLoop();
     that.engine.clear(BABYLON.Color3.Black(),false,false);
-    window.removeEventListener('resize', resize);
      that.props.router.push({pathname: '/'});
   });
 }
@@ -1326,6 +1325,13 @@ componentDidUpdate() {
   });
   window.addEventListener("resize", function () {
     that.engine.resize();
+  });
+  $(".back-to-menu").click(function() {
+    $(".play-again").addClass("none");
+    $(".back-to-menu").addClass("none");
+    that.engine.stopRenderLoop();
+    that.engine.clear(BABYLON.Color3.Black(),false,false);
+     that.props.router.push({pathname: '/profile'});
   });
 }
 
