@@ -63,14 +63,12 @@ export default class About extends React.Component {
 
   render() {
     return(
-    <div>
+    <div id="aboutPage">
       <TopNav router={this.props.router}/>
       <div className="aboutPageContent">
         <h1 className="headers">The Game</h1>
         <p>VR Pacman is a spin on the classic 1980s Pac-man game by Namco. In VR Pacman, you become the Pac-man in this first-person maze traversing game. Users can play in different game modes, as well as compete online or play private games with their friends. They can also design or purchase their own virtual reality mazes and play in them. This game is meant for both virtual reality and PC.</p>
         <p>The game was built using the BabylonJS library on top of a React, Node, Express, MySQL/Sequelize stack.</p>
-        <button onClick={this.submitScore}>Post High Score</button>
-        <button onClick={this.showScores}>Show High Scores</button>
         <h1 className="headers">The Creators</h1>
         <p>We are a team of 3 software engineers excited about VR and web development.</p>
         <div className="creatorsFlexBox">
