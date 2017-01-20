@@ -128,8 +128,7 @@ module.exports = function(app, passport) {
       }
       res.send(user);
     });
-  })
-
+  });
 
   app.get('/logout', function(req, res) {
     req.logout();
