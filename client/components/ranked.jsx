@@ -429,7 +429,7 @@ export default class Ranked extends React.Component {
      });
     world.add(sphereBody);
     var ghostShape = new CANNON.Sphere(4); // Step 1
-    ghostBody = new CANNON.Body({mass: 1, shape: ghostShape}); // Step 2
+    ghostBody = new CANNON.Body({mass: 5, shape: ghostShape}); // Step 2
     ghostBody.position.set(ghostx,1,ghostz);
     ghostBody.rotation = new CANNON.Vec3();
     ghostBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);  
@@ -646,7 +646,7 @@ export default class Ranked extends React.Component {
       }
       if (obj.ghost !== undefined && gameOverFlag === 0) {
         obj.ghost.position.x = ghostBody.position.x;
-        obj.ghost.position.y = ghostBody.position.y + 20;
+        obj.ghost.position.y = ghostBody.position.y + 10;
         obj.ghost.position.z = ghostBody.position.z;
         if(ghostdirections[0] === 'E' && ghostBody.velocity.x !== 80) {
           ghostBody.velocity.z = 1;
@@ -665,8 +665,6 @@ export default class Ranked extends React.Component {
           ghostBody.velocity.x = 1;
         } 
       }  
-      //console.log(engine.fps);
-      canvas2.children[0].text = Math.round(that.engine.fps).toString();
   });
   var resize = function(){
     that.engine.resize();
@@ -1088,7 +1086,7 @@ componentDidUpdate() {
      });
     world.add(sphereBody);
     var ghostShape = new CANNON.Sphere(2); // Step 1
-    ghostBody = new CANNON.Body({mass: 1, shape: ghostShape}); // Step 2
+    ghostBody = new CANNON.Body({mass: 5, shape: ghostShape}); // Step 2
     ghostBody.position.set(ghostx,1,ghostz);
     ghostBody.rotation = new CANNON.Vec3();
     ghostBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);  
@@ -1305,7 +1303,7 @@ componentDidUpdate() {
       }
       if (obj.ghost !== undefined && gameOverFlag === 0) {
         obj.ghost.position.x = ghostBody.position.x;
-        obj.ghost.position.y = ghostBody.position.y + 20;
+        obj.ghost.position.y = ghostBody.position.y + 10;
         obj.ghost.position.z = ghostBody.position.z;
         if(ghostdirections[0] === 'E' && ghostBody.velocity.x !== 80) {
           ghostBody.velocity.z = 1;
@@ -1325,7 +1323,6 @@ componentDidUpdate() {
         } 
       }  
       //console.log(engine.fps);
-      canvas2.children[0].text = Math.round(that.engine.fps).toString();
   });
   window.addEventListener("resize", function () {
     that.engine.resize();
