@@ -1,6 +1,8 @@
 import React from 'react';
 import TopNav from './topNav';
 import MyProfileMaps from './myprofilemaps';
+import {Router, Route, browserHistory, Link, withRouter} from 'react-router';
+
 
 export default class ProfilePage extends React.Component {
   constructor(props) {
@@ -16,7 +18,6 @@ export default class ProfilePage extends React.Component {
     this.mazestoreClick = this.mazestoreClick.bind(this);
     this.convertArray = this.convertArray.bind(this);
     this.convertData = this.convertData.bind(this);
-
   }
 
   logout() {
@@ -83,12 +84,12 @@ export default class ProfilePage extends React.Component {
      this.setState({[strName] : arrayMaps});
      console.log('arrayMaps',arrayMaps);
   }
-  
+
   //converts the map string into an array of row arrays
   convertArray (string) {
     var oneMap = [];
     var oneArray = [];
-    for (var i = 0; string.length > i; i++){    
+    for (var i = 0; string.length > i; i++){
       oneArray.push(Number(string[i]));
       if ((i+1) % 16 === 0){
         oneMap.push(oneArray.slice());
@@ -140,12 +141,11 @@ export default class ProfilePage extends React.Component {
 
   customGamePlayButtonClick() {
 
-    var roomMode, roomName;
-    var roomSuccess = false;
-    var selectedMaze = null;
+    var roomMode, roomName, roomSuccess, selectedMaze = null;
 
     var hasValue = function(elem) {
-      return $(elem).filter(function() { return $(this).val(); }).length > 0;
+      return $(elem).filter(function() {
+        return $(this).val(); }).length > 0;
     };
     if (hasValue($('#joinRoom')) && hasValue($('#createRoom'))) {
       roomName = null;
@@ -162,7 +162,6 @@ export default class ProfilePage extends React.Component {
     // if multiplayer..
       // if creating room and room doesn't exist, create
       // if creating room and room exists, send error
-
       // if joining room and room doesn't exist, send error
       // if joining room and room exists, join
     if (window.customMode === 'multiplayer') {
@@ -210,9 +209,18 @@ export default class ProfilePage extends React.Component {
       }
       window.room = roomName;
       console.log('room joined/created', room);
+      // if conditions are all met, join socket room and enter game
+      if (roomSuccess && selectedMaze) {
+
+      }
       socket.emit('join', room);
       // this.props.router.push({pathname: '/multiplayerCustom'})
     }
+
+    if (window.customMode === 'singleplayer') {
+      // router push /singlelayerCustom
+    }
+
   }
 
   modalClickExit() {
@@ -244,7 +252,7 @@ export default class ProfilePage extends React.Component {
             <br/><a onClick={this.howToPlayClick}>How To Play</a>
           </div><br/>
           <div className="myMazesScreen">
-            <h1 className="headers ">My Mazes</h1> 
+            <h1 className="headers ">My Mazes</h1>
             <div className="profilemaps-container">{this.state.myMaps.map((singleMap, index)=><MyProfileMaps key={index} mapId={index} singleMap={singleMap}/>)}</div>
           </div>
         </div>
