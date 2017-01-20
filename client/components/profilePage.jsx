@@ -11,6 +11,7 @@ export default class ProfilePage extends React.Component {
       mpHighScore: null
     }
     this.mazebuilderClick = this.mazebuilderClick.bind(this);
+    this.mazestoreClick = this.mazestoreClick.bind(this);
   }
 
   logout() {
@@ -54,6 +55,10 @@ export default class ProfilePage extends React.Component {
   mazebuilderClick() {
     this.props.router.push({pathname: '/mazebuilder'});
   }
+  mazestoreClick() {
+    this.props.router.push({pathname: '/mazestore'});
+  }
+
 
   getMyMazes() {
     $.ajax({
@@ -125,7 +130,7 @@ export default class ProfilePage extends React.Component {
             <h1 className="headers">My Mazes</h1>
             <div>mazes here...</div>
           </div>
-        </div>
+        </div>  
         <div id="customModal" className="modal">
           <div className="modal-content custom">
             <div className="customGameModalHeader">

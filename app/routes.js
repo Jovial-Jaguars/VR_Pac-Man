@@ -130,6 +130,24 @@ module.exports = function(app, passport) {
     });
   });
 
+  app.post('/updateMyMapSharing', function(req, res) {
+    console.log(req.body.apiPackage);
+    var myMaps = req.body.apiPackage;
+    myMaps.forEach(function(entry) {
+      Maps.update(
+        {shareable: entry.shareable},
+        {
+          where: {user_id: req.session.passport.user,
+                  mapData: entry.mapData}
+        })
+      .error(function() {
+        console.log('error updating');
+        res.sendStatus(404).send('Error updating my mazes');
+      });
+    });
+    res.send('My mazes publicity options have been updated!');
+  });
+
   app.get('/logout', function(req, res) {
     req.logout();
     res.redirect('/');
