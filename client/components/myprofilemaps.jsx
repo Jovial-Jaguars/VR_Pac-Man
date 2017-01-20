@@ -20,7 +20,7 @@ export default class MyProfileMaps extends React.Component{
 //   if(this.props.showMaps === 'publicMaps'){
 //     this.setState({clickedIcon: 'insertcoin'});
 //   } else if(this.props.showMaps === 'myMaps'){
-    
+
 //     if (this.props.singleMap[2] === false){
 //       this.setState({clickedIcon: 'private'});
 //       console.log('private hit');
@@ -34,7 +34,7 @@ export default class MyProfileMaps extends React.Component{
 // }
 
 // clickedIconHandler (mapId){
-  
+
 //   if (this.state.clickedIcon === 'insertcoin'){
 //     this.setState({clickedIcon: 'onecredit'});
 //     this.props.purchaseOne(mapId);
@@ -53,11 +53,15 @@ export default class MyProfileMaps extends React.Component{
 //     this.props.makeUpdate(mapId);
 //   }
 // }
+  mapSelected(event) {
+    console.log(this.props.singleMap[0]);
+    window.selectedMaze = this.props.singleMap[0];
+  }
 
   render(){
     return (
     <div className="singleProfileMap-container">
-      <table className="singleProfileMap" >
+      <table className="singleProfileMap" onClick={this.mapSelected.bind(this)}>
       <tbody>
       {
         this.props.singleMap[0].map((curr, indy)=> (
@@ -71,7 +75,7 @@ export default class MyProfileMaps extends React.Component{
               return (<td key = {''+index} className="pellet" ></td>);
             } else if (num === 3) {
               return (<td key = {''+index} className="pacmanmaze"></td>);
-            } 
+            }
           })}
           </tr>
         ))

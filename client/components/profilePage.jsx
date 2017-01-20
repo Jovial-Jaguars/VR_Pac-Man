@@ -58,6 +58,7 @@ export default class ProfilePage extends React.Component {
       }.bind(this)
     });
     this.getMyMazes();
+    window.selectedMaze = null;
   }
 
   mazebuilderClick() {
@@ -141,7 +142,7 @@ export default class ProfilePage extends React.Component {
 
   customGamePlayButtonClick() {
 
-    var roomMode, roomName, roomSuccess, selectedMaze = null;
+    var roomMode, roomName, roomSuccess = null;
 
     var hasValue = function(elem) {
       return $(elem).filter(function() {
@@ -210,15 +211,17 @@ export default class ProfilePage extends React.Component {
       window.room = roomName;
       console.log('room joined/created', room);
       // if conditions are all met, join socket room and enter game
-      if (roomSuccess && selectedMaze) {
-
+      if (roomSuccess && window.selectedMaze) {
+        socket.emit('join', room);
+        //
+        // this.props.router.push({pathname: '/multiplayerCustom'})
       }
-      socket.emit('join', room);
-      // this.props.router.push({pathname: '/multiplayerCustom'})
     }
 
     if (window.customMode === 'singleplayer') {
-      // router push /singlelayerCustom
+      if (window.selectedMaze) {
+        // router push /singlelayerCustom
+      }
     }
 
   }
