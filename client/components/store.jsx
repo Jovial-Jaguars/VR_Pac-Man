@@ -28,7 +28,7 @@ export default class MazeStore extends React.Component{
       }
     });
   }
-  
+
   render(){
     return <div className="pacmanapp">
       <MapList router={this.props.router}/>
@@ -83,12 +83,12 @@ convertData (data, strName) {
      this.setState({[strName] : arrayMaps});
      console.log('arrayMaps',arrayMaps);
   }
-  
+
   //converts the map string into an array of row arrays
   convertArray (string) {
     var oneMap = [];
     var oneArray = [];
-    for (var i = 0; string.length > i; i++){    
+    for (var i = 0; string.length > i; i++){
       oneArray.push(Number(string[i]));
       if ((i+1) % 16 === 0){
         oneMap.push(oneArray.slice());
@@ -109,7 +109,7 @@ componentWillMount(){
       success: function(data) {
         console.log('success publicMaps', that.convertData(data[0], 'publicMaps'));
         console.log('success myMaps', that.convertData(data[1], 'myMaps'));
-        
+
         that.setState({fetched: true});
       }
     });
@@ -134,7 +134,7 @@ componentWillMount(){
 
 
 
-  
+
   showMyMaps(){
     this.setState({showMaps: 'myMaps', sidebarOpen: false});
   }
@@ -155,7 +155,7 @@ componentWillMount(){
     console.log(object);
     object[mapId] = this.state.publicMaps[mapId];
     this.setState({cartMaps: object});
-    
+
   }
 
   returnOne (mapId) {
@@ -186,7 +186,7 @@ componentWillMount(){
           mapDataText+= this.state.myMaps[key][0][i][j];
         }
       }
-      oneMap.mapData = mapDataText;  
+      oneMap.mapData = mapDataText;
       oneMap.shareable = !this.state.myMaps[key][2];
       apiPackage.push(oneMap);
     }
@@ -202,8 +202,8 @@ componentWillMount(){
         error: function(err) {
           console.log(err);
         }
-      })    
-    }  
+      })
+    }
 
   }
 
@@ -221,7 +221,7 @@ componentWillMount(){
     let content ;
     var cartMapsArray = [];
 
-    var sidebarContent = 
+    var sidebarContent =
       <div>
         <h1 className='sidebar-title'>{window.username}'s Maze Store</h1>
         <div className='sidebar-options' data-icon="u" onClick={this.showPublicMaps}>MAZE MARKETPLACE</div>
@@ -232,7 +232,7 @@ componentWillMount(){
       </div>;
 
 
-    
+
     if(fetched && showMaps === 'publicMaps'){
       {console.log('inside show publicMaps', publicMaps);}
       content = <div className="maps">{publicMaps.map((singleMap, index)=><PublicMaps key={index} mapId={index} singleMap={singleMap} showMaps={showMaps} purchaseOne={this.purchaseOne.bind(this)} returnOne={this.returnOne.bind(this)} makeUpdate={this.makeUpdate.bind(this)}/>)}</div>;
@@ -256,7 +256,7 @@ componentWillMount(){
     }
 
     return  <div className="maps-container">
-      
+
       {console.log(this.state.cartMaps)}
 
       <Sidebar sidebar={sidebarContent}
@@ -319,7 +319,7 @@ componentWillMount(){
           <div className='title'></div>
         </div>
       </div>
-      <div className='maps-sub-container'>  
+      <div className='maps-sub-container'>
       {content}
       </div>
       </Sidebar>
@@ -358,7 +358,7 @@ componentWillMount(){
   if(this.state.showMaps === 'publicMaps'){
     this.setState({clickedIcon: 'insertcoin'});
   } else if(this.state.showMaps === 'myMaps'){
-    
+
     if (this.state.singleMap[2] === false){
       this.setState({clickedIcon: 'private'});
       console.log('private hit');
@@ -372,7 +372,7 @@ componentWillMount(){
 }
 
 clickedIconHandler (mapId){
-  
+
   if (this.state.clickedIcon === 'insertcoin'){
     this.setState({clickedIcon: 'onecredit'});
     this.props.purchaseOne(mapId);
@@ -409,7 +409,7 @@ clickedIconHandler (mapId){
               return (<td key = {''+index} className="pellet" ></td>);
             } else if (num === 3) {
               return (<td key = {''+index} className="pacmanmaze"></td>);
-            } 
+            }
           })}
           </tr>
         ))
