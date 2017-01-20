@@ -1,8 +1,4 @@
 
-# VR_Pac-Man
-Like the title says
-![alt text](https://i.imgsafe.org/1dee5367d6.png)
-=======
 _.o0 VR_Pac-Man 0o._
 ==========================
 
@@ -109,4 +105,3 @@ Using sounds authored by:
   * http://freesound.org/people/djgriffin/sounds/21209/
 
 In order to suit the in-game atmosphere, I have edited almost all of the samples with [Audacity](http://audacity.sourceforge.net/).
->>>>>>> fixed store elements
