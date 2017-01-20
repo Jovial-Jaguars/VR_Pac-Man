@@ -154,25 +154,7 @@ export default class App extends React.Component {
     this.convertData = this.convertData.bind(this);
   }
   componentWillMount(){
-    $.ajax({
-      type: 'GET',
-      url: '/checkLoggedIn',
-      async: false,
-      success: function(data) {
-        if (!data.username) {
-          console.log('hit not authenticated');
-          this.props.router.push({pathname: '/'});
-        } else {
-          console.log("hit authenticated");
-          console.log(data.username);
-          window.username = data.username;
-          this.getMaps();
-        }
-      }.bind(this),
-      error: function() {
-        console.log('Error!');
-      }
-    });
+
 
   }
   getMaps() {
