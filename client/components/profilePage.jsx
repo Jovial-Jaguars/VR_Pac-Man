@@ -131,13 +131,6 @@ export default class ProfilePage extends React.Component {
             <div>mazes here...</div>
           </div>
         </div>  
-        <div>Welcome {this.state.username}</div>
-        <button id="logout" onClick={this.logout.bind(this)}>Log Out</button>
-        <div>
-          <button id="mazebuilder" onClick={this.mazebuilderClick}>Maze Builder</button>
-          <button id="getmazes" onClick={this.getMazeClick}>Get Mazes Wow</button>
-          <button id="mazestore" onClick={this.mazestoreClick}>MazeStore</button>
-        </div>
         <div id="customModal" className="modal">
           <div className="modal-content custom">
             <div className="customGameModalHeader">
