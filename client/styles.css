@@ -97,28 +97,99 @@ button:active {
   background-position: center;
 
 }
+.ghost {
+  display: inline-block;
+  max-width:100%;
+  max-height:100%;
+  width: 4.5%;
+  height: 100%;
+  margin-left: 2px;
+  margin-right: 2px;
+  border-radius: 5px;
+  background-image: url('/assets/ghost1.png');
+  background-size: contain;
+  background-color: blue;
+  background-repeat: no-repeat;
+  background-position: center;
 
+}
+.up {
+  display: inline-block;
+  max-width:100%;
+  max-height:100%;
+  width: 4.5%;
+  height: 100%;
+  margin-left: 2px;
+  margin-right: 2px;
+  border-radius: 5px;
+  background-image: url('/assets/up2.png');
+  background-size: contain;
+  background-color: blue;
+  background-repeat: no-repeat;
+  background-position: center;
+
+}
+.down {
+  display: inline-block;
+  max-width:100%;
+  max-height:100%;
+  width: 4.5%;
+  height: 100%;
+  margin-left: 2px;
+  margin-right: 2px;
+  border-radius: 5px;
+  background-image: url('/assets/down.png');
+  background-size: contain;
+  background-color: blue;
+  background-repeat: no-repeat;
+  background-position: center;
+
+}
+/* Let's get this party started */
+::-webkit-scrollbar {
+    width: 6px;
+}
+ 
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: black; 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+::-webkit-scrollbar-thumb:window-inactive {
+  background: rgba(0,0,0,0.4); 
+}
 .side-bar {
   display: inline-block;
   float: right;
-  height: 60%;
-  width: 40%;
-  background-color: blue;
-  background: linear-gradient(to bottom right, rgba(56, 132, 255, 0.5), rgba(13, 49, 147, 0.2));
+  height: 80%;
+  width: 20%;
+  overflow-y: scroll;
+  background-color: rgba(0,0,0,0);
   color: white;
 }
 
 .default1 {
   display: inline-block;
-  width: 100%;
-  height: 25%;
+  width: 90%;
+  height: 50%;
   background-color: blue;
+  border: 15px solid rgba(0, 0, 0, 0.7);
+  border-radius: 5px;
 }
 
 .tablerow {
   display: inline-block;
   width: 100%;
-  height: 25%;
+  height: 6.25%;
   background-color: blue;
 }
 
@@ -158,18 +229,62 @@ button:active {
   background-position: center;
   background-repeat: no-repeat;
 }
-
-.maze-editor {
+.block5 {
+  display: inline-block;
+  width: 5.2%;
   height: 100%;
+  background-image: url('assets/ghost1.png');
+  background-size: contain;
+  background-color: blue;
+  background-position: center;
+  background-repeat: no-repeat;
+} 
+.block6 {
+  display: inline-block;
+  width: 5.2%;
+  height: 100%;
+  background-image: url('assets/up2.png');
+  background-size: contain;
+  background-color: blue;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.block7 {
+  display: inline-block;
+  width: 5.2%;
+  height: 100%;
+  background-image: url('assets/down.png');
+  background-size: contain;
+  background-color: blue;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.maze-editor {
   width: 100%;
+  height: 100%;
+  background: rgba(39, 26, 124, 0.9);
+  background-size: cover;
+  color: white;
 }
 
 .maze-editor-table {
-  width: 50%;
-  height: 70%;
-  display: inline-block;
   float: left;
-  background-color: green;
+  width: 100%;
+  height: 83%;
+  margin-top: 120px;
+  display: inline-block;
+
+}
+.maze-editor-table-div {
+  height: 100%;
+  width: 65%;
+  background: url(assets/gba.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center;
+  align-items: stretch;
+  float: left;
+
 }
 
 .maze-editor-row {
@@ -178,19 +293,103 @@ button:active {
   display: inline-block;
   margin-bottom: 5px;
 }
-
-.button {
+.gamepad {
+  width: 20%;
+  height: 20%;
+  float: right;
+  background-color: rgba(0,0,0,0);
+}
+.button1 {
   display: inline-block;
+  border: none;
+  background: url('assets/yellow1.png');
+  background-repeat: no-repeat;
+  background-size: 120% 120%;
+  background-position: 70% 60%;
+  width: 40%;
+  height: 73%;
+  margin-left: 10%;
+  margin-top: 10%;
   float: left;
+  border-radius: 50%;
+}
+.button1:hover {
+  display: inline-block;
+  background: url('assets/yellow2.png');
+  background-repeat: no-repeat;
+  background-size: 130% 130%;
+  background-position: 60% 50%;
+  margin-left: 10%;
+  margin-top: 10%;
+  float: left;
+  border-radius: 50%;
+}
+.button2 {
+  display: inline-block;
+  border: none;
+  background: url('assets/blue1.png');
+  background-repeat: no-repeat;
+  background-size: 130% 130%;
+  background-position: 40% 50%;
+  width: 40%;
+  height: 73%;
+  margin-left: 10%;
+  margin-top: 10%;
+  float: left;
+  border-radius: 50%;
+}
+.button2:hover {
+  display: inline-block;
+  background: url('assets/blue2.png');
+  background-repeat: no-repeat;
+  background-size: 130% 130%;
+  background-position: 50% 50%;
+  margin-left: 10%;
+  margin-top: 10%;
+  float: left;
+  border-radius: 50%;
+}
+
+.legend-div {
+  display: inline-block;
   clear: both;
+  float: left;
+  background-color: rgba(0,0,0,0);
+  height: 100%;
+  width: 15%;
 }
 
 .legend {
+  height: 50%;
+  width: 100%;
+}
+
+.legend-table-head {
   display: inline-block;
-  float: center;
-  background-color: yellow;
-  height: 70%;
-  width: 10%;
+  height: 10%;
+  width: 100%
+}
+.legend-table-head-row {
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+}
+.legend-table-header {
+  display: inline-block;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+}
+.legend-container {
+  display: inline-block;
+  float: left;
+  height: 100%;
+  width: 49%;
+}
+.legend-table-body {
+  display: inline-block;
+  height: 90%;
+  width: 100%;
 }
 
 .legend-table {
@@ -203,14 +402,17 @@ button:active {
 
 .legend-table-row {
   display: inline-block;
+  margin-bottom: 2%;
+  margin-top: 2%;
   width: 100%;
-  height: 20%;
+  height: 15%;
   margin-bottom: 5px;
 }
 
 .legend-block1 {
   display: inline-block;
   border-radius: 5px;
+  float: left;
   width: 20%;
   height: 100%;
   background-color: blue;
@@ -218,52 +420,87 @@ button:active {
 
 .legend-block2 {
   display: inline-block;
+  float: left;
   border-radius: 5px;
   width: 20%;
   height: 100%;
   background-color: black;
 }
-
-.legend-empty {
-  display: inline-block;
-  width: 55%;
-  height: 100%;
-  padding: 2px;
-  text-align: center;
-}
-
-.legend-block {
-  display: inline-block;
-  width: 55%;
-  height: 100%;
-  padding: 2px;
-  text-align: center;
-}
-
-.legend-pellet {
-  display: inline-block;
-  width: 55%;
-  height: 100%;
-  padding: 2px;
-  text-align: center;
-}
-
 .legend-block3 {
   display: inline-block;
+  float: left;
+  border-radius: 5px;
   width: 20%;
   height: 100%;
-  border-radius: 5px;
   background-image: url('assets/dot.png');
-  background-size: cover;
-  background-repeat: none;
+  background-size: contain;
   background-color: blue;
   background-position: center;
+  background-repeat: no-repeat;
+}
+.legend-block4 {
+  display: inline-block;
+  float: left;
+  border-radius: 5px;
+  width: 20%;
+  height: 100%;
+  background-image: url('assets/pacman.png');
+  background-size: contain;
+  background-color: blue;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
+.legend-block5 {
+  display: inline-block;
+  float: left;
+  border-radius: 5px;
+  width: 20%;
+  height: 100%;
+  background-image: url('assets/ghost1.png');
+  background-size: contain;
+  background-color: blue;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.legend-block6 {
+  display: inline-block;
+  float: left;
+  border-radius: 5px;
+  width: 20%;
+  height: 100%;
+  background-image: url('assets/up2.png');
+  background-size: contain;
+  background-color: blue;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.legend-block7 {
+  display: inline-block;
+  float: left;
+  border-radius: 5px;
+  width: 20%;
+  height: 100%;
+  background-image: url('assets/down.png');
+  background-size: contain;
+  background-color: blue;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.legend-empty {
+  display: inline-block;
+  float: left;
+  text-align: left;
+  margin-top: 4%;
+  width: 50%;
+  height: 100%;
+  padding: 2px;
+}
 .maze {
   width: 100%;
   height: 100%;
-  background-image: url('assets/pac4.jpg');
+  background-image: url('assets/pac1.png');
   background-attachment: fixed;
   background-size: cover;
   background-repeat: none;
@@ -443,6 +680,13 @@ html {
   width: 100%;
 }
 */
+html, body {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 
 .title-container {
     position: fixed;
