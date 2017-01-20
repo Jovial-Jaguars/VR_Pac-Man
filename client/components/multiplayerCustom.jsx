@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class MultiplayerMazeRunner extends React.Component {
+export default class MultiplayerCustom extends React.Component {
   constructor(props){
     super(props);
     this.count = 0;
@@ -20,7 +20,16 @@ export default class MultiplayerMazeRunner extends React.Component {
                  [1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 1],
                  [1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1],
                  [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1]];
+  }
+
+   componentWillMount() {
+    this.props.router.setRouteLeaveHook(
+        this.props.route,
+        this.routerWillLeave
+      )
    }
+
+
 
   componentDidMount() {
 
@@ -525,6 +534,7 @@ export default class MultiplayerMazeRunner extends React.Component {
      if(e.body.isPellet){
        for (var p in pellets){
          if (pellets[p] === pellets[e.body.pelletId]){
+          socket.emit('pelletCollision', p);
            pelletMeshes[p].dispose();
              //world.remove(pellets[p]);
              pelletRemover = p;
@@ -618,46 +628,48 @@ export default class MultiplayerMazeRunner extends React.Component {
   otherPlayerSpotlight.diffuse = new BABYLON.Color3(1, 0, 0);
   otherPlayerSpotlight.parent = player2;
 
-  var assignGameRoom = function() {
-    var room = null;
-    $.ajax({
-      type: 'GET',
-      url: '/assignGameRoom',
-      async: false,
-      success: function(number) {
-        room = 'room' + number;
-        console.log('successfully joined room:', room);
-      },
-      error: function() {
-        console.log('Erorr joining game room');
-      }
-    });
-    return room;
-  };
+  // var assignGameRoom = function() {
+  //   var room = null;
+  //   $.ajax({
+  //     type: 'GET',
+  //     url: '/assignGameRoomCustom',
+  //     async: false, //necessary
+  //     success: function(number) {
+  //       room = 'room' + number;
+  //       console.log('successfully joined room:', room);
+  //       window.room = room;
+  //     },
+  //     error: function() {
+  //       console.log('Erorr joining game room');
+  //     }
+  //   });
+  //   return room;
+  // };
 
 
-  socket.emit('join', assignGameRoom());
+  // socket.emit('join', assignGameRoom());
+  // this.socketJoinRoom(room);
+  this.socketReceiveOtherPlayerData(player2);
+  // socket.on('otherPlayerCoords', function(data) {
+  //   var decodeBuffer = new ArrayBuffer(data.length);
+  //   var decodeView   = new Uint8Array( decodeBuffer );
+  //   for (var i = 0; i < data.length; i++) {
+  //     decodeView[i] = data.charCodeAt( i );
+  //   }
+  //   var decodedState = new Float64Array(decodeBuffer);
+  //   player2.position = {x: decodedState[0], y: decodedState[1], z: decodedState[2]};
+  //   player2.rotation = {x: decodedState[3], y: decodedState[4], z: decodedState[5]};
+  // });
 
-  socket.on('otherPlayerCoords', function(data) {
-    var decodeBuffer = new ArrayBuffer(data.length);
-    var decodeView   = new Uint8Array( decodeBuffer );
-    for (var i = 0; i < data.length; i++) {
-      decodeView[i] = data.charCodeAt( i );
-    }
-    var decodedState = new Float64Array(decodeBuffer);
-    player2.position = {x: decodedState[0], y: decodedState[1], z: decodedState[2]};
-    player2.rotation = {x: decodedState[3], y: decodedState[4], z: decodedState[5]};
-  });
-
-  socket.on('otherPlayerPelletCollision', function(pelletId) {
-    console.log('other player collision pellet id:', pelletMeshes[pelletId]);
-    pelletMeshes[pelletId].dispose();
-    pelletRemover = pelletId;
-  })
+  // socket.on('otherPlayerPelletCollision', function(pelletId) {
+  //   console.log('other player collision pellet id:', pelletMeshes[pelletId]);
+  //   pelletMeshes[pelletId].dispose();
+  //   pelletRemover = pelletId;
+  // })
     // });
     engine.runRenderLoop(function () {
       BABYLON.SceneOptimizer.OptimizeAsync(scene);
-      console.log(engine.fps);
+      // console.log(engine.fps);
       socket.on('error', console.error.bind(console));
       // socket.on('otherPlayerCoords', function(data) {
       //   console.log(data);
@@ -665,13 +677,13 @@ export default class MultiplayerMazeRunner extends React.Component {
     // socket.on('blah', function(data) {
     //   console.log('blahdata:', data);
     // })
-    var myCamPosition = camera.position, myCamRotation = camera.rotation;
-    var myCoords = new Float64Array([myCamPosition.x, myCamPosition.y, myCamPosition.z, myCamRotation.x, myCamRotation.y, myCamRotation.z]);
-    var ucharView  = new Uint8Array(myCoords.buffer);
-    var slimData = String.fromCharCode.apply(
-                                             String, [].slice.call( ucharView, 0 )
-                                             );
-    socket.emit('coordinates', slimData);
+      this.socketSendCoords(camera);
+    // var myCoords = new Float64Array([myCamPosition.x, myCamPosition.y, myCamPosition.z, myCamRotation.x, myCamRotation.y, myCamRotation.z]);
+    // var ucharView  = new Uint8Array(myCoords.buffer);
+    // var slimData = String.fromCharCode.apply(
+    //   String, [].slice.call( ucharView, 0 )
+    // );
+    // socket.emit('coordinates', slimData);
     if(pelletRemover !== 0) {
       world.remove(pellets[pelletRemover]);
       pelletRemover = 0;
@@ -757,18 +769,135 @@ export default class MultiplayerMazeRunner extends React.Component {
         }
         //ghostBody.angularVelocity = new CANNON.Vec3(Math.PI,Math.PI,Math.PI);
       }
-    });
+    }.bind(this));
+window.engine = engine;
 window.addEventListener("resize", function () {
   engine.resize();
 });
 }
 
+  // socketAssignGameRoom() {
+  //   var room = null;
+  //   $.ajax({
+  //     type: 'GET',
+  //     url: '/assignGameRoomCustom',
+  //     async: false, //necessary
+  //     success: function(number) {
+  //       room = 'room' + number;
+  //       console.log('successfully joined room:', room);
+  //       window.room = room;
+  //     },
+  //     error: function() {
+  //       console.log('Erorr joining game room');
+  //     }
+  //   });
+  //   return room;
+  // }
+
+  // socketJoinRoom() {
+  //   socket.emit('join', this.socketAssignGameRoom());
+  // }
+
+  socketSendCoords(camera) {
+    var myCamPosition = camera.position, myCamRotation = camera.rotation;
+    var myCoords = new Float64Array([myCamPosition.x, myCamPosition.y, myCamPosition.z, myCamRotation.x, myCamRotation.y, myCamRotation.z]);
+    var ucharView  = new Uint8Array(myCoords.buffer);
+    var slimData = String.fromCharCode.apply(
+      String, [].slice.call( ucharView, 0 )
+    );
+    socket.emit('coordinates', slimData);
+  }
+
+  socketReceiveOtherPlayerData(player2) {
+    socket.on('otherPlayerCoords', function(data) {
+      var decodeBuffer = new ArrayBuffer(data.length);
+      var decodeView   = new Uint8Array( decodeBuffer );
+      for (var i = 0; i < data.length; i++) {
+        decodeView[i] = data.charCodeAt( i );
+      }
+      var decodedState = new Float64Array(decodeBuffer);
+      console.log(decodedState);
+      player2.position = {x: decodedState[0], y: decodedState[1], z: decodedState[2]};
+      player2.rotation = {x: decodedState[3], y: decodedState[4], z: decodedState[5]};
+    });
+
+    socket.on('otherPlayerPelletCollision', function(pelletId) {
+      console.log('other player collision pellet id:', pelletMeshes[pelletId]);
+      pelletMeshes[pelletId].dispose();
+      pelletRemover = pelletId;
+    })
+  }
+
+  socketLeaveRoom() {
+    socket.emit('leave', window.room);
+    $.ajax({
+      type: 'POST',
+      url: 'leaveGameRoomCustom',
+      data: room,
+      success: function() {
+        console.log('left room');
+        window.room = null;
+      },
+      error: function() {
+        console.log('error leaving room');
+      }
+    })
+
+  }
+
+  routerWillLeave() {
+    engine.stopRenderLoop();
+
+    // leave socket room
+    socket.emit('leave', window.room);
+    $.ajax({
+      type: 'POST',
+      url: 'leaveGameRoomCustom',
+      data: {room: room},
+      success: function() {
+        console.log('left room');
+        window.room = null;
+      },
+      error: function() {
+        console.log('error leaving room');
+      }
+    })
+
+    // reset unload
+    window.myEvent = null;
+    window.chkevent = null;
+
+    // continue
+    return true;
+  }
 
 
-render() {
-  return (<div className="container">
-          <div className="camera-toggle">Camera Toggle</div>
-          <canvas id="renderCanvas"></canvas>
-          </div>);
+  render() {
+    return (<div className="container">
+            <div className="camera-toggle">Camera Toggle</div>
+            <canvas id="renderCanvas"></canvas>
+            </div>);
+  }
 }
-}
+
+
+
+// handles leaving room for window unload event
+window.myEvent = window.attachEvent || window.addEventListener;
+window.chkevent = window.attachEvent ? 'onbeforeunload' : 'beforeunload'; /// make IE7, IE8 compitable
+
+  myEvent(chkevent, function(e) { // For >=IE7, Chrome, Firefox
+      socket.emit('leave', room);
+  $.ajax({
+    type: 'POST',
+    url: 'leaveGameRoomCustom',
+    data: {room: room},
+    success: function() {
+      console.log('left room');
+      window.room = null;
+    },
+    error: function() {
+      console.log('error leaving room');
+    }
+  })
+  });

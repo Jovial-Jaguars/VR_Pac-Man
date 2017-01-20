@@ -19,38 +19,27 @@ io.on('connection', function(socket) {
   socket.on('join', function(room) {
     console.log('a user joined a room:', room);
     socket.join(room);
-    io.to(room).emit('test', 'room message from server sent');
+    // io.to(room).emit('test', 'room message from server sent');
 
     socket.on('coordinates', function(coords) {
-      socket.broadcast.to('room1').emit('otherPlayerCoords', coords);
+      socket.broadcast.to(room).emit('otherPlayerCoords', coords);
     });
 
     socket.on('pelletCollision', function(pelletId) {
       console.log('hit pellet collision in server', pelletId);
-      socket.broadcast.to('room1').emit('otherPlayerPelletCollision', pelletId);
+      socket.broadcast.to(room).emit('otherPlayerPelletCollision', pelletId);
     });
+
+    socket.on('leave', function(room) {
+      console.log('a user left the room:', room);
+      socket.leave(room);
+    })
 
   });
 
   socket.on('disconnect', function() {
     console.log('user disconnected');
   });
-
-  // socket.on('coordinates', function(coords) {
-  //   socket.broadcast.to('room1').emit('otherPlayerCoords', coords);
-  // });
-
-  // socket.on('pelletCollision', function(pelletId) {
-  //   console.log('hit pellet collision in server', pelletId);
-  //   socket.broadcast.to('room1').emit('otherPlayerPelletCollision', pelletId)
-  // });
-
-
-
-  // socket.join('some room');
-  // io.to('some room').emit('some event');
-
-  // socket.emit('coordinates', 'testing');
 
 });
 

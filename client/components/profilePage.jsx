@@ -35,7 +35,9 @@ export default class ProfilePage extends React.Component {
       success: function(data) {
         if (!data.username) {
           // console.log('compwillmount profpage data', data);
-          alert('Authentication error');
+
+          alert('Authentication error!!!');
+          console.log('data.username', data.username)
           this.props.router.push({pathname: '/'});
         } else {
           console.log('reset high scores state');
@@ -59,7 +61,6 @@ export default class ProfilePage extends React.Component {
     this.props.router.push({pathname: '/mazestore'});
   }
 
-
   getMyMazes() {
     $.ajax({
       type: 'GET',
@@ -72,8 +73,7 @@ export default class ProfilePage extends React.Component {
   }
 
   multiplayerClick() {
-    socket.emit('testing', {user: this.state.username});
-    this.props.router.push({pathname: '/multiplayer'})
+    this.props.router.push({pathname: '/multiplayerRanked'})
   }
 
   singlePlayerClick() {
@@ -90,6 +90,7 @@ export default class ProfilePage extends React.Component {
     var toggle = false;
     $('#spModeButton').css('box-shadow', 'none');
     $('#mpModeButton').css('box-shadow', 'inset 0 0 0 1px #27496d,inset 0 5px 30px #193047');
+    window.customMode = 'multiplayer'
   }
 
   customSinglePlayerClick() {
@@ -97,6 +98,84 @@ export default class ProfilePage extends React.Component {
     $('#multiplayerSelected').slideUp("fast");
     $('#mpModeButton').css('box-shadow', 'none');
     $('#spModeButton').css('box-shadow', 'inset 0 0 0 1px #27496d,inset 0 5px 30px #193047');
+    window.customMode = 'singleplayer'
+  }
+
+  customGamePlayButtonClick() {
+
+    var roomMode, roomName;
+    var roomSuccess = false;
+    var selectedMaze = null;
+
+    var hasValue = function(elem) {
+      return $(elem).filter(function() { return $(this).val(); }).length > 0;
+    };
+    if (hasValue($('#joinRoom')) && hasValue($('#createRoom'))) {
+      roomName = null;
+    } else if (hasValue($('#joinRoom'))) {
+      roomName = $('#joinRoom').val();
+      roomMode = 'join';
+    } else if (hasValue($('#createRoom'))) {
+      roomName = $('#createRoom').val();
+      roomMode = 'create';
+    }
+
+    console.log('roomname', roomName);
+    console.log(window.customMode);
+    // if multiplayer..
+      // if creating room and room doesn't exist, create
+      // if creating room and room exists, send error
+
+      // if joining room and room doesn't exist, send error
+      // if joining room and room exists, join
+    if (window.customMode === 'multiplayer') {
+      if (roomMode === 'create') {
+        $.ajax({
+          type: 'POST',
+          url: '/createCustomRoom',
+          async: false,
+          data: {room: roomName},
+          success: function(data) {
+            if (data === 'created') {
+              roomSuccess = true;
+              console.log('room created');
+            } else if (data === 'taken') {
+              roomSuccess = false;
+              console.log('room taken');
+            }
+          },
+          error: function() {
+            console.log('error creating room');
+          }
+        })
+      } else if (roomMode === 'join') {
+        $.ajax({
+          type: 'GET',
+          url: '/joinCustomRoom',
+          async: false,
+          data: {room: roomName},
+          success: function(data) {
+            if (data === 'not found') {
+              roomSuccess = false;
+              console.log('room not found')
+            } else if (data === 'joined') {
+              roomSuccess = true;
+              console.log('room joined');
+            } else if (data === 'room full') {
+              roomSuccess = false;
+              console.log('room full');
+            }
+          },
+          error: function() {
+            console.log('error joining room');
+          }
+        })
+      }
+      window.room = roomName;
+      console.log('room joined/created', room);
+      socket.emit('join', room);
+      // this.props.router.push({pathname: '/multiplayerCustom'})
+    }
   }
 
   modalClickExit() {
@@ -130,7 +209,7 @@ export default class ProfilePage extends React.Component {
             <h1 className="headers">My Mazes</h1>
             <div>mazes here...</div>
           </div>
-        </div>  
+        </div>
         <div id="customModal" className="modal">
           <div className="modal-content custom">
             <div className="customGameModalHeader">
@@ -143,14 +222,15 @@ export default class ProfilePage extends React.Component {
               <button id="mpModeButton" onClick={this.customMultiplayerClick}>Multiplayer</button>
             </div>
             <div id="multiplayerSelected">
-              <span>Join a room:&nbsp;<input type="text"/></span>
+              <span>Join a room:&nbsp;<input type="text" id="joinRoom"/></span>
               <span>OR</span>
-              <span>Create a Room:&nbsp;<input type="text"/></span>
+              <span>Create a Room:&nbsp;<input type="text" id="createRoom"/></span>
             </div>
             <div id="customMazeSelection">
               <p className="customGameHeaders">Choose a maze:</p>
               <br/>mazes here...
             </div>
+            <button id="customGamePlayButton" onClick={this.customGamePlayButtonClick.bind(this)}>Play</button>
           </div>
         </div>
         <div id="htpModal" className="howToPlayModal">

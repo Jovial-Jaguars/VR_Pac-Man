@@ -17,12 +17,14 @@ export default class LandingPage extends React.Component {
     $('.modal').css('display', 'block');
     $('#modal-signupform').css('display', 'none');
     $('#modal-loginform').css('display', 'block');
+    $('#login-username').focus();
   }
 
   modalClickSignup() {
     $('.modal').css('display', 'block');
     $('#modal-loginform').css('display', 'none');
     $('#modal-signupform').css('display', 'block');
+    $('#signup-username').focus();
   }
 
   modalClickExit() {
@@ -84,13 +86,13 @@ export default class LandingPage extends React.Component {
       url: '/checkLoggedIn',
       async: false,
       success: function(data) {
-        if (!data.user) {
+        if (!data.username) {
           console.log('hit not authenticated');
           this.props.router.push({pathname: '/'});
         } else {
           console.log("hit authenticated");
-          console.log(data.user);
-          window.username = data.user;
+          console.log(data.username);
+          window.username = data.username;
           this.props.router.push({pathname: '/profile'});
         }
       }.bind(this),
