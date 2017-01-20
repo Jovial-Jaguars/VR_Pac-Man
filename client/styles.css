@@ -599,6 +599,7 @@ button:active {
 
 #modal-loginform {
   display:none;
+<<<<<<< HEAD
   text-align: right;
   /*padding-right: 50%;*/
   min-height: 140px;
@@ -678,6 +679,7 @@ html {
   text-align : center;
   height: 100%;
   width: 100%;
+<<<<<<< HEAD
 }
 */
 html, body {
@@ -688,12 +690,13 @@ html, body {
   padding: 0;
 }
 
+
 .title-container {
     position: fixed;
-    background-color: blue;
+    background-color: rgba(0,0,0,.91);
     width: 100%;
     z-index: 10;
-    box-shadow: 5px 5px 5px #00004C;
+    box-shadow: 5px 5px 5px #FEDC3D;
 
 }
 
@@ -702,23 +705,18 @@ html, body {
     top: 5px;
     left: 5px;
     max-width: 1190px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .title {
-    font: 5em 'pacfont_back';
-    color: red;
-    margin-left: .5em;
-    text-shadow: 2px 2px 2px #00004C;
-}
-
-.title::before {
-    position: absolute;
-    content: attr(data-text);
-    top: 0;
-    left: 0;
-    margin-left: .5em;
-    font-family: 'pacfont_front';
-    color: yellow;
+    background-image: url(assets/mazestoretxt.png);
+    width: 35em;
+    height: 6.5em;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .maps-sub-container {
@@ -741,6 +739,13 @@ html, body {
     align-items: stretch;
     /*flex-direction: row;
     align-items: flex-start;
+
+    justify-content: space-around; 
+    flex-wrap: wrap;
+    align-items: stretch;
+    /*flex-direction: row;
+    align-items: flex-start; 
+
     align-content: space-between;
     background-color: red;
     background: #fff;
@@ -762,7 +767,7 @@ html, body {
   justify-content: space-between;
   display: flex;
   align-items: stretch;
-  background-color: /*#FFCC00*/ #EB5200;
+  background-color: #01ABAA;
   box-shadow: 10px 10px 5px #00004C;
 }
 
@@ -820,7 +825,7 @@ tbody {
   height: 2.2vmin;
 }
 
-.insertcoin {
+.insertcoin, .onecredit, .public, .private{
   position: absolute;
   display: inline-block;
   background-image: url('assets/insertcoin.png');
@@ -828,48 +833,99 @@ tbody {
   background-position: center;
   background-repeat: no-repeat;
   align-items: stretch;
-  width:100px;
-  height: 100px;
+  width: 5em;
+  height: 5em;
   box-shadow: 0 2px 5px 1px rgba(0,0,0,0.4);
   margin-top: 3px;
   margin-left: 3px;
-  left: 0;
-  top: 0;
+  bottom: 3px;
+  right: 3px;
+  border-radius: 8px
+
 }
 
 .onecredit {
-  position: absolute;
-  display: inline-block;
-  background-image: url('assets/onecredit.png');
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  align-items: stretch;
-  width:150px;
-  height: 80px;
-  box-shadow: 0 2px 5px 1px rgba(0,0,0,0.4);
-  margin-top: 3px;
-  margin-left: 3px;
-  left: 0;
-  top: 0;
+  background-image: url('assets/goldcoin.png');
+}
+
+.public {
+  background-image: url('assets/public.png');
+}
+
+.private {
+  background-image: url('assets/private.png');
 }
 
 .hamburger {
     font-size: 50px;
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 10px;
+    left: 4px;
     z-index: 20;
     margin-top: 10px;
     margin-left: 10px;
-    text-shadow: 2px 2px 2px #00004C;
+    color: #FDDB4E;
+    text-shadow: 2px 2px 2px #AAAAC3;
+}
+
+.sidebar-title {
+  font-family: "Joystix";
+  margin-left: 15px;
+  margin-right: 15px;
+  font-size: 1.5em;
+  color: #FDDB4E;
+  text-shadow: 2px 2px #FB0D1B;
+  padding-bottom: .6em
+
+
+
+}
+
+.sidebar-options {
+  font-family: 'cp7';
+  font-size: 2em;
+  text-align: left;
+  padding: 0em 1em .4em .5em;
+  text-shadow: 2px 2px #FB0D1B;
+  letter-spacing: 1px;
+  font-weight: bold;
+  box-shadow: inset 0 -1px rgba(0,0,0,0.2);
+  transition: background 0.3s, box-shadow 0.3s;
+  color: #FFF7D2;
+
+}
+
+.sidebar-options:hover {
+  opacity: 0.5; 
+  color: DodgerBlue;
+}
+
+.sendUpdate-mymaps {
+    background-color: #01ABAA;
+    border-radius: 20px;
+    border: none;
+    font-family: 'cp7';
+    font-size: 2em;
+    color: #FFF7D2;
+    width: 6em;
+    height: 1.5em;
+    margin: 4px;
+    position: fixed;
+    bottom: 35px;
+    text-shadow: 2px 2px 8px #FF0000;
+    right: 25px;
+    box-shadow: 10px 10px 5px #00004C;
 }
 
 [data-icon]:before {
   font-family: icons; /* BYO icon font, mapped smartly */
   content: attr(data-icon);
-  speak: none; /* Not to be trusted, but hey. */
+  vertical-align: bottom;
+  margin-right: 0.8em;
+  font-size: 1em;
+  -webkit-font-smoothing: antialiased;
 }
+
 
 /*end styling for maze store*/
 
@@ -904,6 +960,12 @@ tbody {
 #topleft {
   font-family: "Crackman Font";
   font-size: 35px;
+  background-image: url('assets/vrpacmantxt.png');
+  width: 10em;
+  height: 4em;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 #nav-login {

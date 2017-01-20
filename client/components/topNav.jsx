@@ -15,6 +15,7 @@ export default class TopNav extends React.Component {
   }
 
   navClickStore() {
+    this.props.router.push({pathname: '/mazestore'});
     console.log('clicked store')
     this.props.router.push({pathname: '/mazestore'});
   }
@@ -27,7 +28,7 @@ export default class TopNav extends React.Component {
     return (
       <nav>
         <ul id="topnav">
-          <li id="topleft">VR Pacman</li>
+          <li id="topleft"></li>
           <li id="nav-home" onClick={this.navClickHome.bind(this)}>Home</li>
           <li onClick={this.navClickMazeBuilder.bind(this)}>MazeBuilder</li>
           <li onClick={this.navClickStore.bind(this)}>Store</li>
