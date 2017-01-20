@@ -243,7 +243,7 @@ export default class Unranked extends React.Component {
               newInstanceSphere = pellet.createInstance("j" + (i *16) + j);
               newInstanceSphere.position.z = z; 
               newInstanceSphere.position.x = x;
-              newInstanceSphere.position.y = 986;
+              newInstanceSphere.position.y = 990;
               var sphereBody = createSphereBody(newInstanceSphere.getBoundingInfo().boundingBox.center, 4, newInstanceSphere.uniqueId);
               pelletMeshes[newInstanceSphere.uniqueId] = newInstanceSphere;
             } else {
@@ -627,7 +627,7 @@ export default class Unranked extends React.Component {
       if (obj.ghost !== undefined && gameOverFlag === 0) {
         if (upsidedown == 1) {
           obj.ghost.position.x = ghostBody.position.x;
-          obj.ghost.position.y = ghostBody.position.y - 10;
+          obj.ghost.position.y = ghostBody.position.y - 2;
           obj.ghost.position.z = ghostBody.position.z;
         } else {
           obj.ghost.position.x = ghostBody.position.x;
@@ -651,7 +651,6 @@ export default class Unranked extends React.Component {
           ghostBody.velocity.x = 0;
         } 
       } 
-      canvas2.children[0].text = Math.round(that.engine.fps).toString();
       
   });
   var resize = function(){
@@ -1305,7 +1304,6 @@ componentDidUpdate() {
           ghostBody.velocity.x = 0;
         } 
       } 
-      canvas2.children[0].text = Math.round(that.engine.fps).toString();
       
   });
   var resize = function(){
