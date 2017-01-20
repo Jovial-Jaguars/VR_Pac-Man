@@ -39,7 +39,7 @@ export default class ProfilePage extends React.Component {
         } else {
           console.log('reset high scores state');
           console.log(data);
-          window.username = data.user;
+          window.username = data.username;
           this.setState({
             username: data.username,
             spHighScore: data.spHighScores_VR,
