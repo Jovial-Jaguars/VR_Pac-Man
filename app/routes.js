@@ -66,16 +66,100 @@ module.exports = function(app, passport) {
     });
   });
 
-  var roomNumber = 1;
-  var participants = 0;
-  app.get('/assignGameRoom', function(req, res) {
-    participants++;
-    if (participants > 2) {
-      roomNumber++;
-      participants = 1;
+  /* For ranked room assignments, there are two options a user can encounter. Either (1) there is no element in the waitingRoom array and a random room number is generated and joined or (2) there is a waiting room and it is joined, shifted from waiting room, and added to roomsInPlay object.
+  In the case that a user leaves a waiting room before another user joins, the room will be spliced from the waiting room and not added to rooms in play */
+
+  var waitingRoomRanked = [];
+  var roomsInPlayRanked = {};
+  app.get('/assignGameRoomRanked', function(req, res) {
+    if (waitingRoomRanked.length === 0) {
+      var generateRandomRoom = function() {
+        var num = Math.ceil(Math.random() * 1000000000);
+        if (roomsInPlayRanked[num]) {
+          return generateRandomRoom();
+        } else {
+          return num;
+        }
+      };
+      var randomRoomNumber = generateRandomRoom();
+      waitingRoomRanked.push(randomRoomNumber);
+      res.send(randomRoomNumber.toString());
+    } else if (waitingRoomRanked.length > 0) {
+      var roomNumber = waitingRoomRanked.shift();
+      roomsInPlayRanked[roomNumber] = 2;
+      res.send(roomNumber.toString());
     }
-    res.send(roomNumber.toString());
+    // res.send(roomNumber.toString());
   }.bind(this));
+
+  app.post('/leaveGameRoomRanked', function(req, res) {
+    var roomNumber = req.body.room.slice(4);
+    console.log(req.session.passport.user + ' left room number:', roomNumber);
+    console.log('roomsInPlayRanked:', roomsInPlayRanked);
+    if (roomsInPlayRanked[roomNumber]) {
+      roomsInPlayRanked[roomNumber]--;
+      if (roomsInPlayRanked[roomNumber] <= 0) {
+        console.log('hit');
+        delete roomsInPlayRanked[roomNumber];
+      }
+      console.log('roomsInPlayRanked:', roomsInPlayRanked);
+    } else if (!roomsInPlayRanked[roomNumber]) {
+      console.log('waitingRoom', waitingRoomRanked);
+      waitingRoomRanked.forEach(function(room, idx) {
+        if (room === Number(roomNumber)) {
+          waitingRoomRanked.splice(idx, 1);
+        }
+      });
+      console.log('waitingRoom', waitingRoomRanked);
+    }
+    res.end();
+  });
+
+
+  var customRooms = {};
+  app.post('/createCustomRoom', function(req, res) {
+    var roomName = req.body.room;
+    if (!customRooms[roomName]) {
+      customRooms[roomName] = 1;
+      res.send('created');
+    } else if (customRooms[roomName]) {
+      res.send('taken');
+    }
+  });
+
+  app.get('/joinCustomRoom', function(req, res) {
+    var roomName = req.query.room;
+    if(!customRooms[roomName]) {
+      res.send('not found');
+    } else if (customRooms[roomName] && customRooms[roomName] === 1) {
+      customRooms[roomName]++;
+      res.send('joined')
+    } else if (customRooms[roomName] && customRooms[roomName] >= 2) {
+      res.send('room full');
+    }
+  });
+
+  app.post('/leaveGameRoomCustom', function(req, res) {
+    var roomNumber = req.body.room.slice(4);
+    console.log(req.session.passport.user + ' left room number:', roomNumber);
+    customRooms[roomNumber]--;
+    if (customRooms[roomNumber] <= 0) {
+      delete customRooms[roomNumber];
+    }
+    res.end();
+  })
+
+
+
+  app.get('/joinCustomRoom', function(req, res) {
+
+  })
+
+  app.post('/leaveGameRoomCustom', function(req, res) {
+    var roomNumber = req.body.room.slice(4);
+    console.log(req.session.passport.user + ' left room:', roomNumber);
+
+  })
 
   app.post('/submitScore', function(req, res) {
     if (!req.session.passport || !req.session.passport.user) {

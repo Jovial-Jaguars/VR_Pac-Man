@@ -22,6 +22,13 @@ export default class About extends React.Component {
 
   componentWillMount() {
     this.randomizeCreatorsOrder();
+    this.props.router.setRouteLeaveHook(
+        this.props.route,
+        this.routerWillLeave
+      )
+  }
+
+  routerWillLeave() {
   }
 
   submitScore() {
