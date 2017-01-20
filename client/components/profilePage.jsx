@@ -116,7 +116,7 @@ export default class ProfilePage extends React.Component {
   }
 
   singlePlayerClick() {
-    this.props.router.push({pathname: '/singleplayer'})
+    this.props.router.push({pathname: '/ranked'})
   }
 
   customGameClick() {
@@ -221,6 +221,10 @@ export default class ProfilePage extends React.Component {
     if (window.customMode === 'singleplayer') {
       if (window.selectedMaze) {
         // router push /singlelayerCustom
+        ///////////////////////////////////*******************
+        window.selectedMaze;
+        this.props.router.push({pathname: '/unranked'})
+
       }
     }
 

@@ -5,12 +5,12 @@ export default class Unranked extends React.Component {
   constructor(props){
     super(props);
     console.log('lol');
-    console.log(localStorage.maze);
+    console.log(window.selectedMaze);
     var maze = [];
-    for(var i = 0; i  < browserHistory.maze.length; i++) {
+    for(var i = 0; i  < window.selectedMaze.length; i++) {
       maze[i] = [];
-      for(var j = 0; j < browserHistory.maze[i].length; j++) {
-        maze[i].push(browserHistory.maze[i][j]);
+      for(var j = 0; j < window.selectedMaze[i].length; j++) {
+        maze[i].push(window.selectedMaze[i][j]);
       }
     }
     this.maze = maze;
