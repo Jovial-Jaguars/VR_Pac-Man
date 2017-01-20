@@ -1,10 +1,12 @@
 import React from 'react';
 import TopNav from './topNav';
+import MyProfileMaps from './myprofilemaps';
 
 export default class ProfilePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      myMaps: [],
       username: null,
       savedMaps: null,
       spHighScore: null,
@@ -12,6 +14,9 @@ export default class ProfilePage extends React.Component {
     }
     this.mazebuilderClick = this.mazebuilderClick.bind(this);
     this.mazestoreClick = this.mazestoreClick.bind(this);
+    this.convertArray = this.convertArray.bind(this);
+    this.convertData = this.convertData.bind(this);
+
   }
 
   logout() {
@@ -61,13 +66,45 @@ export default class ProfilePage extends React.Component {
     this.props.router.push({pathname: '/mazestore'});
   }
 
+
+  convertData (data, strName) {
+     var that = this;
+     var arrayMaps = [];
+     //var obj = {};
+     for (var i = 0; i < data.length ; i++){
+        var tempArray =[]
+        tempArray.push(that.convertArray(data[i]['mapData']));
+        tempArray.push(data[i]['id']);
+        tempArray.push(data[i]['shareable']);
+        tempArray.push(data[i]['user_id']);
+        arrayMaps.push(tempArray);
+     }
+     //obj[strName] = arrayMaps;
+     this.setState({[strName] : arrayMaps});
+     console.log('arrayMaps',arrayMaps);
+  }
+  
+  //converts the map string into an array of row arrays
+  convertArray (string) {
+    var oneMap = [];
+    var oneArray = [];
+    for (var i = 0; string.length > i; i++){    
+      oneArray.push(Number(string[i]));
+      if ((i+1) % 16 === 0){
+        oneMap.push(oneArray.slice());
+        oneArray = [];
+      }
+    }
+    return oneMap;
+  }
+
   getMyMazes() {
+    var that = this;
     $.ajax({
       type: 'GET',
       url: '/maps',
       success: function(data) {
-        console.log('ajax get /maps success');
-        console.log('data:', JSON.stringify(data));
+        console.log('success myMaps', that.convertData(data[1], 'myMaps'));
       }
     });
   }
@@ -188,6 +225,7 @@ export default class ProfilePage extends React.Component {
   }
 
   render() {
+    console.log('mymaps:',this.state.myMaps);
     return (
       <div>
         <TopNav router={this.props.router}/>
@@ -206,8 +244,8 @@ export default class ProfilePage extends React.Component {
             <br/><a onClick={this.howToPlayClick}>How To Play</a>
           </div><br/>
           <div className="myMazesScreen">
-            <h1 className="headers">My Mazes</h1>
-            <div>mazes here...</div>
+            <h1 className="headers ">My Mazes</h1> 
+            <div className="profilemaps-container">{this.state.myMaps.map((singleMap, index)=><MyProfileMaps key={index} mapId={index} singleMap={singleMap}/>)}</div>
           </div>
         </div>
         <div id="customModal" className="modal">
@@ -228,7 +266,7 @@ export default class ProfilePage extends React.Component {
             </div>
             <div id="customMazeSelection">
               <p className="customGameHeaders">Choose a maze:</p>
-              <br/>mazes here...
+              <div className="profilemaps-container">{this.state.myMaps.map((singleMap, index)=><MyProfileMaps key={index} mapId={index} singleMap={singleMap}/>)}</div>
             </div>
             <button id="customGamePlayButton" onClick={this.customGamePlayButtonClick.bind(this)}>Play</button>
           </div>

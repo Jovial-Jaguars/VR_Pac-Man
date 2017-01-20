@@ -599,7 +599,6 @@ button:active {
 
 #modal-loginform {
   display:none;
-<<<<<<< HEAD
   text-align: right;
   /*padding-right: 50%;*/
   min-height: 140px;
@@ -825,7 +824,7 @@ tbody {
   height: 2.2vmin;
 }
 
-.insertcoin, .onecredit, .public, .private{
+.insertcoin, .onecredit {
   position: absolute;
   display: inline-block;
   background-image: url('assets/insertcoin.png');
@@ -842,6 +841,24 @@ tbody {
   right: 3px;
   border-radius: 8px
 
+}
+
+.public, .private {
+  position: absolute;
+  display: inline-block;
+  background-image: url('assets/insertcoin.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  align-items: stretch;
+  width: 20em;
+  height: 20em;
+  /*box-shadow: 0 2px 5px 1px rgba(0,0,0,0.4);
+  margin-top: 3px;
+  margin-left: 3px;*/
+  bottom: 1em;
+  right: 1.2em;
+  border-radius: 8px
 }
 
 .onecredit {
@@ -914,7 +931,12 @@ tbody {
     bottom: 35px;
     text-shadow: 2px 2px 8px #FF0000;
     right: 25px;
-    box-shadow: 10px 10px 5px #00004C;
+    box-shadow: 8px 8px 5px #00004C;
+}
+
+.sendUpdate-mymaps:active {
+    background-color: #057f7e;
+    box-shadow: 2px 2px 3px #00004C;
 }
 
 [data-icon]:before {
@@ -977,7 +999,7 @@ tbody {
   font-size: 30px;
   border: none;
   position: fixed;
-  top: 2.5%;
+  top: 2%;
   right: 13%;
 }
 
@@ -994,7 +1016,7 @@ tbody {
   font-size: 30px;
   border: none;
   position: fixed;
-  top: 2.5%;
+  top: 2%;
   right: 4%;
 }
 
@@ -1049,6 +1071,7 @@ tbody {
   font-family: 'Quicksand';
   font-size: 16px;
   color: #FFF7D2;
+  overflow: auto;
 }
 
 .playScreen {
@@ -1057,7 +1080,7 @@ tbody {
   border-radius: 45px;
   background-color: rgba(0,0,0,1);
   text-align: center;
-  padding: 25px 50px 25px 50px;
+  padding: 10px 50px 25px 50px;
   margin: 15px;
   max-width: 55%;
 }
@@ -1075,14 +1098,40 @@ tbody {
 }
 
 .myMazesScreen {
-  padding: 25px;
   display: inline-block;
   border-radius: 45px;
   background-color: rgba(0,0,0,1);
   text-align: center;
-  padding: 25px 50px 25px 50px;
-  margin: 15px 30px;
-  max-width: 55%;
+  padding: 0px 50px 10px 50px;
+  margin: 0px 30px 15px 30px;
+  max-width: 65%;
+}
+
+.profilemaps-container {
+  overflow-y: scroll;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+  height: 43vh;
+  position: relative;
+}
+
+.singleProfileMap-container {
+  justify-content: space-between;
+  position: relative;
+  align-items: stretch;
+  margin-bottom: 40px;
+
+}
+
+.singleProfileMap {
+  justify-content: space-between;
+  display: flex;
+  align-items: stretch;
+  flex: 1;
+  background-color: #01ABAA;
+  box-shadow: 10px 10px 5px #00004C;
 }
 
 .landingPageContent, .aboutPageContent{
