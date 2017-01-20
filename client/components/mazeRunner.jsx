@@ -35,7 +35,7 @@ export default class MazeRunner extends React.Component {
     var pelletMeshes = [];
     var cameraFlag = false;
     var cam1, cam2;
-    var posx = -387;
+    var posx = 13;
     var posz = 187;
     var ghost, ghostBody;
     var wall, pellet;
@@ -53,8 +53,8 @@ export default class MazeRunner extends React.Component {
         if(that.props.maze[i][j] === 3) {
           currPacmani = i;
           currPacmanj = j;
-          posx = (i * 25) - 387;
-          posz = 187 - (j * 25);
+          posx = (j * 25) + 13;
+          posz = 187 - (i * 25);
         }
       }
     }
@@ -134,31 +134,11 @@ export default class MazeRunner extends React.Component {
     }
     console.log(path([0,0], that.props.maze));
     setInterval(function() {
-      var curr = path([Math.abs(Math.floor((ghostBody.position.z - 174.5) / 25)),Math.abs(Math.floor((ghostBody.position.x + 399.5) / 25))], that.props.maze);
+      var curr = path([Math.abs(Math.floor((ghostBody.position.z - 175) / 25)),Math.abs(Math.floor((ghostBody.position.x) / 25))], that.props.maze);
       if(typeof curr === 'string') {
         ghostdirections = curr.split('');
       }
     }, 1000)
-    // start = problem.getStartState()
-    // stac = Queue()
-    // recur = set()
-    // suc = []
-    // new = [start,[]]
-    // x=[]
-    // while problem.isGoalState(new[0])==False:
-    //     suc = problem.getSuccessors(new[0])
-    //     if new[0] not in recur:
-    //         recur.add(new[0])
-    //     for a in suc:
-    //         if a[0] not in recur:
-    //             new[1].append(a[1])
-    //             stac.push((a[0],new[1][:]))
-    //             new[1].pop()
-    //             if(problem.isGoalState(a[0])==False):
-    //                 recur.add(a[0])
-    //     new = stac.pop()
-    // return new[1]  
-     // This begins the creation of a function that we will 'call' just after it's built
      var create = function (scene, string) {
       var canvas = new BABYLON.ScreenSpaceCanvas2D(scene, {
         id: "ScreenCanvas",
@@ -224,7 +204,7 @@ export default class MazeRunner extends React.Component {
       return;
     });
     var mazemaker = function(arr, wall, pellet, hl, flipMaze) {
-      var x = -387;
+      var x = 13;
       var z = 187;
       for (var i = 0; i < arr.length; i++) {
         for (var j = 0; j < arr[i].length; j++) {
@@ -257,13 +237,10 @@ export default class MazeRunner extends React.Component {
               var sphereBody = createSphereBody(newInstanceSphere.getBoundingInfo().boundingBox.center, 4, newInstanceSphere.uniqueId);
               pelletMeshes[newInstanceSphere.uniqueId] = newInstanceSphere;
             }
-        } else if (arr[i][j] === 3) {
-          posz = z; 
-          posx = x; 
         }
         x += 25;
       }
-      x = -387;
+      x = 13;
       z -= 25;
     }
   };
@@ -391,15 +368,12 @@ export default class MazeRunner extends React.Component {
 
     var mm = new BABYLON.FreeCamera("minimap", new BABYLON.Vector3(0,1000,0), scene);
     mm.setTarget(new BABYLON.Vector3(0.1,0.1,0.1));
-    // Activate the orthographic projection
     mm.mode = BABYLON.Camera.ORTHOGRAPHIC_CAMERA;
     mm.orthoLeft = -canvas.size/2;
     mm.orthoRight = canvas.size/2;
     mm.orthoTop =  canvas.size/2;
     mm.orthoBottom = -canvas.size/2;
-
-    mm.rotation.y = 3 * Math.PI;
-
+    mm.rotation.y = 0;//Camera Toggle
     var xstart = 0.8, // 80% from the left
         ystart = 0.75; // 75% from the bottom
     var width = 0.99-xstart, // Almost until the right edge of the screen
@@ -427,19 +401,19 @@ export default class MazeRunner extends React.Component {
         createWallBody(plane.getBoundingInfo().boundingBox.center, new CANNON.Vec3(plane.scaling.x, plane.scaling.y, plane.scaling.z), 0);
         var walls = [];
         mazemaker(that.props.maze, wall, pellet, hl, 0);
-        mazemaker(that.props.maze, wall, pellet, hl, 1);
+        //mazemaker(that.props.maze, wall, pellet, hl, 1);
         var plane2 = plane.createInstance("i" + 201);
         plane2.scaling.z = 200;
         plane2.scaling.y = 1000;
         plane2.scaling.x = .2;
-        plane2.position.x = -400; 
+        plane2.position.x = 400; 
         createWallBody(plane2.getBoundingInfo().boundingBox.center, new CANNON.Vec3(plane2.scaling.x, plane2.scaling.y, plane2.scaling.z), 0);
         var plane3 = plane.createInstance("i" + 302);
         plane3.scaling.z = 200;
         plane3.scaling.y = 1000;
         plane3.scaling.x = .2;
         plane3.rotation.y = Math.PI/2;
-        plane3.position.x = -200; 
+        plane3.position.x = 200; 
         plane3.position.z = 200;
         createWallBody(plane3.getBoundingInfo().boundingBox.center, new CANNON.Vec3(plane3.scaling.x, plane3.scaling.y, plane3.scaling.z), 2);
         var plane4 = plane.createInstance("i" + 403);
@@ -447,7 +421,7 @@ export default class MazeRunner extends React.Component {
         plane4.scaling.y = 1000;
         plane4.scaling.x = 0.2;
         plane4.rotation.y = Math.PI/2;
-        plane4.position.x = -200; 
+        plane4.position.x = 200; 
         plane4.position.z = -200;
         createWallBody(plane4.getBoundingInfo().boundingBox.center, new CANNON.Vec3(plane4.scaling.x, plane4.scaling.y, plane4.scaling.z), 2);
         wall.isVisible = false;
@@ -555,10 +529,10 @@ export default class MazeRunner extends React.Component {
     world.add(sphereBody);
     var ghostShape = new CANNON.Sphere(10); // Step 1
     ghostBody = new CANNON.Body({mass: 5, shape: ghostShape}); // Step 2
-    ghostBody.position.set(-387,5,187);
+    ghostBody.position.set(13,5,187);
     ghostBody.rotation = new CANNON.Vec3();
     ghostBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);  
-   //  ghostBody.addEventListener('collide', function(e){
+   //  ghostBody.addEventListener('collide', function(e){Camera Toggle
    //   ghostxvelocity = Math.floor(Math.random() * 100) - 50;
    //   ghostzvelocity = Math.floor(Math.random() * 100) - 50;
    //   if(obj.ghost !== undefined) {
@@ -663,28 +637,24 @@ export default class MazeRunner extends React.Component {
         camera.position.y = sphereBody.position.y + 5;
         camera.position.z = sphereBody.position.z;
       }
-      if(Math.abs(Math.floor((camera.position.x + 399.5) / 25)) !== currPacmanj || Math.abs(Math.floor((camera.position.z - 174.5) / 25) !== currPacmani)) {
+      if(Math.abs(Math.floor((camera.position.x) / 25)) !== currPacmanj || Math.abs(Math.floor((camera.position.z - 175) / 25) !== currPacmani)) {
         that.props.maze[currPacmani][currPacmanj] = 0;
-        currPacmanj = Math.abs(Math.floor((camera.position.x + 399.5) / 25));
-        currPacmani = Math.abs(Math.floor((camera.position.z - 174.5) / 25));
+        currPacmanj = Math.abs(Math.floor((camera.position.x) / 25));
+        currPacmani = Math.abs(Math.floor((camera.position.z - 175) / 25));
         that.props.maze[currPacmani][currPacmanj] = 3;
         if(currPacmani === 0 && currPacmanj === 0) {
-          ghostBody.velocity.z = 0;
-          ghostBody.velocity.x = 0;
-          //ghostBody.velocity.y = 20;
-          sphereBody.velocity.x = 0;
-          sphereBody.velocity.z = 0;
-          //camera.rotation.y = Math.PI;
-          obj.ghost.rotation.x = Math.PI;
-          //sphereBody.velocity.y = 20;
+          // ghostBody.velocity.z = 0;
+          // ghostBody.velocity.x = 0;
+          ghostBody.velocity.y = 20;
+          // sphereBody.velocity.x = 0;
+          // sphereBody.velocity.z = 0;
+          //obj.ghost.rotation.x = Math.PI;
+          sphereBody.velocity.y = 20;
           world.gravity.set(0, 40, 0);
           gravityFlag = 1;
           upsidedown = 1;
         }
-        //console.log(path([0,0], that.props.maze));
       }
-      // console.log(ghost);
-      // console.log(ghostBody)
       if (obj.ghost !== undefined) {
         if (upsidedown == 1) {
           obj.ghost.position.x = ghostBody.position.x;
@@ -695,24 +665,6 @@ export default class MazeRunner extends React.Component {
           obj.ghost.position.y = ghostBody.position.y + 10;
           obj.ghost.position.z = ghostBody.position.z;
         }
-        
-        // obj.ghost.rotation.x = ghostBody.rotation.x;
-        // obj.ghost.rotation.y = ghostBody.rotation.y + Math.PI/16;
-        // obj.ghost.rotation.z = ghostBody.rotation.z;
-        //console.log(ghostBody.rotation, obj.ghost.rotation, ghostBody.angularVelocity);
-       // inputVelocity = sphereBody.velocity;
-       //  var quatX = new CANNON.Quaternion();
-       //  var quatY = new CANNON.Quaternion();
-       //  quatX.setFromAxisAngle(new CANNON.Vec3(1,0,0), angleX);
-       //  quatY.setFromAxisAngle(new CANNON.Vec3(0,1,0), angleY);
-       //  var quaternion = quatY.mult(quatX);
-       //  quaternion.normalize();
-       //  var rotatedVelocity = quaternion.vmult(inputVelocity);
-       //  ghostBody.velocity = rotatedVelocity;
-        // obj.ghost.rotationQuaternion.x = ghostBody.rotationQuaternion.x;
-        // obj.ghost.rotationQuaternion.y = ghostBody.rotationQuaternion.y;
-        // obj.ghost.rotationQuaternion.z = ghostBody.rotationQuaternion.z;
-        console.log(ghostBody.position.y);
         if(gravityFlag !== 1) {
           if(ghostdirections[0] === 'E') {
             ghostBody.velocity.z = 0;
