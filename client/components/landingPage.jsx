@@ -2,6 +2,7 @@ import React from 'react';
 import LoginForm from './login';
 import SignupForm from './signup';
 import TopNav from './topNav';
+import {Router, Route, browserHistory, Link} from 'react-router';
 
 export default class LandingPage extends React.Component {
   constructor(props) {
@@ -79,6 +80,66 @@ export default class LandingPage extends React.Component {
       }.bind(this)
     })
   }
+   demoButtonClick(e) {
+    console.log(browserHistory.maze);
+    browserHistory.maze = [[1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1],
+                         [1, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1],
+                         [1, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1],
+                         [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
+                         [1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1],
+                         [1, 2, 2, 2, 5, 2, 2, 2, 2, 6, 2, 2, 2, 1, 2, 1],
+                         [1, 1, 1, 1, 2, 1, 1, 1, 0, 1, 0, 1, 1, 1, 2, 1],
+                         [1, 1, 1, 1, 2, 1, 3, 4, 0, 0, 0, 0, 0, 1, 2, 1],
+                         [1, 0, 0, 0, 2, 0, 0, 1, 1, 0, 1, 1, 0, 0, 2, 1],
+                         [1, 1, 1, 1, 2, 1, 0, 1, 0, 0, 0, 1, 0, 1, 2, 1],
+                         [1, 1, 1, 1, 2, 1, 0, 1, 1, 1, 1, 1, 0, 1, 2, 1],
+                         [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
+                         [1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1],
+                         [1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 1],
+                         [1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1],
+                         [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1]];
+
+    // var str = '';
+    // var arr = [[1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1],
+    //            [1, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1],
+    //            [1, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1],
+    //            [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
+    //            [1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1],
+    //            [1, 2, 2, 2, 5, 2, 2, 2, 2, 6, 2, 2, 2, 1, 2, 1],
+    //            [1, 1, 1, 1, 2, 1, 1, 1, 0, 1, 0, 1, 1, 1, 2, 1],
+    //            [1, 1, 1, 1, 2, 1, 3, 4, 0, 0, 0, 0, 0, 1, 2, 1],
+    //            [1, 0, 0, 0, 2, 0, 0, 1, 1, 0, 1, 1, 0, 0, 2, 1],
+    //            [1, 1, 1, 1, 2, 1, 0, 1, 0, 0, 0, 1, 0, 1, 2, 1],
+    //            [1, 1, 1, 1, 2, 1, 0, 1, 1, 1, 1, 1, 0, 1, 2, 1],
+    //            [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
+    //            [1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1],
+    //            [1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 1],
+    //            [1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1],
+    //            [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1]];
+    // for(var i = 0; i < arr.length; i++) {
+    //   for(var j =0; j < arr[i].length; j++) {
+    //     str = str + arr[i][j];
+    //   }
+    // }
+    // browserHistory.maze = str;
+    // browserHistory.maze = [[1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1],
+    //                  [1, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1],
+    //                  [1, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1],
+    //                  [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
+    //                  [1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1],
+    //                  [1, 2, 2, 2, 5, 2, 2, 2, 2, 6, 2, 2, 2, 1, 2, 1],
+    //                  [1, 1, 1, 1, 2, 1, 1, 1, 0, 1, 0, 1, 1, 1, 2, 1],
+    //                  [1, 1, 1, 1, 2, 1, 3, 4, 0, 0, 0, 0, 0, 1, 2, 1],
+    //                  [1, 0, 0, 0, 2, 0, 0, 1, 1, 0, 1, 1, 0, 0, 2, 1],
+    //                  [1, 1, 1, 1, 2, 1, 0, 1, 0, 0, 0, 1, 0, 1, 2, 1],
+    //                  [1, 1, 1, 1, 2, 1, 0, 1, 1, 1, 1, 1, 0, 1, 2, 1],
+    //                  [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
+    //                  [1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1],
+    //                  [1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 1],
+    //                  [1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1],
+    //                  [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1]]
+      this.props.router.push({pathname: '/unranked'});
+  }
 
   componentWillMount() {
     $.ajax({
@@ -136,7 +197,7 @@ export default class LandingPage extends React.Component {
       <div className="landingPageContent">
           <h1 className="headers">Welcome to VR Pacman!</h1>
         <div className="playBtnContent">
-          <button id="demobutton"><span className="playText">Play</span><br/>Demo Version</button>
+          <button id="demobutton" onClick={this.demoButtonClick.bind(this)}><span className="playText">Play</span><br/>Demo Version</button>
           <p>For multiplayer mode, high scores, custom mazes and more, create a FREE account!</p>
         </div>
         <h1 className="headers">How to Play:</h1>
