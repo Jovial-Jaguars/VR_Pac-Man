@@ -63,7 +63,7 @@ export default class About extends React.Component {
 
   render() {
     return(
-    <div>
+    <div id="aboutPage">
       <TopNav router={this.props.router}/>
       <div className="aboutPageContent">
         <h1 className="headers">The Game</h1>
