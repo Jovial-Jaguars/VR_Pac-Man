@@ -154,7 +154,8 @@ export default class App extends React.Component {
     this.convertData = this.convertData.bind(this);
   }
   componentWillMount(){
-    this.getMaps();
+
+
   }
   getMaps() {
     var that = this;
@@ -184,13 +185,13 @@ export default class App extends React.Component {
      //obj[strName] = arrayMaps;
      this.setState({[strName] : arrayMaps});
      console.log('arrayMaps',arrayMaps);
-    
-  } 
+
+  }
     //converts the map string into an array of row arrays
   convertArray(string) {
     var oneMap = [];
     var oneArray = [];
-    for (var i = 0; string.length > i; i++){    
+    for (var i = 0; string.length > i; i++){
       oneArray.push(Number(string[i]));
       if ((i+1) % 16 === 0){
         oneMap.push(oneArray.slice());

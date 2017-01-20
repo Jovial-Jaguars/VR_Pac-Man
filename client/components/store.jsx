@@ -10,23 +10,7 @@ export default class MazeStore extends React.Component{
   };
 
   componentWillMount() {
-    $.ajax({
-      type: 'GET',
-      url: '/checkLoggedIn',
-      async: false,
-      success: function(data) {
-        if (!data.user) {
-          console.log('hit not authenticated');
-          this.props.router.push({pathname: '/'});
-        } else {
-          console.log('hit authenticated');
-          window.username = data.user;
-        }
-      }.bind(this),
-      error: function() {
-        console.log('Error!');
-      }
-    });
+
   }
 
   render(){
@@ -259,7 +243,7 @@ componentWillMount(){
       for(var key in cartMaps){
         cartMapsArray.push(cartMaps[key]);
       }
-      content = <div> 
+      content = <div>
       <div className="maps">{cartMapsArray.map((singleMap, index)=><Map key={index} mapId={index} singleMap={singleMap} showMaps={showMaps} purchaseOne={this.purchaseOne.bind(this)} returnOne={this.returnOne.bind(this)} makeUpdate={this.makeUpdate.bind(this)}/>)}</div>;
       <div id="customModal" className="modal">
           <div className="modal-content custom">
