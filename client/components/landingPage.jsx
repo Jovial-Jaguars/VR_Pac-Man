@@ -17,12 +17,14 @@ export default class LandingPage extends React.Component {
     $('.modal').css('display', 'block');
     $('#modal-signupform').css('display', 'none');
     $('#modal-loginform').css('display', 'block');
+    $('#login-username').focus();
   }
 
   modalClickSignup() {
     $('.modal').css('display', 'block');
     $('#modal-loginform').css('display', 'none');
     $('#modal-signupform').css('display', 'block');
+    $('#signup-username').focus();
   }
 
   modalClickExit() {
