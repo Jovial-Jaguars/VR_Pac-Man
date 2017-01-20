@@ -63,6 +63,8 @@ class MapList extends React.Component{
     this.navClickHome = this.navClickHome.bind(this);
     this.makeUpdate = this.makeUpdate.bind(this);
     this.sendUpdate = this.sendUpdate.bind(this);
+    this.modalClickExit = this.modalClickExit.bind(this);
+    this.customGameClick = this.customGameClick.bind(this);
   }
 
   //converts the returned query data into and array of maps
@@ -207,6 +209,16 @@ componentWillMount(){
 
   }
 
+  modalClickExit() {
+    $('.modal').css('display', 'none');
+    $('.howToPlayModal').css('display', 'none');
+  }
+
+  customGameClick() {
+    $('.modal').css('display', 'block');
+  }
+
+
   mazebuilderClick() {
     this.props.router.push({pathname: '/mazebuilder'});
   }
@@ -247,7 +259,20 @@ componentWillMount(){
       for(var key in cartMaps){
         cartMapsArray.push(cartMaps[key]);
       }
-      content = <div className="maps">{cartMapsArray.map((singleMap, index)=><Map key={index} mapId={index} singleMap={singleMap} showMaps={showMaps} purchaseOne={this.purchaseOne.bind(this)} returnOne={this.returnOne.bind(this)} makeUpdate={this.makeUpdate.bind(this)}/>)}</div>;
+      content = <div> 
+      <div className="maps">{cartMapsArray.map((singleMap, index)=><Map key={index} mapId={index} singleMap={singleMap} showMaps={showMaps} purchaseOne={this.purchaseOne.bind(this)} returnOne={this.returnOne.bind(this)} makeUpdate={this.makeUpdate.bind(this)}/>)}</div>;
+      <div id="customModal" className="modal">
+          <div className="modal-content custom">
+            <div className="customGameModalHeader">
+              <span id="customGametext">Purchase Mazes</span>
+            </div>
+            <span id="customGameModalClose" className="close" onClick={this.modalClickExit}>&times;</span>
+            <p className="customGameHeaders">Credit Card Information</p>
+            <img className='creditcard' src={'./assets/creditcard.png'} />
+          </div>
+      </div>
+      <button className='sendUpdate-mymaps' onClick={this.customGameClick.bind(this)}>Purchase</button>
+      </div>
     } else if(loading && !fetched){
         content = <p className='loading'> Loading ...</p>;
     }

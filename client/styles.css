@@ -703,7 +703,6 @@ html, body {
     position: relative;
     top: 5px;
     left: 5px;
-    max-width: 1190px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -937,6 +936,10 @@ tbody {
 .sendUpdate-mymaps:active {
     background-color: #057f7e;
     box-shadow: 2px 2px 3px #00004C;
+}
+
+.creditcard{
+  width: 40vw;
 }
 
 [data-icon]:before {
