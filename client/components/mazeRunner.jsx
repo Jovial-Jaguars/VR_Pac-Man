@@ -139,26 +139,6 @@ export default class MazeRunner extends React.Component {
         ghostdirections = curr.split('');
       }
     }, 1000)
-    // start = problem.getStartState()
-    // stac = Queue()
-    // recur = set()
-    // suc = []
-    // new = [start,[]]
-    // x=[]
-    // while problem.isGoalState(new[0])==False:
-    //     suc = problem.getSuccessors(new[0])
-    //     if new[0] not in recur:
-    //         recur.add(new[0])
-    //     for a in suc:
-    //         if a[0] not in recur:
-    //             new[1].append(a[1])
-    //             stac.push((a[0],new[1][:]))
-    //             new[1].pop()
-    //             if(problem.isGoalState(a[0])==False):
-    //                 recur.add(a[0])
-    //     new = stac.pop()
-    // return new[1]  
-     // This begins the creation of a function that we will 'call' just after it's built
      var create = function (scene, string) {
       var canvas = new BABYLON.ScreenSpaceCanvas2D(scene, {
         id: "ScreenCanvas",
@@ -421,7 +401,7 @@ export default class MazeRunner extends React.Component {
         createWallBody(plane.getBoundingInfo().boundingBox.center, new CANNON.Vec3(plane.scaling.x, plane.scaling.y, plane.scaling.z), 0);
         var walls = [];
         mazemaker(that.props.maze, wall, pellet, hl, 0);
-        mazemaker(that.props.maze, wall, pellet, hl, 1);
+        //mazemaker(that.props.maze, wall, pellet, hl, 1);
         var plane2 = plane.createInstance("i" + 201);
         plane2.scaling.z = 200;
         plane2.scaling.y = 1000;
