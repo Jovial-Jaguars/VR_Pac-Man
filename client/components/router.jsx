@@ -2,6 +2,8 @@
 import {Router, Route, browserHistory, Link, withRouter} from 'react-router';
 import LandingPage from './landingPage';
 import ProfilePage from './profilePage';
+import Ranked from './ranked';
+import Unranked from './unranked';
 import App from './app';
 import MazeStore from './store';
 import ReactDOM from 'react-dom';
@@ -12,11 +14,13 @@ import MultiplayerCustom from './multiplayerCustom';
 import MazeRunner from './mazeRunner';
 import About from './about';
 
-
 // React router that switches between signin, signup, and pet app
+
 var MainRouter = () => (
    <Router history={browserHistory}>
-    <Route path="/" component={LandingPage} />
+    <Route path="/" component={LandingPage}/>
+    <Route path="/ranked" component={Ranked}/>
+    <Route path="/unranked" component={Unranked} />
     <Route path="/profile" component={ProfilePage} />
     <Route path="/mazebuilder" component={App} />
     <Route path="/multiplayer" component={MultiplayerMazeRunner} />

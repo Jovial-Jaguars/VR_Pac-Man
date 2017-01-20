@@ -1,29 +1,20 @@
 import React from 'react';
 import {Router, Route, browserHistory, Link} from 'react-router';
 
-export default class Ranked extends React.Component {
+export default class Unranked extends React.Component {
   constructor(props){
     super(props);
     console.log('lol');
-    console.log(browserHistory);
-    this.state = {
-      maze: [[1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1],
-            [1, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1],
-            [1, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1],
-            [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
-            [1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1],
-            [1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 1],
-            [1, 1, 1, 1, 2, 1, 1, 1, 0, 1, 0, 1, 1, 1, 2, 1],
-            [1, 1, 1, 1, 2, 1, 3, 0, 0, 0, 0, 0, 0, 1, 2, 1],
-            [1, 0, 0, 0, 2, 0, 0, 1, 1, 0, 1, 1, 0, 0, 2, 1],
-            [1, 1, 1, 1, 2, 1, 0, 1, 0, 4, 0, 1, 0, 1, 2, 1],
-            [1, 1, 1, 1, 2, 1, 0, 1, 1, 1, 1, 1, 0, 1, 2, 1],
-            [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
-            [1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1],
-            [1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 1],
-            [1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1],
-            [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1]]
+    console.log(localStorage.maze);
+    var maze = [];
+    for(var i = 0; i  < browserHistory.maze.length; i++) {
+      maze[i] = [];
+      for(var j = 0; j < browserHistory.maze[i].length; j++) {
+        maze[i].push(browserHistory.maze[i][j]);
+      }
     }
+    this.maze = maze;
+    console.log(maze);
   }
 
   componentDidMount() {
@@ -55,8 +46,12 @@ export default class Ranked extends React.Component {
     var newInstanceWall, newInstanceSphere;
     var ghostxvelocity = 0;
     var ghostzvelocity = 25;
-    var ghostx = 0;
-    var ghostz = 25;
+    var ghostx;
+    var ghostz;
+    var gravityPositivej;
+    var gravityPositivei;
+    var gravityNegativej;
+    var gravityNegativei;
     var ghostdirections = [];
     var velocity;
     var gravityFlag = 0;
@@ -65,16 +60,22 @@ export default class Ranked extends React.Component {
     var gameOverCanvas
     var gameOverFlag = 0;
     var currPacmani, currPacmanj;
-    for (var i = 0; i < that.state.maze.length; i++) {
-      for (var j = 0; j < that.state.maze[i].length; j++) {
-        if(that.state.maze[i][j] === 3) {
+    for (var i = 0; i < that.maze.length; i++) {
+      for (var j = 0; j < that.maze[i].length; j++) {
+        if (that.maze[i][j] === 3) {
           currPacmani = i;
           currPacmanj = j;
           posx = (j * 25) + 13;
           posz = 187 - (i * 25);
-        } else if(that.state.maze[i][j] === 4) {
+        } else if (that.maze[i][j] === 4) {
           ghostx = (j * 25) + 13;
           ghostz = 187 - (i * 25);
+        } else if (that.maze[i][j] === 5) {
+          gravityPositivej = j;
+          gravityPositivei = i;
+        } else if (that.maze[i][j] === 6) {
+          gravityNegativej = j;
+          gravityNegativei = i;
         }
       }
     }
@@ -146,13 +147,15 @@ export default class Ranked extends React.Component {
       }
       return curr[1];
     }
-    //console.log(path([0,0], that.state.maze));
-    setInterval(function() {
-      var curr = path([Math.abs(Math.floor((ghostBody.position.z - 175) / 25)),Math.abs(Math.floor((ghostBody.position.x) / 25))], that.state.maze);
+    //console.log(path([0,0], that.maze));
+    if(ghostx !== undefined) {
+      setInterval(function() {
+      var curr = path([Math.abs(Math.floor((ghostBody.position.z - 175) / 25)),Math.abs(Math.floor((ghostBody.position.x) / 25))], that.maze);
       if(typeof curr === 'string') {
         ghostdirections = curr.split('');
       }
-    }, 500)
+    }, 500);
+    }
     var create = function (scene, string) {
       var canvas = new BABYLON.ScreenSpaceCanvas2D(scene, {
         id: "ScreenCanvas",
@@ -223,24 +226,41 @@ export default class Ranked extends React.Component {
       for (var i = 0; i < arr.length; i++) {
         for (var j = 0; j < arr[i].length; j++) {
           if (arr[i][j] === 1) {
-            newInstanceWall = wall.createInstance("i" + (i *16) + j);
-            newInstanceWall.position.z = z; 
-            newInstanceWall.position.x = x;
-            createWallBody(newInstanceWall.getBoundingInfo().boundingBox.center, new CANNON.Vec3(wall.scaling.x, wall.scaling.y, wall.scaling.z), 0);
+            if(flipMaze === 1) {
+              newInstanceWall = wall.createInstance("j" + (i *16) + j);
+              newInstanceWall.position.z = z; 
+              newInstanceWall.position.x = x; 
+              newInstanceWall.position.y = 900;
+              createWallBody(newInstanceWall.getBoundingInfo().boundingBox.center, new CANNON.Vec3(wall.scaling.x, wall.scaling.y, wall.scaling.z), 0);
+            } else {
+              newInstanceWall = wall.createInstance("i" + (i *16) + j);
+              newInstanceWall.position.z = z; 
+              newInstanceWall.position.x = x;
+              createWallBody(newInstanceWall.getBoundingInfo().boundingBox.center, new CANNON.Vec3(wall.scaling.x, wall.scaling.y, wall.scaling.z), 0);
+            }
           } else if (arr[i][j] === 2) {
-            newInstanceSphere = pellet.createInstance("i" + (i *16) + j);
-            newInstanceSphere.position.z = z; 
-            newInstanceSphere.position.x = x; 
-            newInstanceSphere.position.y = 5;
-            var sphereBody = createSphereBody(newInstanceSphere.getBoundingInfo().boundingBox.center, 4, newInstanceSphere.uniqueId);
-            pelletMeshes[newInstanceSphere.uniqueId] = newInstanceSphere;
-          }
-          x += 25;
+            if(flipMaze === 1) {
+              newInstanceSphere = pellet.createInstance("j" + (i *16) + j);
+              newInstanceSphere.position.z = z; 
+              newInstanceSphere.position.x = x;
+              newInstanceSphere.position.y = 986;
+              var sphereBody = createSphereBody(newInstanceSphere.getBoundingInfo().boundingBox.center, 4, newInstanceSphere.uniqueId);
+              pelletMeshes[newInstanceSphere.uniqueId] = newInstanceSphere;
+            } else {
+              newInstanceSphere = pellet.createInstance("i" + (i *16) + j);
+              newInstanceSphere.position.z = z; 
+              newInstanceSphere.position.x = x; 
+              newInstanceSphere.position.y = 5;
+              var sphereBody = createSphereBody(newInstanceSphere.getBoundingInfo().boundingBox.center, 4, newInstanceSphere.uniqueId);
+              pelletMeshes[newInstanceSphere.uniqueId] = newInstanceSphere;
+            }
         }
-        x = 13;
-        z -= 25;
+        x += 25;
       }
-    };
+      x = 13;
+      z -= 25;
+    }
+  };
     var createScene = function () {
 
     // Now create a basic Babylon Scene object
@@ -268,37 +288,40 @@ export default class Ranked extends React.Component {
     // skybox.material = skyboxMaterial;
     // skybox.infiniteDistance = true;
     // skybox.renderingGroupId = 0;
-    BABYLON.SceneLoader.ImportMesh("", "../assets/", "ghostparent.babylon", scene, function (newMeshes, particleSystems, skeletons) {
-      for (var i = 0; i < newMeshes.length; i++) {
-        var ghosty = newMeshes[i];
-        //this.ghost = newMeshes[0];
-        // var light0 = new BABYLON.SpotLight("Spot0", new BABYLON.Vector3(0, 50, 0), new BABYLON.Vector3(0, -1, 0), 0.7, 3, scene);
-        // light0.parent = ghosty;
-        if (ghosty.name === 'Plane') {
-          ghosty.position.y = 10;
-          ghosty.position.x = -200;
-          ghosty.position.z = -10;
-          ghosty.scaling.x = 10;
-          ghosty.scaling.y = 5;
-          ghosty.scaling.z = 10;
-          hl.addMesh(ghosty, BABYLON.Color3.Green());
-          ghosty.material = new BABYLON.StandardMaterial('ghosty', scene);
-          ghosty.material.emissiveColor = new BABYLON.Color3(0.2, 0.4, 0.8);
-          this.ghost = ghosty;
-        } else if (ghosty.name === 'Sphere' || ghosty.name === 'Sphere.001') {
-          ghosty.material = new BABYLON.StandardMaterial('ghosty', scene);
-          ghosty.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
-          ghosty.material.specularColor = new BABYLON.Color3(1, 1, 1);
-          ghosty.material.diffuseColor = new BABYLON.Color3(0.8, 0.8, 0.8);
-        } else if (ghosty.name === 'Sphere.002' || ghosty.name === 'Sphere.003') {
-          ghosty.material = new BABYLON.StandardMaterial('ghosty', scene);
-          ghosty.material.emissiveColor = new BABYLON.Color3(0, 0, 0);
-          ghosty.material.specularColor = new BABYLON.Color3(1, 1, 1);
-          ghosty.material.diffuseColor = new BABYLON.Color3(0.8, 0.8, 0.8);
-        }
+    console.log(ghostx);
+    if(ghostx !== undefined) {
+      BABYLON.SceneLoader.ImportMesh("", "../assets/", "ghostparent.babylon", scene, function (newMeshes, particleSystems, skeletons) {
+        for (var i = 0; i < newMeshes.length; i++) {
+          var ghosty = newMeshes[i];
+          //this.ghost = newMeshes[0];
+          // var light0 = new BABYLON.SpotLight("Spot0", new BABYLON.Vector3(0, 50, 0), new BABYLON.Vector3(0, -1, 0), 0.7, 3, scene);
+          // light0.parent = ghosty;
+          if (ghosty.name === 'Plane') {
+            ghosty.position.y = 10;
+            ghosty.position.x = -200;
+            ghosty.position.z = -10;
+            ghosty.scaling.x = 10;
+            ghosty.scaling.y = 5;
+            ghosty.scaling.z = 10;
+            hl.addMesh(ghosty, BABYLON.Color3.Green());
+            ghosty.material = new BABYLON.StandardMaterial('ghosty', scene);
+            ghosty.material.emissiveColor = new BABYLON.Color3(0.2, 0.4, 0.8);
+            this.ghost = ghosty;
+          } else if (ghosty.name === 'Sphere' || ghosty.name === 'Sphere.001') {
+            ghosty.material = new BABYLON.StandardMaterial('ghosty', scene);
+            ghosty.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
+            ghosty.material.specularColor = new BABYLON.Color3(1, 1, 1);
+            ghosty.material.diffuseColor = new BABYLON.Color3(0.8, 0.8, 0.8);
+          } else if (ghosty.name === 'Sphere.002' || ghosty.name === 'Sphere.003') {
+            ghosty.material = new BABYLON.StandardMaterial('ghosty', scene);
+            ghosty.material.emissiveColor = new BABYLON.Color3(0, 0, 0);
+            ghosty.material.specularColor = new BABYLON.Color3(1, 1, 1);
+            ghosty.material.diffuseColor = new BABYLON.Color3(0.8, 0.8, 0.8);
+          }
 
-      }
-    }.bind(obj));
+        }
+      }.bind(obj));
+    }
     wall = BABYLON.Mesh.CreateBox("plane", 1.8, scene);
     wall.scaling.x = 25 / 1.8;
     wall.scaling.y = 200 / 1.8;
@@ -344,8 +367,10 @@ export default class Ranked extends React.Component {
         plane.material.alpha = 0.2;
         createWallBody(plane.getBoundingInfo().boundingBox.center, new CANNON.Vec3(plane.scaling.x, plane.scaling.y, plane.scaling.z), 0);
         var walls = [];
-        mazemaker(that.state.maze, wall, pellet, hl, 0);
-        //mazemaker(that.state.maze, wall, pellet, hl, 1);
+        mazemaker(that.maze, wall, pellet, hl, 0);
+        if (gravityPositivei !== undefined) {
+          mazemaker(that.maze, wall, pellet, hl, 1);
+        }
         wall.position.x = -200
         wall.isVisible = false;
         var plane2 = plane.createInstance("i" + 201);
@@ -380,6 +405,19 @@ export default class Ranked extends React.Component {
         ground.material.emissiveTexture.vScale = 100.0;
         pelletSound = new BABYLON.Sound("pellet", "../assets/pellet.wav", scene);
         canvas2 = create(scene, score);
+        if (ghostx !== undefined) {
+          var ground2 = ground.createInstance("hk2000");
+          ground2.scaling.z = 900;
+          ground2.scaling.y = 1500;
+          ground2.scaling.x = 10;
+          ground2.position.y = 1000;
+          ground2.rotation.z = -Math.PI;
+          var groundShape = new CANNON.Box(new CANNON.Vec3(ground2.scaling.x, ground2.scaling.y, ground2.scaling.z));
+          var groundBody = new CANNON.Body({ mass: 0, shape: groundShape });
+          groundBody.position.y = 1000;
+          groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(0,0,1),-Math.PI/2); 
+          world.add(groundBody);
+        }
         // var getOptions = function() {
         //   var result = new BABYLON.SceneOptimizerOptions(60, 2000);
         //   var priority = 0;
@@ -428,12 +466,12 @@ export default class Ranked extends React.Component {
        }
      });
     world.add(sphereBody);
-    var ghostShape = new CANNON.Sphere(4); // Step 1
+    if(ghostx !== undefined) {
+      var ghostShape = new CANNON.Sphere(2); // Step 1
     ghostBody = new CANNON.Body({mass: 1, shape: ghostShape}); // Step 2
     ghostBody.position.set(ghostx,1,ghostz);
     ghostBody.rotation = new CANNON.Vec3();
     ghostBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);  
-    // ghostBody.collisionResponse =
     ghostBody.addEventListener('collide', function(e){
       console.log('collide');
       if (e.body.isPlayer) {
@@ -443,59 +481,29 @@ export default class Ranked extends React.Component {
         sphereBody.velocity.x = 0;
         sphereBody.velocity.z = 0;
         if(gameOverCanvas === undefined) {
-          $.ajax({
-            type: 'POST',
-            url: '/submitScore',
-            data: {table: 'spHighScores_PC', score: score},
-            success: function(data) {
-              console.log(data);
-              $.ajax({
-                type: 'POST',
-                url: '/updateMyHighScores',
-                data: {table: 'spHighScores_PC', score: score},
-                success: function(data) {
-                  $.ajax({
-                    type: 'GET',
-                    url: '/highScoreTable',
-                    data: {table: 'spHighScores_PC'},
-                    success: function(scores) {
-                      console.log(JSON.stringify(scores));
-                      var data = scores;
-                      var scores = [];
-                      scores.push(new BABYLON.Text2D('Game Over', {
-                          id: "text5",
-                          y: 10,
-                          x: 325,
-                          marginAlignment: "h: left, v:center",
-                          fontName: "20pt Arial",
-                      }));
-                      scores.push(new BABYLON.Text2D('Your Score:', {
-                          id: "text3",
-                          y: -30,
-                          x: 325,
-                          marginAlignment: "h: left, v:center",
-                          fontName: "20pt Arial",
-                      }));
-                      scores.push(new BABYLON.Text2D(score.toString(), {
-                          id: "text4",
-                          y: -60,
-                          marginAlignment: "h: center, v:center",
-                          fontName: "20pt Arial",
-                      }));
-                      if (data.length > 10) {
-                        data = data.slice(0, 10);
-                      }
-                      for (var i = 0; i < data.length; i++) {
-                        console.log((i + 1).toString() + data[i].username + data[i].score.toString());
-                        scores.push(new BABYLON.Text2D((i + 1).toString() + '.  ' + data[i].username + '  ' + data[i].score.toString() + '\n ', {
-                          id: "text6",
-                          y: (-30 * i) - 130 ,
-                          x: 325,
-                          marginAlignment: "h: left, v:center",
-                          fontName: "20pt Arial",
-                        }));
-                      }
-                      gameOverCanvas = new BABYLON.ScreenSpaceCanvas2D(scene, {
+          var data = scores;
+          var scores = [];
+          scores.push(new BABYLON.Text2D('Game Over', {
+              id: "text5",
+              y: 10,
+              x: 325,
+              marginAlignment: "h: left, v:center",
+              fontName: "20pt Arial",
+          }));
+          scores.push(new BABYLON.Text2D('Your Score:', {
+              id: "text3",
+              y: -30,
+              x: 325,
+              marginAlignment: "h: left, v:center",
+              fontName: "20pt Arial",
+          }));
+          scores.push(new BABYLON.Text2D(score.toString(), {
+              id: "text4",
+              y: -60,
+              marginAlignment: "h: center, v:center",
+              fontName: "20pt Arial",
+          }));
+          gameOverCanvas = new BABYLON.ScreenSpaceCanvas2D(scene, {
                       id: "gameover2",
                       x: 400,
                       y: 0,
@@ -503,11 +511,8 @@ export default class Ranked extends React.Component {
                       backgroundFill: "#C0C0C040",
                       backgroundRoundRadius: 50,
                       children: scores
-                    });
-                }
-              })
-            }
-          })
+            });
+        }
             $(".none").toggleClass("none");
             $(".play-again").click(function() {
               console.log('hello')
@@ -530,43 +535,11 @@ export default class Ranked extends React.Component {
                       [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1]]
               });
             });
-            }
-          })
-      }
-      // $('.play-again').setAttribute('class', )
-      
-        // var buttonRect = new BABYLON.Rectangle2D(
-        // {   parent: canvas, id: "buttonClickMe", x: 400, y: 0, width: 100, height: 40, fill: "#40C040FF", 
-        //   children: 
-        //   [
-        //     new BABYLON.Text2D("Click Me!", { id: "clickme", marginAlignment: "h:center, v:center" })
-        //   ]
-        // });
-        // buttonRect.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, buttonRect, function() {
-        //   console.log('click');
-        // }
-        // , true));
-        //  buttonRect.pointerEventObservable.add(function (d, s) {
-        //     // button2Rect.levelVisible = !button2Rect.levelVisible;
-        //     console.log("UP");
-        // }, BABYLON.PrimitivePointerInfo.PointerUp);
-      //   var rect = new BABYLON.Rectangle2D({
-      //   id: "gameover",  x: 200, y: 200, width: 500, height: 800, 
-      //   fill: "#C0C0C040", border: "#A040A0D0, #FFFFFFFF", borderThickness: 10, 
-      //   roundRadius: 10, 
-      //   children: 
-      //   [
-      //       new BABYLON.Rectangle2D(
-      //       { 
-      //           id: "insideRect", marginAlignment: "v: center, h: center", 
-      //           width: 40, height: 40, fill: "blue", roundRadius: 10 
-      //       })
-      //   ]});
-         gameOverFlag = 1;
-
+            gameOverFlag = 1;
       }
     });
     world.add(ghostBody);
+    }
 
     var groundShape = new CANNON.Plane();
     var groundBody = new CANNON.Body({ mass: 0, shape: groundShape });
@@ -639,34 +612,47 @@ export default class Ranked extends React.Component {
       camera.position.y = sphereBody.position.y + 5;
       camera.position.z = sphereBody.position.z;
       if(Math.abs(Math.floor((camera.position.x) / 25)) !== currPacmanj || Math.abs(Math.floor((camera.position.z - 175) / 25) !== currPacmani)) {
-        that.state.maze[currPacmani][currPacmanj] = 0;
+        that.maze[currPacmani][currPacmanj] = 0;
         currPacmanj = Math.abs(Math.floor((camera.position.x) / 25));
         currPacmani = Math.abs(Math.floor((camera.position.z - 175) / 25));
-        that.state.maze[currPacmani][currPacmanj] = 3;
+        that.maze[currPacmani][currPacmanj] = 3;
+        if(currPacmani === gravityPositivei && currPacmanj === gravityPositivej && upsidedown === 0) {
+          world.gravity.set(0, 40, 0);
+          upsidedown = 1;
+        } else if (currPacmani === gravityNegativei && currPacmanj === gravityNegativej && upsidedown === 1) {
+          world.gravity.set(0, -40, 0);
+          upsidedown = 0;
+        }
       }
       if (obj.ghost !== undefined && gameOverFlag === 0) {
-        obj.ghost.position.x = ghostBody.position.x;
-        obj.ghost.position.y = ghostBody.position.y + 20;
-        obj.ghost.position.z = ghostBody.position.z;
-        if(ghostdirections[0] === 'E' && ghostBody.velocity.x !== 80) {
-          ghostBody.velocity.z = 1;
-          ghostBody.velocity.x = 40;
+        if (upsidedown == 1) {
+          obj.ghost.position.x = ghostBody.position.x;
+          obj.ghost.position.y = ghostBody.position.y - 10;
+          obj.ghost.position.z = ghostBody.position.z;
+        } else {
+          obj.ghost.position.x = ghostBody.position.x;
+          obj.ghost.position.y = ghostBody.position.y + 10;
+          obj.ghost.position.z = ghostBody.position.z;
+        }
+        if(ghostdirections[0] === 'E') {
+          ghostBody.velocity.z = 0;
+          ghostBody.velocity.x = 30;
         } 
-        if(ghostdirections[0] === 'W' && ghostBody.velocity.x !== -80) {
-          ghostBody.velocity.z = 1;
-          ghostBody.velocity.x = -40;
+        if(ghostdirections[0] === 'W') {
+          ghostBody.velocity.z = 0;
+          ghostBody.velocity.x = -30;
         } 
-        if(ghostdirections[0] === 'S' && ghostBody.velocity.z !== -80) {
-          ghostBody.velocity.z = -40;
-          ghostBody.velocity.x = 1;
+        if(ghostdirections[0] === 'S') {
+          ghostBody.velocity.z = -30;
+          ghostBody.velocity.x = 0;
         } 
-        if(ghostdirections[0] === 'N' && ghostBody.velocity.z !== 80) {
-          ghostBody.velocity.z = 40;
-          ghostBody.velocity.x = 1;
+        if(ghostdirections[0] === 'N') {
+          ghostBody.velocity.z = 30;
+          ghostBody.velocity.x = 0;
         } 
-      }  
-      //console.log(engine.fps);
+      } 
       canvas2.children[0].text = Math.round(that.engine.fps).toString();
+      
   });
   var resize = function(){
     that.engine.resize();
@@ -714,8 +700,12 @@ componentDidUpdate() {
     var newInstanceWall, newInstanceSphere;
     var ghostxvelocity = 0;
     var ghostzvelocity = 25;
-    var ghostx = 0;
-    var ghostz = 25;
+    var ghostx;
+    var ghostz;
+    var gravityPositivej;
+    var gravityPositivei;
+    var gravityNegativej;
+    var gravityNegativei;
     var ghostdirections = [];
     var velocity;
     var gravityFlag = 0;
@@ -724,16 +714,22 @@ componentDidUpdate() {
     var gameOverCanvas
     var gameOverFlag = 0;
     var currPacmani, currPacmanj;
-    for (var i = 0; i < that.state.maze.length; i++) {
-      for (var j = 0; j < that.state.maze[i].length; j++) {
-        if(that.state.maze[i][j] === 3) {
+    for (var i = 0; i < that.maze.length; i++) {
+      for (var j = 0; j < that.maze[i].length; j++) {
+        if (that.maze[i][j] === 3) {
           currPacmani = i;
           currPacmanj = j;
           posx = (j * 25) + 13;
           posz = 187 - (i * 25);
-        } else if(that.state.maze[i][j] === 4) {
+        } else if (that.maze[i][j] === 4) {
           ghostx = (j * 25) + 13;
           ghostz = 187 - (i * 25);
+        } else if (that.maze[i][j] === 5) {
+          gravityPositivej = j;
+          gravityPositivei = i;
+        } else if (that.maze[i][j] === 6) {
+          gravityNegativej = j;
+          gravityNegativei = i;
         }
       }
     }
@@ -805,13 +801,15 @@ componentDidUpdate() {
       }
       return curr[1];
     }
-    //console.log(path([0,0], that.state.maze));
-    setInterval(function() {
-      var curr = path([Math.abs(Math.floor((ghostBody.position.z - 175) / 25)),Math.abs(Math.floor((ghostBody.position.x) / 25))], that.state.maze);
+    //console.log(path([0,0], that.maze));
+    if(ghostx !== undefined) {
+      setInterval(function() {
+      var curr = path([Math.abs(Math.floor((ghostBody.position.z - 175) / 25)),Math.abs(Math.floor((ghostBody.position.x) / 25))], that.maze);
       if(typeof curr === 'string') {
         ghostdirections = curr.split('');
       }
-    }, 500)
+    }, 500);
+    }
     var create = function (scene, string) {
       var canvas = new BABYLON.ScreenSpaceCanvas2D(scene, {
         id: "ScreenCanvas",
@@ -882,24 +880,41 @@ componentDidUpdate() {
       for (var i = 0; i < arr.length; i++) {
         for (var j = 0; j < arr[i].length; j++) {
           if (arr[i][j] === 1) {
-            newInstanceWall = wall.createInstance("i" + (i *16) + j);
-            newInstanceWall.position.z = z; 
-            newInstanceWall.position.x = x;
-            createWallBody(newInstanceWall.getBoundingInfo().boundingBox.center, new CANNON.Vec3(wall.scaling.x, wall.scaling.y, wall.scaling.z), 0);
+            if(flipMaze === 1) {
+              newInstanceWall = wall.createInstance("j" + (i *16) + j);
+              newInstanceWall.position.z = z; 
+              newInstanceWall.position.x = x; 
+              newInstanceWall.position.y = 900;
+              createWallBody(newInstanceWall.getBoundingInfo().boundingBox.center, new CANNON.Vec3(wall.scaling.x, wall.scaling.y, wall.scaling.z), 0);
+            } else {
+              newInstanceWall = wall.createInstance("i" + (i *16) + j);
+              newInstanceWall.position.z = z; 
+              newInstanceWall.position.x = x;
+              createWallBody(newInstanceWall.getBoundingInfo().boundingBox.center, new CANNON.Vec3(wall.scaling.x, wall.scaling.y, wall.scaling.z), 0);
+            }
           } else if (arr[i][j] === 2) {
-            newInstanceSphere = pellet.createInstance("i" + (i *16) + j);
-            newInstanceSphere.position.z = z; 
-            newInstanceSphere.position.x = x; 
-            newInstanceSphere.position.y = 5;
-            var sphereBody = createSphereBody(newInstanceSphere.getBoundingInfo().boundingBox.center, 4, newInstanceSphere.uniqueId);
-            pelletMeshes[newInstanceSphere.uniqueId] = newInstanceSphere;
-          }
-          x += 25;
+            if(flipMaze === 1) {
+              newInstanceSphere = pellet.createInstance("j" + (i *16) + j);
+              newInstanceSphere.position.z = z; 
+              newInstanceSphere.position.x = x;
+              newInstanceSphere.position.y = 986;
+              var sphereBody = createSphereBody(newInstanceSphere.getBoundingInfo().boundingBox.center, 4, newInstanceSphere.uniqueId);
+              pelletMeshes[newInstanceSphere.uniqueId] = newInstanceSphere;
+            } else {
+              newInstanceSphere = pellet.createInstance("i" + (i *16) + j);
+              newInstanceSphere.position.z = z; 
+              newInstanceSphere.position.x = x; 
+              newInstanceSphere.position.y = 5;
+              var sphereBody = createSphereBody(newInstanceSphere.getBoundingInfo().boundingBox.center, 4, newInstanceSphere.uniqueId);
+              pelletMeshes[newInstanceSphere.uniqueId] = newInstanceSphere;
+            }
         }
-        x = 13;
-        z -= 25;
+        x += 25;
       }
-    };
+      x = 13;
+      z -= 25;
+    }
+  };
     var createScene = function () {
 
     // Now create a basic Babylon Scene object
@@ -927,37 +942,40 @@ componentDidUpdate() {
     // skybox.material = skyboxMaterial;
     // skybox.infiniteDistance = true;
     // skybox.renderingGroupId = 0;
-    BABYLON.SceneLoader.ImportMesh("", "../assets/", "ghostparent.babylon", scene, function (newMeshes, particleSystems, skeletons) {
-      for (var i = 0; i < newMeshes.length; i++) {
-        var ghosty = newMeshes[i];
-        //this.ghost = newMeshes[0];
-        // var light0 = new BABYLON.SpotLight("Spot0", new BABYLON.Vector3(0, 50, 0), new BABYLON.Vector3(0, -1, 0), 0.7, 3, scene);
-        // light0.parent = ghosty;
-        if (ghosty.name === 'Plane') {
-          ghosty.position.y = 10;
-          ghosty.position.x = -200;
-          ghosty.position.z = -10;
-          ghosty.scaling.x = 10;
-          ghosty.scaling.y = 5;
-          ghosty.scaling.z = 10;
-          hl.addMesh(ghosty, BABYLON.Color3.Green());
-          ghosty.material = new BABYLON.StandardMaterial('ghosty', scene);
-          ghosty.material.emissiveColor = new BABYLON.Color3(0.2, 0.4, 0.8);
-          this.ghost = ghosty;
-        } else if (ghosty.name === 'Sphere' || ghosty.name === 'Sphere.001') {
-          ghosty.material = new BABYLON.StandardMaterial('ghosty', scene);
-          ghosty.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
-          ghosty.material.specularColor = new BABYLON.Color3(1, 1, 1);
-          ghosty.material.diffuseColor = new BABYLON.Color3(0.8, 0.8, 0.8);
-        } else if (ghosty.name === 'Sphere.002' || ghosty.name === 'Sphere.003') {
-          ghosty.material = new BABYLON.StandardMaterial('ghosty', scene);
-          ghosty.material.emissiveColor = new BABYLON.Color3(0, 0, 0);
-          ghosty.material.specularColor = new BABYLON.Color3(1, 1, 1);
-          ghosty.material.diffuseColor = new BABYLON.Color3(0.8, 0.8, 0.8);
-        }
+    console.log(ghostx);
+    if(ghostx !== undefined) {
+      BABYLON.SceneLoader.ImportMesh("", "../assets/", "ghostparent.babylon", scene, function (newMeshes, particleSystems, skeletons) {
+        for (var i = 0; i < newMeshes.length; i++) {
+          var ghosty = newMeshes[i];
+          //this.ghost = newMeshes[0];
+          // var light0 = new BABYLON.SpotLight("Spot0", new BABYLON.Vector3(0, 50, 0), new BABYLON.Vector3(0, -1, 0), 0.7, 3, scene);
+          // light0.parent = ghosty;
+          if (ghosty.name === 'Plane') {
+            ghosty.position.y = 10;
+            ghosty.position.x = -200;
+            ghosty.position.z = -10;
+            ghosty.scaling.x = 10;
+            ghosty.scaling.y = 5;
+            ghosty.scaling.z = 10;
+            hl.addMesh(ghosty, BABYLON.Color3.Green());
+            ghosty.material = new BABYLON.StandardMaterial('ghosty', scene);
+            ghosty.material.emissiveColor = new BABYLON.Color3(0.2, 0.4, 0.8);
+            this.ghost = ghosty;
+          } else if (ghosty.name === 'Sphere' || ghosty.name === 'Sphere.001') {
+            ghosty.material = new BABYLON.StandardMaterial('ghosty', scene);
+            ghosty.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
+            ghosty.material.specularColor = new BABYLON.Color3(1, 1, 1);
+            ghosty.material.diffuseColor = new BABYLON.Color3(0.8, 0.8, 0.8);
+          } else if (ghosty.name === 'Sphere.002' || ghosty.name === 'Sphere.003') {
+            ghosty.material = new BABYLON.StandardMaterial('ghosty', scene);
+            ghosty.material.emissiveColor = new BABYLON.Color3(0, 0, 0);
+            ghosty.material.specularColor = new BABYLON.Color3(1, 1, 1);
+            ghosty.material.diffuseColor = new BABYLON.Color3(0.8, 0.8, 0.8);
+          }
 
-      }
-    }.bind(obj));
+        }
+      }.bind(obj));
+    }
     wall = BABYLON.Mesh.CreateBox("plane", 1.8, scene);
     wall.scaling.x = 25 / 1.8;
     wall.scaling.y = 200 / 1.8;
@@ -1003,8 +1021,10 @@ componentDidUpdate() {
         plane.material.alpha = 0.2;
         createWallBody(plane.getBoundingInfo().boundingBox.center, new CANNON.Vec3(plane.scaling.x, plane.scaling.y, plane.scaling.z), 0);
         var walls = [];
-        mazemaker(that.state.maze, wall, pellet, hl, 0);
-        //mazemaker(that.state.maze, wall, pellet, hl, 1);
+        mazemaker(that.maze, wall, pellet, hl, 0);
+        if (gravityPositivei !== undefined) {
+          mazemaker(that.maze, wall, pellet, hl, 1);
+        }
         wall.position.x = -200
         wall.isVisible = false;
         var plane2 = plane.createInstance("i" + 201);
@@ -1039,6 +1059,19 @@ componentDidUpdate() {
         ground.material.emissiveTexture.vScale = 100.0;
         pelletSound = new BABYLON.Sound("pellet", "../assets/pellet.wav", scene);
         canvas2 = create(scene, score);
+        if (ghostx !== undefined) {
+          var ground2 = ground.createInstance("hk2000");
+          ground2.scaling.z = 900;
+          ground2.scaling.y = 1500;
+          ground2.scaling.x = 10;
+          ground2.position.y = 1000;
+          ground2.rotation.z = -Math.PI;
+          var groundShape = new CANNON.Box(new CANNON.Vec3(ground2.scaling.x, ground2.scaling.y, ground2.scaling.z));
+          var groundBody = new CANNON.Body({ mass: 0, shape: groundShape });
+          groundBody.position.y = 1000;
+          groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(0,0,1),-Math.PI/2); 
+          world.add(groundBody);
+        }
         // var getOptions = function() {
         //   var result = new BABYLON.SceneOptimizerOptions(60, 2000);
         //   var priority = 0;
@@ -1087,12 +1120,12 @@ componentDidUpdate() {
        }
      });
     world.add(sphereBody);
-    var ghostShape = new CANNON.Sphere(2); // Step 1
+    if(ghostx !== undefined) {
+      var ghostShape = new CANNON.Sphere(2); // Step 1
     ghostBody = new CANNON.Body({mass: 1, shape: ghostShape}); // Step 2
     ghostBody.position.set(ghostx,1,ghostz);
     ghostBody.rotation = new CANNON.Vec3();
     ghostBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);  
-    // ghostBody.collisionResponse =
     ghostBody.addEventListener('collide', function(e){
       console.log('collide');
       if (e.body.isPlayer) {
@@ -1102,59 +1135,29 @@ componentDidUpdate() {
         sphereBody.velocity.x = 0;
         sphereBody.velocity.z = 0;
         if(gameOverCanvas === undefined) {
-          $.ajax({
-            type: 'POST',
-            url: '/submitScore',
-            data: {table: 'spHighScores_PC', score: score},
-            success: function(data) {
-              console.log(data);
-              $.ajax({
-                type: 'POST',
-                url: '/updateMyHighScores',
-                data: {table: 'spHighScores_PC', score: score},
-                success: function(data) {
-                  $.ajax({
-                    type: 'GET',
-                    url: '/highScoreTable',
-                    data: {table: 'spHighScores_PC'},
-                    success: function(scores) {
-                      console.log(JSON.stringify(scores));
-                      var data = scores;
-                      var scores = [];
-                      scores.push(new BABYLON.Text2D('Game Over', {
-                          id: "text5",
-                          y: 10,
-                          x: 325,
-                          marginAlignment: "h: left, v:center",
-                          fontName: "20pt Arial",
-                      }));
-                      scores.push(new BABYLON.Text2D('Your Score:', {
-                          id: "text3",
-                          y: -30,
-                          x: 325,
-                          marginAlignment: "h: left, v:center",
-                          fontName: "20pt Arial",
-                      }));
-                      scores.push(new BABYLON.Text2D(score.toString(), {
-                          id: "text4",
-                          y: -60,
-                          marginAlignment: "h: center, v:center",
-                          fontName: "20pt Arial",
-                      }));
-                      if (data.length > 10) {
-                        data = data.slice(0, 10);
-                      }
-                      for (var i = 0; i < data.length; i++) {
-                        console.log((i + 1).toString() + data[i].username + data[i].score.toString());
-                        scores.push(new BABYLON.Text2D((i + 1).toString() + '.  ' + data[i].username + '  ' + data[i].score.toString() + '\n ', {
-                          id: "text6",
-                          y: (-30 * i) - 130,
-                          x: 325,
-                          marginAlignment: "h: left, v:center",
-                          fontName: "20pt Arial",
-                        }));
-                      }
-                      gameOverCanvas = new BABYLON.ScreenSpaceCanvas2D(scene, {
+          var data = scores;
+          var scores = [];
+          scores.push(new BABYLON.Text2D('Game Over', {
+              id: "text5",
+              y: 10,
+              x: 325,
+              marginAlignment: "h: left, v:center",
+              fontName: "20pt Arial",
+          }));
+          scores.push(new BABYLON.Text2D('Your Score:', {
+              id: "text3",
+              y: -30,
+              x: 325,
+              marginAlignment: "h: left, v:center",
+              fontName: "20pt Arial",
+          }));
+          scores.push(new BABYLON.Text2D(score.toString(), {
+              id: "text4",
+              y: -60,
+              marginAlignment: "h: center, v:center",
+              fontName: "20pt Arial",
+          }));
+          gameOverCanvas = new BABYLON.ScreenSpaceCanvas2D(scene, {
                       id: "gameover2",
                       x: 400,
                       y: 0,
@@ -1162,11 +1165,8 @@ componentDidUpdate() {
                       backgroundFill: "#C0C0C040",
                       backgroundRoundRadius: 50,
                       children: scores
-                    });
-                }
-              })
-            }
-          })
+            });
+        }
             $(".none").toggleClass("none");
             $(".play-again").click(function() {
               console.log('hello')
@@ -1189,43 +1189,11 @@ componentDidUpdate() {
                       [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1]]
               });
             });
-            }
-          })
-      }
-      // $('.play-again').setAttribute('class', )
-      
-        // var buttonRect = new BABYLON.Rectangle2D(
-        // {   parent: canvas, id: "buttonClickMe", x: 400, y: 0, width: 100, height: 40, fill: "#40C040FF", 
-        //   children: 
-        //   [
-        //     new BABYLON.Text2D("Click Me!", { id: "clickme", marginAlignment: "h:center, v:center" })
-        //   ]
-        // });
-        // buttonRect.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, buttonRect, function() {
-        //   console.log('click');
-        // }
-        // , true));
-        //  buttonRect.pointerEventObservable.add(function (d, s) {
-        //     // button2Rect.levelVisible = !button2Rect.levelVisible;
-        //     console.log("UP");
-        // }, BABYLON.PrimitivePointerInfo.PointerUp);
-      //   var rect = new BABYLON.Rectangle2D({
-      //   id: "gameover",  x: 200, y: 200, width: 500, height: 800, 
-      //   fill: "#C0C0C040", border: "#A040A0D0, #FFFFFFFF", borderThickness: 10, 
-      //   roundRadius: 10, 
-      //   children: 
-      //   [
-      //       new BABYLON.Rectangle2D(
-      //       { 
-      //           id: "insideRect", marginAlignment: "v: center, h: center", 
-      //           width: 40, height: 40, fill: "blue", roundRadius: 10 
-      //       })
-      //   ]});
-         gameOverFlag = 1;
-
+            gameOverFlag = 1;
       }
     });
     world.add(ghostBody);
+    }
 
     var groundShape = new CANNON.Plane();
     var groundBody = new CANNON.Body({ mass: 0, shape: groundShape });
@@ -1298,37 +1266,59 @@ componentDidUpdate() {
       camera.position.y = sphereBody.position.y + 5;
       camera.position.z = sphereBody.position.z;
       if(Math.abs(Math.floor((camera.position.x) / 25)) !== currPacmanj || Math.abs(Math.floor((camera.position.z - 175) / 25) !== currPacmani)) {
-        that.state.maze[currPacmani][currPacmanj] = 0;
+        that.maze[currPacmani][currPacmanj] = 0;
         currPacmanj = Math.abs(Math.floor((camera.position.x) / 25));
         currPacmani = Math.abs(Math.floor((camera.position.z - 175) / 25));
-        that.state.maze[currPacmani][currPacmanj] = 3;
+        that.maze[currPacmani][currPacmanj] = 3;
+        if(currPacmani === gravityPositivei && currPacmanj === gravityPositivej && upsidedown === 0) {
+          world.gravity.set(0, 40, 0);
+          upsidedown = 1;
+        } else if (currPacmani === gravityNegativei && currPacmanj === gravityNegativej && upsidedown === 1) {
+          world.gravity.set(0, -40, 0);
+          upsidedown = 0;
+        }
       }
       if (obj.ghost !== undefined && gameOverFlag === 0) {
-        obj.ghost.position.x = ghostBody.position.x;
-        obj.ghost.position.y = ghostBody.position.y + 20;
-        obj.ghost.position.z = ghostBody.position.z;
-        if(ghostdirections[0] === 'E' && ghostBody.velocity.x !== 80) {
-          ghostBody.velocity.z = 1;
-          ghostBody.velocity.x = 40;
+        if (upsidedown == 1) {
+          obj.ghost.position.x = ghostBody.position.x;
+          obj.ghost.position.y = ghostBody.position.y - 10;
+          obj.ghost.position.z = ghostBody.position.z;
+        } else {
+          obj.ghost.position.x = ghostBody.position.x;
+          obj.ghost.position.y = ghostBody.position.y + 10;
+          obj.ghost.position.z = ghostBody.position.z;
+        }
+        if(ghostdirections[0] === 'E') {
+          ghostBody.velocity.z = 0;
+          ghostBody.velocity.x = 30;
         } 
-        if(ghostdirections[0] === 'W' && ghostBody.velocity.x !== -80) {
-          ghostBody.velocity.z = 1;
-          ghostBody.velocity.x = -40;
+        if(ghostdirections[0] === 'W') {
+          ghostBody.velocity.z = 0;
+          ghostBody.velocity.x = -30;
         } 
-        if(ghostdirections[0] === 'S' && ghostBody.velocity.z !== -80) {
-          ghostBody.velocity.z = -40;
-          ghostBody.velocity.x = 1;
+        if(ghostdirections[0] === 'S') {
+          ghostBody.velocity.z = -30;
+          ghostBody.velocity.x = 0;
         } 
-        if(ghostdirections[0] === 'N' && ghostBody.velocity.z !== 80) {
-          ghostBody.velocity.z = 40;
-          ghostBody.velocity.x = 1;
+        if(ghostdirections[0] === 'N') {
+          ghostBody.velocity.z = 30;
+          ghostBody.velocity.x = 0;
         } 
-      }  
-      //console.log(engine.fps);
+      } 
       canvas2.children[0].text = Math.round(that.engine.fps).toString();
+      
   });
-  window.addEventListener("resize", function () {
+  var resize = function(){
     that.engine.resize();
+  }
+  window.addEventListener("resize", resize);
+  $(".back-to-menu").click(function() {
+    $(".play-again").addClass("none");
+    $(".back-to-menu").addClass("none");
+    that.engine.stopRenderLoop();
+    that.engine.clear(BABYLON.Color3.Black(),false,false);
+    window.removeEventListener('resize', resize);
+     that.props.router.push({pathname: '/'});
   });
 }
 
