@@ -86,13 +86,13 @@ export default class LandingPage extends React.Component {
       url: '/checkLoggedIn',
       async: false,
       success: function(data) {
-        if (!data.username) {
+        if (!data.user) {
           console.log('hit not authenticated');
           this.props.router.push({pathname: '/'});
         } else {
           console.log("hit authenticated");
-          console.log(data.username);
-          window.username = data.username;
+          console.log(data.user);
+          window.username = data.user;
           this.props.router.push({pathname: '/profile'});
         }
       }.bind(this),
