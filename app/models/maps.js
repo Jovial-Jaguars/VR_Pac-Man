@@ -1,5 +1,7 @@
 var Sequelize = require('sequelize');
-var sequelize = new Sequelize('PacmanVR', 'root', '');
+var supersecret = require('../../config/config');
+var sequelize = new Sequelize('PacmanVR', 'root', supersecret.dbPassword);
+
 
 var Maps = sequelize.define('Maps', {
   mapData: {

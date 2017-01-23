@@ -2,31 +2,79 @@ var User = require('../app/models/user');
 var Maps = require('../app/models/maps');
 var HighScores = require('../app/models/highscores');
 
+var jwt = require('jsonwebtoken');
+var supersecret = require('../config/config');
+
 module.exports = function(app, passport) {
 
-  app.post('/login', passport.authenticate('local-login', {
-    successRedirect: '/profile',
-    failureRedirect: '/#/failure',
-    failureFlash: true
-    })
-  );
+  // app.post('/login', passport.authenticate('local-login'), function(req, res) {
+  //   console.log('req.body:',req.body);
+  //     if (!user) {
+  //       res.send(info);
+  //     }
+  //     if (user) {
+  //       res.send(user);
+  //     }
+  //     res.send('hit nothing');
+  // });
 
-  app.post('/signup', passport.authenticate('local-signup', {
-    successRedirect: '/profile',
-    failureRedirect: '/#/failure',
-    failureFlash: true
-    })
-  );
-
-  app.get('/checkLoggedIn', function(req, res) {
-    if (!req.isAuthenticated()) {
-      res.redirect('/');
-    } else {
-      res.send(req.session.passport);
-    }
+  // app.post('/login', function(req, res, next) {
+  //   console.log('hit')
+  //   passport.authenticate('local-login', function(err, user, info) {
+  //     console.log('hit');
+  //     console.log(err, user, info);
+  //     res.send(user);
+  //   })
+  // })
+  app.post('/login', function(req, res, next) {
+    passport.authenticate('local-login', function(err, user, info, status) {
+      if (err) {
+        return next(err);
+      } else if (!user) {
+        res.send(info);
+      } else {
+        // send back a json web token upon successful login
+        var token = jwt.sign({user}, supersecret.secret, {
+          expiresIn: '90d' // expires in 90 days
+        });
+        res.send({username: user, token: token});
+      }
+    })(req, res, next);
   });
 
-  app.post('/profileInfo', isLoggedIn, function(req, res) {
+  // app.post('/signup', passport.authenticate('local-signup', {
+  //   successRedirect: '/profile',
+  //   failureRedirect: '/#/failure',
+  //   failureFlash: true
+  //   })
+  // );
+
+  app.post('/signup', function(req, res, next) {
+    passport.authenticate('local-signup', function(err, user, info, status) {
+      if (err) {
+        return next(err);
+      } else if (!user) {
+        res.send(info);
+      } else {
+        console.log('hit4')
+        // send back a json web token upon successful signup
+        var token = jwt.sign({user}, supersecret.secret, {
+          expiresIn: '90d' // expires in 90 days, unit seconds
+        });
+        res.send({username: user, token: token});
+      }
+    })(req, res, next);
+  });
+
+  // app.get('/checkLoggedIn', function(req, res) {
+  //   if (!req.isAuthenticated()) {
+  //     res.redirect('/');
+  //   } else {
+  //     res.send(req.session.passport);
+  //   }
+  // });
+
+  app.post('/profileInfo', function(req, res) {
     console.log('hit profileinfo request.');
     // console.log('req.body:', req.body);
     User.findOne({
@@ -38,10 +86,7 @@ module.exports = function(app, passport) {
     });
   });
 
-  app.post('/maps', isLoggedIn, function(req, res) {
-    console.log('hit /post maps in server!');
-    console.log('req.session.passport.user:', req.session.passport.user);
-    console.log(req.body);
+  app.post('/maps', function(req, res) {
     Maps.create({
       mapData: req.body.mapData,
       shareable: req.body.shareable,
@@ -51,14 +96,14 @@ module.exports = function(app, passport) {
     });
   })
 
-  app.get('/maps', isLoggedIn, function(req, res) {
+  app.get('/maps', function(req, res) {
     var getMaps = {};
     Maps.findAll({
       where: {shareable: true}
     }).then(function(publicMaps) {
       getMaps[0] = publicMaps;
       Maps.findAll({
-        where: {user_id: req.session.passport.user}
+        where: {user_id: req.query.username}
       }).then(function(userMaps) {
         getMaps[1] = userMaps;
         res.send(getMaps);
@@ -237,6 +282,25 @@ module.exports = function(app, passport) {
     res.redirect('/');
     });
 
+  app.get('/verifytoken', function(req, res) {
+    console.log('hit verify token in server')
+    var token = req.headers['x-access-token'];
+    if (token) {
+      console.log('hit token exists in server')
+      jwt.verify(token, supersecret.secret, function(err, decoded) {
+        if (err) {
+          return res.json({success: false, message: 'Failed to authenticate token.'});
+        } else {
+          console.log('decoded:', decoded);
+          return res.json({success: true, message: 'Authenticated token.', decoded: decoded});
+        }
+      });
+    } else {
+      console.log('hit token doesnt exist in server');
+      return res.status(403).send({success: false, message: 'No token provided.'});
+    }
+  })
+
   app.get('*', function(req, res) {
     res.redirect('/');
   })
@@ -245,13 +309,13 @@ module.exports = function(app, passport) {
 
 
 
-function isLoggedIn(req, res, next) {
-  // if user is authenticated, continue
-  if (req.isAuthenticated()) {
-    console.log('user is authenticated');
-    return next();
-  }
-  console.log('user is not authenticated man');
-  // else, redirect to home page
-  res.redirect('/');
-};
+// function isLoggedIn(req, res, next) {
+//   // if user is authenticated, continue
+//   if (req.isAuthenticated()) {
+//     console.log('user is authenticated');
+//     return next();
+//   }
+//   console.log('user is not authenticated man');
+//   // else, redirect to home page
+//   res.redirect('/');
+// };
