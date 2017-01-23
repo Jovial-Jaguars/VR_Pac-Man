@@ -48,15 +48,26 @@ export default class LandingPage extends React.Component {
       type: 'POST',
       url: '/signup',
       data: dataString,
-      success: function() {
-        if (!username) {
-          console.log('signup !username', username);
-          this.props.router.push({pathname: '/'});
+      success: function(data) {
+        console.log(data)
+        if (data.message) {
+          console.log(data.message);
+          // render error message on form
+          // clear form?
+          $('#signup-username').focus();
+          // this.props.router.push({pathname: '/'});
         } else {
-          window.username = username;
+          // window.username = data.username;
+          // set cookie
+          document.cookie = data.token;
+          localStorage.setItem('username', data.username);
+          console.log(document.cookie);
           this.props.router.push({pathname: '/profile'});
         }
-      }.bind(this)
+      }.bind(this),
+      error: function(err) {
+        console.log('error:', err);
+      }
     })
   }
 
@@ -70,14 +81,27 @@ export default class LandingPage extends React.Component {
       url: '/login',
       data: dataString,
       success: function(data) {
-        console.log('successfully logged in!', data);
-        if (!username) {
-          this.props.router.push({pathname: '/'});
+        console.log('success cb:',data);
+        if (data.message) {
+          console.log(data.message);
+          // render error on form
+          // clear form?
         } else {
-          window.username = username;
+          document.cookie = data.token;
+          localStorage.setItem('username', data.username);
           this.props.router.push({pathname: '/profile'});
         }
-      }.bind(this)
+        // console.log('successfully logged in!', data);
+        // if (!username) {
+        //   this.props.router.push({pathname: '/'});
+        // } else {
+        //   window.username = username;
+        // this.props.router.push({pathname: '/profile'});
+        // }
+      }.bind(this),
+      error: function(err) {
+        console.log(err);
+      }
     })
   }
    demoButtonClick(e) {
@@ -142,25 +166,6 @@ export default class LandingPage extends React.Component {
   }
 
   componentWillMount() {
-    $.ajax({
-      type: 'GET',
-      url: '/checkLoggedIn',
-      async: false,
-      success: function(data) {
-        if (!data.user) {
-          console.log('hit not authenticated');
-          this.props.router.push({pathname: '/'});
-        } else {
-          console.log("hit authenticated");
-          console.log(data.user);
-          window.username = data.user;
-          this.props.router.push({pathname: '/profile'});
-        }
-      }.bind(this),
-      error: function() {
-        console.log('Error!');
-      }
-    });
   }
 
   render() {

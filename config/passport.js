@@ -4,16 +4,16 @@ var User = require('../app/models/user');
 
 module.exports = function(passport) {
   // serialize and deserialize users for sessions
-  passport.serializeUser(function(user, done) {
-    done(null, user);
-  });
+  // passport.serializeUser(function(user, done) {
+  //   done(null, user);
+  // });
 
-  passport.deserializeUser(function(username, done) {
-    User.find({ username: username })
-    .then(function(user) {
-      done(null, user);
-    });
-  });
+  // passport.deserializeUser(function(username, done) {
+  //   User.find({ username: username })
+  //   .then(function(user) {
+  //     done(null, user);
+  //   });
+  // });
 
   passport.use('local-login', new LocalStrategy({
     usernameField: 'username',
@@ -23,6 +23,7 @@ module.exports = function(passport) {
   function(req, username, password, done) {
    User.find({ where: {username: username} })
     .then(function(user) {
+      console.log('hits found query')
       if (!user) {
         console.log('hit !user');
         // return done(err);
@@ -50,6 +51,7 @@ module.exports = function(passport) {
     passReqToCallback: true
   },
   function(req, username, password, done) {
+    console.log('req.body:',req.body);
       User.find({ where: {username: username} })
       .then(function(user) {
         if (user) {
@@ -63,14 +65,14 @@ module.exports = function(passport) {
             email: req.body.email,
             password: User.generateHash(password)
           })
-          .then(function(user) {
+          .then(function(user, test) {
             //signup success
             var newUser = user.dataValues.username;
             return done(null, newUser);
           })
           .catch(function(err) {
-            // return done(err);
-            return done(null, false, {message: 'Error.'});
+            return done(err);
+            // return done(null, false, {message: 'Error.'});
           });
         }
       })

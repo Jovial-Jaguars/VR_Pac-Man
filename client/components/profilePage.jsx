@@ -26,7 +26,8 @@ export default class ProfilePage extends React.Component {
       url: '/logout',
       success: function() {
         console.log('logged out!');
-        window.username = null;
+        document.cookie = '';
+        localStorage.clear();
         this.props.router.push({pathname: '/'});
       }.bind(this)
     })
@@ -36,25 +37,16 @@ export default class ProfilePage extends React.Component {
     $.ajax({
       type: 'POST',
       url: 'profileInfo',
-      data: {user: username},
+      data: {user: localStorage.getItem('username')},
       async: false,
       success: function(data) {
-        if (!data.username) {
-          // console.log('compwillmount profpage data', data);
+        console.log('profile info data', data);
+        this.setState({
+          username: data.username,
+          spHighScore: data.spHighScores_PC,
+          mpHighScore: data.mpHighScores_PC
+        });
 
-          alert('Authentication error!');
-          console.log('data.username', data.username)
-          this.props.router.push({pathname: '/'});
-        } else {
-          console.log('reset high scores state');
-          console.log(data);
-          window.username = data.username;
-          this.setState({
-            username: data.username,
-            spHighScore: data.spHighScores_VR,
-            mpHighScore: data.mpHighScores_VR
-          });
-        }
       }.bind(this)
     });
     this.getMyMazes();
@@ -102,9 +94,11 @@ export default class ProfilePage extends React.Component {
 
   getMyMazes() {
     var that = this;
+    console.log('test', localStorage.getItem('username'))
     $.ajax({
       type: 'GET',
       url: '/maps',
+      data: {username: localStorage.getItem('username')},
       success: function(data) {
         console.log('success myMaps', that.convertData(data[1], 'myMaps'));
       }

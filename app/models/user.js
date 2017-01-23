@@ -1,5 +1,6 @@
 var Sequelize = require('sequelize');
-var sequelize = new Sequelize('PacmanVR', 'root', '');
+var supersecret = require('../../config/config');
+var sequelize = new Sequelize('PacmanVR', 'root', supersecret.dbPassword);
 var bcrypt = require('bcrypt-nodejs');
 
 var Maps = require('./maps');
