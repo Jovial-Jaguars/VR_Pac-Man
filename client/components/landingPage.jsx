@@ -53,7 +53,10 @@ export default class LandingPage extends React.Component {
         if (data.message) {
           console.log(data.message);
           // render error message on form
+          $('.authError.signupError').css('display', 'block');
+          $('.authError.signupError').text(data.message);
           // clear form?
+          $('#signupForm input[type=text]').val('');
           $('#signup-username').focus();
           // this.props.router.push({pathname: '/'});
         } else {
@@ -85,8 +88,13 @@ export default class LandingPage extends React.Component {
         if (data.message) {
           console.log(data.message);
           // render error on form
+          $('.authError.loginError').css('display', 'block');
+          $('.authError.loginError').text(data.message);
           // clear form?
+          $('#loginForm input[type=text]').val('');
+          $('#login-username').focus();
         } else {
+          $('.authError').css('display', 'none');
           document.cookie = data.token;
           localStorage.setItem('username', data.username);
           this.props.router.push({pathname: '/profile'});
@@ -101,6 +109,8 @@ export default class LandingPage extends React.Component {
       }.bind(this),
       error: function(err) {
         console.log(err);
+        $('.authError.loginError').css('display', 'block');
+        $('.authError.loginError').text('Invalid credentials.');
       }
     })
   }
@@ -188,10 +198,12 @@ export default class LandingPage extends React.Component {
           <div id="modal-loginform">
             <h2 id="formheader">Login</h2>
             <LoginForm loginFormSubmit={this.loginFormSubmit.bind(this)}/>
+            <p className="authError loginError"></p>
           </div>
           <div id="modal-signupform">
             <h2 id="formheader">Signup</h2>
             <SignupForm signupFormSubmit={this.signupFormSubmit.bind(this)}/><br/>
+            <p className="authError signupError"></p>
             <p>Already have an account? <a onClick={this.modalClickLogin}>Login</a></p>
           </div>
           <div>
