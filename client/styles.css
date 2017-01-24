@@ -654,6 +654,12 @@ button:active {
 #modal-signupform>p {
   text-align: center;
   /*margin-left: 10px;*/
+  margin: 7px;
+}
+
+#moda-signupform>p,.authError {
+  display: none;
+  color: red;
 }
 
 /*styling for the maze store*/
