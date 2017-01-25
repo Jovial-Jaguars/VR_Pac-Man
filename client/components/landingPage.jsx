@@ -57,10 +57,10 @@ export default class LandingPage extends React.Component {
           $('.authError.signupError').text(data.message);
           // clear form?
           $('#signupForm input[type=text]').val('');
+          $('#signupForm input[type=password]').val('');
           $('#signup-username').focus();
           // this.props.router.push({pathname: '/'});
         } else {
-          // window.username = data.username;
           // set cookie
           document.cookie = data.token;
           localStorage.setItem('username', data.username);
@@ -92,6 +92,7 @@ export default class LandingPage extends React.Component {
           $('.authError.loginError').text(data.message);
           // clear form?
           $('#loginForm input[type=text]').val('');
+          $('#loginForm input[type=password]').val('');
           $('#login-username').focus();
         } else {
           $('.authError').css('display', 'none');
@@ -109,8 +110,13 @@ export default class LandingPage extends React.Component {
       }.bind(this),
       error: function(err) {
         console.log(err);
+        console.log(err.status);
         $('.authError.loginError').css('display', 'block');
-        $('.authError.loginError').text('Invalid credentials.');
+        if (err.status === 429) {
+          $('.authError.loginError').text('Too many requests, try again later.');
+        } else {
+          $('.authError.loginError').text('Invalid credentials.');
+        }
       }
     })
   }
@@ -197,7 +203,7 @@ export default class LandingPage extends React.Component {
           </div>
           <div id="modal-loginform">
             <h2 id="formheader">Login</h2>
-            <LoginForm loginFormSubmit={this.loginFormSubmit.bind(this)}/>
+            <LoginForm loginFormSubmit={this.loginFormSubmit.bind(this)}/><br/>
             <p className="authError loginError"></p>
           </div>
           <div id="modal-signupform">
