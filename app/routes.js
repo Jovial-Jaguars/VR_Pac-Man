@@ -4,6 +4,10 @@ var HighScores = require('../app/models/highscores');
 
 var jwt = require('jsonwebtoken');
 var supersecret = require('../config/config');
+var ExpressBrute = require('express-brute');
+var store = new ExpressBrute.MemoryStore();
+var bruteforce = new ExpressBrute(store);
+var nodemailer = require('nodemailer');
 
 module.exports = function(app, passport) {
 
@@ -26,7 +30,7 @@ module.exports = function(app, passport) {
   //     res.send(user);
   //   })
   // })
-  app.post('/login', function(req, res, next) {
+  app.post('/login', bruteforce.prevent, function(req, res, next) {
     passport.authenticate('local-login', function(err, user, info, status) {
       if (err) {
         return next(err);
@@ -57,6 +61,11 @@ module.exports = function(app, passport) {
         res.send(info);
       } else {
         console.log('hit4')
+        // send Email
+
+        // to do!
+
+
         // send back a json web token upon successful signup
         var token = jwt.sign({user}, supersecret.secret, {
           expiresIn: '90d' // expires in 90 days, unit seconds

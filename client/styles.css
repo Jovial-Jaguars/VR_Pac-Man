@@ -659,6 +659,7 @@ button:active {
 
 #moda-signupform>p,.authError {
   display: none;
+  text-align: center;
   color: red;
 }
 
@@ -723,7 +724,7 @@ html, body {
     background-repeat: no-repeat;
 }
 
-.maps-sub-container {
+.maps-container {
     display: block;
     margin-top: 120px;
 }
