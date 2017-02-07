@@ -2,31 +2,66 @@ var User = require('../app/models/user');
 var Maps = require('../app/models/maps');
 var HighScores = require('../app/models/highscores');
 
+var jwt = require('jsonwebtoken');
+var supersecret = require('../config/config');
+var ExpressBrute = require('express-brute');
+var store = new ExpressBrute.MemoryStore();
+var bruteforce = new ExpressBrute(store);
+var nodemailer = require('nodemailer');
+
 module.exports = function(app, passport) {
 
-  app.post('/login', passport.authenticate('local-login', {
-    successRedirect: '/profile',
-    failureRedirect: '/#/failure',
-    failureFlash: true
-    })
-  );
-
-  app.post('/signup', passport.authenticate('local-signup', {
-    successRedirect: '/profile',
-    failureRedirect: '/#/failure',
-    failureFlash: true
-    })
-  );
-
-  app.get('/checkLoggedIn', function(req, res) {
-    if (!req.isAuthenticated()) {
-      res.redirect('/');
-    } else {
-      res.send(req.session.passport);
-    }
+  app.post('/login', bruteforce.prevent, function(req, res, next) {
+    passport.authenticate('local-login', function(err, user, info, status) {
+      if (err) {
+        return next(err);
+      } else if (!user) {
+        res.send(info);
+      } else {
+        // send back a json web token upon successful login
+        // var token = jwt.sign({user}, supersecret.secret, {
+        //   expiresIn: '90d' // expires in 90 days
+        // });
+        var username = user.dataValues.username;
+        var token = user.dataValues.token;
+        res.send({username: username, token: token});
+      }
+    })(req, res, next);
   });
 
-  app.post('/profileInfo', isLoggedIn, function(req, res) {
+  // app.post('/signup', passport.authenticate('local-signup', {
+  //   successRedirect: '/profile',
+  //   failureRedirect: '/#/failure',
+  //   failureFlash: true
+  //   })
+  // );
+
+  app.post('/signup', function(req, res, next) {
+    passport.authenticate('local-signup', function(err, user, info, status) {
+      if (err) {
+        return next(err);
+      } else if (!user) {
+        res.send(info);
+      } else {
+        console.log('hit4')
+        // send Email
+
+        // to do!
+
+
+        // send back a json web token upon successful signup
+        var token = user.dataValues.token;
+        var username = user.dataValues.username
+        // var token = jwt.sign({user}, supersecret.secret, {
+        //   expiresIn: '90d' // expires in 90 days, unit seconds
+        // });
+
+        res.send({username: username, token: token});
+      }
+    })(req, res, next);
+  });
+
+  app.post('/profileInfo', function(req, res) {
     console.log('hit profileinfo request.');
     // console.log('req.body:', req.body);
     User.findOne({
@@ -38,10 +73,7 @@ module.exports = function(app, passport) {
     });
   });
 
-  app.post('/maps', isLoggedIn, function(req, res) {
-    console.log('hit /post maps in server!');
-    console.log('req.session.passport.user:', req.session.passport.user);
-    console.log(req.body);
+  app.post('/maps', function(req, res) {
     Maps.create({
       mapData: req.body.mapData,
       shareable: req.body.shareable,
@@ -51,14 +83,17 @@ module.exports = function(app, passport) {
     });
   })
 
-  app.get('/maps', isLoggedIn, function(req, res) {
+  app.get('/maps', function(req, res) {
+    if (!checkToken) {
+      res.sendStatus(403).send('Not authenticated')
+    }
     var getMaps = {};
     Maps.findAll({
       where: {shareable: true}
     }).then(function(publicMaps) {
       getMaps[0] = publicMaps;
       Maps.findAll({
-        where: {user_id: req.session.passport.user}
+        where: {user_id: req.query.username}
       }).then(function(userMaps) {
         getMaps[1] = userMaps;
         res.send(getMaps);
@@ -94,7 +129,8 @@ module.exports = function(app, passport) {
 
   app.post('/leaveGameRoomRanked', function(req, res) {
     var roomNumber = req.body.room.slice(4);
-    console.log(req.session.passport.user + ' left room number:', roomNumber);
+    var username = req.body.username;
+    console.log(username + ' left room number:', roomNumber);
     console.log('roomsInPlayRanked:', roomsInPlayRanked);
     if (roomsInPlayRanked[roomNumber]) {
       roomsInPlayRanked[roomNumber]--;
@@ -141,7 +177,8 @@ module.exports = function(app, passport) {
 
   app.post('/leaveGameRoomCustom', function(req, res) {
     var roomNumber = req.body.room.slice(4);
-    console.log(req.session.passport.user + ' left room number:', roomNumber);
+    var username = req.body.username;
+    console.log(username + ' left room number:', roomNumber);
     customRooms[roomNumber]--;
     if (customRooms[roomNumber] <= 0) {
       delete customRooms[roomNumber];
@@ -157,17 +194,18 @@ module.exports = function(app, passport) {
 
   app.post('/leaveGameRoomCustom', function(req, res) {
     var roomNumber = req.body.room.slice(4);
-    console.log(req.session.passport.user + ' left room:', roomNumber);
+    var username = req.body.username;
+    console.log(username + ' left room:', roomNumber);
 
   })
 
   app.post('/submitScore', function(req, res) {
-    if (!req.session.passport || !req.session.passport.user) {
-      res.end('authentication error');
+    if (!checkToken) {
+      res.send('authentication error');
     } else {
       var table = req.body.table;
       var score = Number(req.body.score);
-      var username = req.session.passport.user;
+      var username = req.body.username;
       HighScores[table].create({
         username: username,
         score: score
@@ -191,7 +229,7 @@ module.exports = function(app, passport) {
 
     User.findOne({
       where: {
-        username: req.session.passport.user
+        username: req.body.username
       }, raw:true
     })
     .then(function(user) {
@@ -206,7 +244,7 @@ module.exports = function(app, passport) {
         User.update(
           {[table]: req.body.score},
           {
-            where: {username: req.session.passport.user}
+            where: {username: req.body.username}
           }
         )
       }
@@ -221,7 +259,7 @@ module.exports = function(app, passport) {
       Maps.update(
         {shareable: entry.shareable},
         {
-          where: {user_id: req.session.passport.user,
+          where: {user_id: req.body.username,
                   mapData: entry.mapData}
         })
       .error(function() {
@@ -233,25 +271,70 @@ module.exports = function(app, passport) {
   });
 
   app.get('/logout', function(req, res) {
+    var username = req.query.username;
+    var token = req.query.token;
+    User.find({where: {username: username, token: token}})
+      .then(function(user) {
+        user.update({token: null});
+      })
     req.logout();
     res.redirect('/');
     });
+
+  app.get('/verifytoken', function(req, res) {
+    console.log('hit verify token in server, req.query', req.query);
+    var token = req.headers['x-access-token'];
+    var username = req.query.username;
+    User.findOne({where: {
+      username: username,
+      token: token
+    }}).then(function(user) {
+      if (!user) {
+        return res.json({success: false, message: 'Failed to authenticate token.'});
+      }
+      if (token) {
+        console.log('hit token exists in server')
+        jwt.verify(token, supersecret.secret, function(err, decoded) {
+          if (err) {
+            return res.json({success: false, message: 'Failed to authenticate token.'});
+          } else {
+            console.log('decoded:', decoded);
+            return res.json({success: true, message: 'Authenticated token.', decoded: decoded});
+          }
+        });
+      } else {
+        console.log('hit token doesnt exist in server');
+        return res.status(403).send({success: false, message: 'No token provided.'});
+      }
+    })
+  })
 
   app.get('*', function(req, res) {
     res.redirect('/');
   })
 };
 
-
-
-
-function isLoggedIn(req, res, next) {
-  // if user is authenticated, continue
-  if (req.isAuthenticated()) {
-    console.log('user is authenticated');
-    return next();
-  }
-  console.log('user is not authenticated man');
-  // else, redirect to home page
-  res.redirect('/');
+function checkToken(req, res) {
+  var token = req.body.token;
+  var username = req.body.username;
+  User.findOne({where: {
+    username: username,
+    token: token
+  }}).then(function(user) {
+    if (!user) {
+      return false;
+    }
+    if (token) {
+      jwt.verify(token, supersecret.secret, function(err, decoded) {
+        if (err) {
+          return false;
+        } else {
+          return true;
+        }
+      });
+    } else {
+      return false;
+    }
+  })
 };
+

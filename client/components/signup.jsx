@@ -13,7 +13,7 @@ var SignupForm = (props) => (
 
     <div>
       <label>Password: </label>
-      <input type="text" name="password"/>
+      <input type="password" name="password"/>
     </div>
     <div>
       <input id="submitInput" type="submit" value="Sign Up" onClick={props.signupFormSubmit}/>
