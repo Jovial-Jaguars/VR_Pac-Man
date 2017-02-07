@@ -11,25 +11,6 @@ var nodemailer = require('nodemailer');
 
 module.exports = function(app, passport) {
 
-  // app.post('/login', passport.authenticate('local-login'), function(req, res) {
-  //   console.log('req.body:',req.body);
-  //     if (!user) {
-  //       res.send(info);
-  //     }
-  //     if (user) {
-  //       res.send(user);
-  //     }
-  //     res.send('hit nothing');
-  // });
-
-  // app.post('/login', function(req, res, next) {
-  //   console.log('hit')
-  //   passport.authenticate('local-login', function(err, user, info) {
-  //     console.log('hit');
-  //     console.log(err, user, info);
-  //     res.send(user);
-  //   })
-  // })
   app.post('/login', bruteforce.prevent, function(req, res, next) {
     passport.authenticate('local-login', function(err, user, info, status) {
       if (err) {
@@ -38,10 +19,12 @@ module.exports = function(app, passport) {
         res.send(info);
       } else {
         // send back a json web token upon successful login
-        var token = jwt.sign({user}, supersecret.secret, {
-          expiresIn: '90d' // expires in 90 days
-        });
-        res.send({username: user, token: token});
+        // var token = jwt.sign({user}, supersecret.secret, {
+        //   expiresIn: '90d' // expires in 90 days
+        // });
+        var username = user.dataValues.username;
+        var token = user.dataValues.token;
+        res.send({username: username, token: token});
       }
     })(req, res, next);
   });
@@ -67,21 +50,16 @@ module.exports = function(app, passport) {
 
 
         // send back a json web token upon successful signup
-        var token = jwt.sign({user}, supersecret.secret, {
-          expiresIn: '90d' // expires in 90 days, unit seconds
-        });
-        res.send({username: user, token: token});
+        var token = user.dataValues.token;
+        var username = user.dataValues.username
+        // var token = jwt.sign({user}, supersecret.secret, {
+        //   expiresIn: '90d' // expires in 90 days, unit seconds
+        // });
+
+        res.send({username: username, token: token});
       }
     })(req, res, next);
   });
-
-  // app.get('/checkLoggedIn', function(req, res) {
-  //   if (!req.isAuthenticated()) {
-  //     res.redirect('/');
-  //   } else {
-  //     res.send(req.session.passport);
-  //   }
-  // });
 
   app.post('/profileInfo', function(req, res) {
     console.log('hit profileinfo request.');
@@ -106,6 +84,9 @@ module.exports = function(app, passport) {
   })
 
   app.get('/maps', function(req, res) {
+    if (!checkToken) {
+      res.sendStatus(403).send('Not authenticated')
+    }
     var getMaps = {};
     Maps.findAll({
       where: {shareable: true}
@@ -287,27 +268,42 @@ module.exports = function(app, passport) {
   });
 
   app.get('/logout', function(req, res) {
+    var username = req.query.username;
+    var token = req.query.token;
+    User.find({where: {username: username, token: token}})
+      .then(function(user) {
+        user.update({token: null});
+      })
     req.logout();
     res.redirect('/');
     });
 
   app.get('/verifytoken', function(req, res) {
-    console.log('hit verify token in server')
+    console.log('hit verify token in server, req.query', req.query);
     var token = req.headers['x-access-token'];
-    if (token) {
-      console.log('hit token exists in server')
-      jwt.verify(token, supersecret.secret, function(err, decoded) {
-        if (err) {
-          return res.json({success: false, message: 'Failed to authenticate token.'});
-        } else {
-          console.log('decoded:', decoded);
-          return res.json({success: true, message: 'Authenticated token.', decoded: decoded});
-        }
-      });
-    } else {
-      console.log('hit token doesnt exist in server');
-      return res.status(403).send({success: false, message: 'No token provided.'});
-    }
+    var username = req.query.username;
+    User.findOne({where: {
+      username: username,
+      token: token
+    }}).then(function(user) {
+      if (!user) {
+        return res.json({success: false, message: 'Failed to authenticate token.'});
+      }
+      if (token) {
+        console.log('hit token exists in server')
+        jwt.verify(token, supersecret.secret, function(err, decoded) {
+          if (err) {
+            return res.json({success: false, message: 'Failed to authenticate token.'});
+          } else {
+            console.log('decoded:', decoded);
+            return res.json({success: true, message: 'Authenticated token.', decoded: decoded});
+          }
+        });
+      } else {
+        console.log('hit token doesnt exist in server');
+        return res.status(403).send({success: false, message: 'No token provided.'});
+      }
+    })
   })
 
   app.get('*', function(req, res) {
@@ -315,16 +311,18 @@ module.exports = function(app, passport) {
   })
 };
 
+function checkToken(req, res) {
+  var token = req.body.token;
+  if (token) {
+    jwt.verify(token, supersecret.secret, function(err, decoded) {
+      if (err) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+  } else {
+    return false;
+  }
+};
 
-
-
-// function isLoggedIn(req, res, next) {
-//   // if user is authenticated, continue
-//   if (req.isAuthenticated()) {
-//     console.log('user is authenticated');
-//     return next();
-//   }
-//   console.log('user is not authenticated man');
-//   // else, redirect to home page
-//   res.redirect('/');
-// };

@@ -22,6 +22,7 @@ function requireAuth() {
         url: '/verifytoken',
         async: false,
         headers: {'x-access-token': document.cookie},
+        data: {username: localStorage.getItem('username')},
         success: function(data) {
             if (data.success) {
                 console.log(data.message);
@@ -42,6 +43,7 @@ function checkAuth() {
         type: 'GET',
         url: '/verifytoken',
         headers: {'x-access-token': document.cookie},
+        data: {username: localStorage.getItem('username')},
         async: false,
         success: function(data) {
             if (data.success) {

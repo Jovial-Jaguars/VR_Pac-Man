@@ -29,6 +29,10 @@ var User = sequelize.define('User', {
     type: Sequelize.STRING,
     allowNull: false
   },
+  token: {
+    type: Sequelize.TEXT,
+    allowNull: true
+  },
   spHighScores_PC: {
     type: Sequelize.INTEGER,
     defaultValue: 0
