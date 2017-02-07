@@ -24,6 +24,7 @@ export default class ProfilePage extends React.Component {
     $.ajax({
       type: 'GET',
       url: '/logout',
+      data: {username: localStorage.getItem('username'), token: document.cookie},
       success: function() {
         console.log('logged out!');
         document.cookie = '';
@@ -37,7 +38,7 @@ export default class ProfilePage extends React.Component {
     $.ajax({
       type: 'POST',
       url: 'profileInfo',
-      data: {user: localStorage.getItem('username')},
+      data: {user: localStorage.getItem('username'), token: document.cookie},
       async: false,
       success: function(data) {
         console.log('profile info data', data);
@@ -98,7 +99,7 @@ export default class ProfilePage extends React.Component {
     $.ajax({
       type: 'GET',
       url: '/maps',
-      data: {username: localStorage.getItem('username')},
+      data: {username: localStorage.getItem('username'), token: document.cookie},
       success: function(data) {
         console.log('success myMaps', that.convertData(data[1], 'myMaps'));
       }

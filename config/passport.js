@@ -1,6 +1,8 @@
 var LocalStrategy = require('passport-local').Strategy;
 
 var User = require('../app/models/user');
+var jwt = require('jsonwebtoken');
+var supersecret = require('../config/config');
 
 module.exports = function(passport) {
   // serialize and deserialize users for sessions
@@ -39,7 +41,12 @@ module.exports = function(passport) {
       }
       //login success
       console.log('login success');
-      user = user.dataValues.username;
+      var token = jwt.sign({user}, supersecret.secret, {
+          expiresIn: '90d' // expires in 90 days
+        });
+      console.log('token:', token);
+      user.update({ token: token });
+      // user = user.dataValues.username;
       return done(null, user);
     });
   }));
@@ -60,15 +67,19 @@ module.exports = function(passport) {
           // return done(null, false, req.flash('signupMessage', 'That username is already taken!'));
         }
         else if (!user) {
+          var token = jwt.sign({user}, supersecret.secret, {
+              expiresIn: '90d' // expires in 90 days, unit seconds
+            });
           User.create({
             username: username,
             email: req.body.email,
-            password: User.generateHash(password)
+            password: User.generateHash(password),
+            token: token
           })
           .then(function(user, test) {
             //signup success
-            var newUser = user.dataValues.username;
-            return done(null, newUser);
+            // var newUser = user.dataValues.username;
+            return done(null, user);
           })
           .catch(function(err) {
             return done(err);
