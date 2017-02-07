@@ -451,16 +451,17 @@ componentDidMount() {
         sphereBody.velocity.x = 0;
         sphereBody.velocity.z = 0;
         if(gameOverCanvas === undefined) {
+          var username = localStorage.setItem('username');
           $.ajax({
             type: 'POST',
             url: '/submitScore',
-            data: {table: 'mpHighScores_PC', score: score},
+            data: {table: 'mpHighScores_PC', score: score, username: username},
             success: function(data) {
               console.log(data);
               $.ajax({
                 type: 'POST',
                 url: '/updateMyHighScores',
-                data: {table: 'mpHighScores_PC', score: score},
+                data: {table: 'mpHighScores_PC', score: score, username: username},
                 success: function(data) {
                   $.ajax({
                     type: 'GET',
@@ -1426,7 +1427,7 @@ componentDidUpdate() {
     $.ajax({
       type: 'POST',
       url: 'leaveGameRoomRanked',
-      data: room,
+      data: {room: room, username: localStorage.getItem('username')},
       success: function() {
         console.log('left room');
         window.room = null;
@@ -1446,7 +1447,7 @@ componentDidUpdate() {
     $.ajax({
       type: 'POST',
       url: 'leaveGameRoomRanked',
-      data: {room: room},
+      data: {room: room, username: localStorage.getItem('username')},
       success: function() {
         console.log('left room');
         window.room = null;

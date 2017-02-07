@@ -181,7 +181,7 @@ componentWillMount(){
       $.ajax({
         type: 'POST',
         url: '/updateMyMapSharing',
-        data: {apiPackage},
+        data: {apiPackage: apiPackage, username: localStorage.getItem('username')},
         success: function(data) {
           console.log(data);
         },

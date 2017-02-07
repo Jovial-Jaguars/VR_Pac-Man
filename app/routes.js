@@ -129,7 +129,8 @@ module.exports = function(app, passport) {
 
   app.post('/leaveGameRoomRanked', function(req, res) {
     var roomNumber = req.body.room.slice(4);
-    console.log(req.session.passport.user + ' left room number:', roomNumber);
+    var username = req.body.username;
+    console.log(username + ' left room number:', roomNumber);
     console.log('roomsInPlayRanked:', roomsInPlayRanked);
     if (roomsInPlayRanked[roomNumber]) {
       roomsInPlayRanked[roomNumber]--;
@@ -176,7 +177,8 @@ module.exports = function(app, passport) {
 
   app.post('/leaveGameRoomCustom', function(req, res) {
     var roomNumber = req.body.room.slice(4);
-    console.log(req.session.passport.user + ' left room number:', roomNumber);
+    var username = req.body.username;
+    console.log(username + ' left room number:', roomNumber);
     customRooms[roomNumber]--;
     if (customRooms[roomNumber] <= 0) {
       delete customRooms[roomNumber];
@@ -192,17 +194,18 @@ module.exports = function(app, passport) {
 
   app.post('/leaveGameRoomCustom', function(req, res) {
     var roomNumber = req.body.room.slice(4);
-    console.log(req.session.passport.user + ' left room:', roomNumber);
+    var username = req.body.username;
+    console.log(username + ' left room:', roomNumber);
 
   })
 
   app.post('/submitScore', function(req, res) {
-    if (!req.session.passport || !req.session.passport.user) {
-      res.end('authentication error');
+    if (!checkToken) {
+      res.send('authentication error');
     } else {
       var table = req.body.table;
       var score = Number(req.body.score);
-      var username = req.session.passport.user;
+      var username = req.body.username;
       HighScores[table].create({
         username: username,
         score: score
@@ -226,7 +229,7 @@ module.exports = function(app, passport) {
 
     User.findOne({
       where: {
-        username: req.session.passport.user
+        username: req.body.username
       }, raw:true
     })
     .then(function(user) {
@@ -241,7 +244,7 @@ module.exports = function(app, passport) {
         User.update(
           {[table]: req.body.score},
           {
-            where: {username: req.session.passport.user}
+            where: {username: req.body.username}
           }
         )
       }
@@ -256,7 +259,7 @@ module.exports = function(app, passport) {
       Maps.update(
         {shareable: entry.shareable},
         {
-          where: {user_id: req.session.passport.user,
+          where: {user_id: req.body.username,
                   mapData: entry.mapData}
         })
       .error(function() {
@@ -313,16 +316,25 @@ module.exports = function(app, passport) {
 
 function checkToken(req, res) {
   var token = req.body.token;
-  if (token) {
-    jwt.verify(token, supersecret.secret, function(err, decoded) {
-      if (err) {
-        return false;
-      } else {
-        return true;
-      }
-    });
-  } else {
-    return false;
-  }
+  var username = req.body.username;
+  User.findOne({where: {
+    username: username,
+    token: token
+  }}).then(function(user) {
+    if (!user) {
+      return false;
+    }
+    if (token) {
+      jwt.verify(token, supersecret.secret, function(err, decoded) {
+        if (err) {
+          return false;
+        } else {
+          return true;
+        }
+      });
+    } else {
+      return false;
+    }
+  })
 };
 
