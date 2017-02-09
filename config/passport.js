@@ -23,21 +23,26 @@ module.exports = function(passport) {
     passReqToCallback: true
   },
   function(req, username, password, done) {
-   User.find({ where: {username: username} })
+   User.find({ where: {username: username}, raw: true })
     .then(function(user) {
-      console.log('hits found query')
+      console.log('hits found query');
+      console.log('balhblablahbhla');
+      console.log('user:',user.password);
       if (!user) {
         console.log('hit !user');
         // return done(err);
         return done(null, false, {message: 'Invalid username.'});
         // return done(null, false, req.flash('loginMessage', 'User not found.'));
       }
-      var hash = user.dataValues.password;
+      var hash = user.password;
       if (!User.validPassword(password, hash)) {
         console.log('***Enter valid password condition***');
         // return done(err);
         return done(null, false, {message: 'Invalid password.'});
         // return done(null, false, req.flash('loginMessage', 'Invalid password.'));
+      }
+      if (!user.active) {
+        return done(null, false, {message: 'Please activate your account by following the instructions in the account confirmation email you received to proceed.'});
       }
       //login success
       console.log('login success');

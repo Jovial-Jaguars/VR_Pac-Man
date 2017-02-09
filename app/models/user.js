@@ -29,6 +29,10 @@ var User = sequelize.define('User', {
     type: Sequelize.STRING,
     allowNull: false
   },
+  active: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
+  },
   token: {
     type: Sequelize.TEXT,
     allowNull: true

@@ -50,22 +50,27 @@ export default class LandingPage extends React.Component {
       data: dataString,
       success: function(data) {
         console.log(data)
+        $('#signupForm input[type=text]').val('');
+        $('#signupForm input[type=password]').val('');
         if (data.message) {
           console.log(data.message);
           // render error message on form
           $('.authError.signupError').css('display', 'block');
           $('.authError.signupError').text(data.message);
-          // clear form?
-          $('#signupForm input[type=text]').val('');
-          $('#signupForm input[type=password]').val('');
+          // $('#signupForm input[type=text]').val('');
+          // $('#signupForm input[type=password]').val('');
           $('#signup-username').focus();
           // this.props.router.push({pathname: '/'});
         } else {
-          // set cookie
-          document.cookie = data.token;
-          localStorage.setItem('username', data.username);
-          console.log(document.cookie);
-          this.props.router.push({pathname: '/profile'});
+          // // set cookie
+          // document.cookie = data.token;
+          // localStorage.setItem('username', data.username);
+          // console.log(document.cookie);
+          // this.props.router.push({pathname: '/profile'});
+          var modal = document.getElementById('myModal');
+          modal.style.display = 'none'
+          alert('Please check your email to confirm registration and log in!');
+          // this.props.router.push({pathname: '/'});
         }
       }.bind(this),
       error: function(err) {
