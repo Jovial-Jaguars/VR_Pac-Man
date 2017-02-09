@@ -48,29 +48,15 @@ export default class LandingPage extends React.Component {
       type: 'POST',
       url: '/signup',
       data: dataString,
-      success: function(data) {
-        console.log(data)
-        if (data.message) {
-          console.log(data.message);
-          // render error message on form
-          $('.authError.signupError').css('display', 'block');
-          $('.authError.signupError').text(data.message);
-          // clear form?
-          $('#signupForm input[type=text]').val('');
-          $('#signupForm input[type=password]').val('');
-          $('#signup-username').focus();
-          // this.props.router.push({pathname: '/'});
+      success: function() {
+        if (!username) {
+          console.log('signup !username', username);
+          this.props.router.push({pathname: '/'});
         } else {
-          // set cookie
-          document.cookie = data.token;
-          localStorage.setItem('username', data.username);
-          console.log(document.cookie);
+          window.username = username;
           this.props.router.push({pathname: '/profile'});
         }
-      }.bind(this),
-      error: function(err) {
-        console.log('error:', err);
-      }
+      }.bind(this)
     })
   }
 
@@ -84,40 +70,14 @@ export default class LandingPage extends React.Component {
       url: '/login',
       data: dataString,
       success: function(data) {
-        console.log('success cb:',data);
-        if (data.message) {
-          console.log(data.message);
-          // render error on form
-          $('.authError.loginError').css('display', 'block');
-          $('.authError.loginError').text(data.message);
-          // clear form?
-          $('#loginForm input[type=text]').val('');
-          $('#loginForm input[type=password]').val('');
-          $('#login-username').focus();
+        console.log('successfully logged in!', data);
+        if (!username) {
+          this.props.router.push({pathname: '/'});
         } else {
-          $('.authError').css('display', 'none');
-          document.cookie = data.token;
-          localStorage.setItem('username', data.username);
+          window.username = username;
           this.props.router.push({pathname: '/profile'});
         }
-        // console.log('successfully logged in!', data);
-        // if (!username) {
-        //   this.props.router.push({pathname: '/'});
-        // } else {
-        //   window.username = username;
-        // this.props.router.push({pathname: '/profile'});
-        // }
-      }.bind(this),
-      error: function(err) {
-        console.log(err);
-        console.log(err.status);
-        $('.authError.loginError').css('display', 'block');
-        if (err.status === 429) {
-          $('.authError.loginError').text('Too many requests, try again later.');
-        } else {
-          $('.authError.loginError').text('Invalid credentials.');
-        }
-      }
+      }.bind(this)
     })
   }
    demoButtonClick(e) {
@@ -182,6 +142,25 @@ export default class LandingPage extends React.Component {
   }
 
   componentWillMount() {
+    $.ajax({
+      type: 'GET',
+      url: '/checkLoggedIn',
+      async: false,
+      success: function(data) {
+        if (!data.user) {
+          console.log('hit not authenticated');
+          this.props.router.push({pathname: '/'});
+        } else {
+          console.log("hit authenticated");
+          console.log(data.user);
+          window.username = data.user;
+          this.props.router.push({pathname: '/profile'});
+        }
+      }.bind(this),
+      error: function() {
+        console.log('Error!');
+      }
+    });
   }
 
   render() {
@@ -203,13 +182,11 @@ export default class LandingPage extends React.Component {
           </div>
           <div id="modal-loginform">
             <h2 id="formheader">Login</h2>
-            <LoginForm loginFormSubmit={this.loginFormSubmit.bind(this)}/><br/>
-            <p className="authError loginError"></p>
+            <LoginForm loginFormSubmit={this.loginFormSubmit.bind(this)}/>
           </div>
           <div id="modal-signupform">
             <h2 id="formheader">Signup</h2>
             <SignupForm signupFormSubmit={this.signupFormSubmit.bind(this)}/><br/>
-            <p className="authError signupError"></p>
             <p>Already have an account? <a onClick={this.modalClickLogin}>Login</a></p>
           </div>
           <div>
