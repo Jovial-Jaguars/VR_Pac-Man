@@ -181,7 +181,7 @@ componentWillMount(){
       $.ajax({
         type: 'POST',
         url: '/updateMyMapSharing',
-        data: {apiPackage: apiPackage, username: localStorage.getItem('username')},
+        data: {apiPackage},
         success: function(data) {
           console.log(data);
         },
@@ -219,9 +219,9 @@ componentWillMount(){
 
     var sidebarContent =
       <div>
-        <h1 className='sidebar-title'>{localStorage.getItem('username')}'s Maze Store</h1>
+        <h1 className='sidebar-title'>{window.username}'s Maze Store</h1>
         <div className='sidebar-options' data-icon="u" onClick={this.showPublicMaps}>MAZE MARKETPLACE</div>
-        <div className='sidebar-options' data-icon="v" onClick={this.showMyMaps}>{localStorage.getItem('username').toUpperCase()}'S MAZES</div>
+        <div className='sidebar-options' data-icon="v" onClick={this.showMyMaps}>{window.username.toUpperCase()}'S MAZES</div>
         <div className="sidebar-options" data-icon="b" onClick={this.showCartMaps}>MAZE CART</div>
         <div className='sidebar-options' data-icon="i" onClick={this.mazebuilderClick.bind(this)}>MAZE BUILDER</div>
         <div className='sidebar-options' data-icon="j" onClick={this.navClickHome.bind(this)}>HOME</div>

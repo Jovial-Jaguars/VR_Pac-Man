@@ -1,6 +1,5 @@
 var Sequelize = require('sequelize');
-var supersecret = require('../../config/config');
-var sequelize = new Sequelize('PacmanVR', 'root', supersecret.dbPassword);
+var sequelize = new Sequelize('PacmanVR', 'root', '');
 
 var spHighScores_PC = sequelize.define('spHighScores_PC', {
   username: {

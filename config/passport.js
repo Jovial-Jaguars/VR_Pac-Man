@@ -1,21 +1,19 @@
 var LocalStrategy = require('passport-local').Strategy;
 
 var User = require('../app/models/user');
-var jwt = require('jsonwebtoken');
-var supersecret = require('../config/config');
 
 module.exports = function(passport) {
   // serialize and deserialize users for sessions
-  // passport.serializeUser(function(user, done) {
-  //   done(null, user);
-  // });
+  passport.serializeUser(function(user, done) {
+    done(null, user);
+  });
 
-  // passport.deserializeUser(function(username, done) {
-  //   User.find({ username: username })
-  //   .then(function(user) {
-  //     done(null, user);
-  //   });
-  // });
+  passport.deserializeUser(function(username, done) {
+    User.find({ username: username })
+    .then(function(user) {
+      done(null, user);
+    });
+  });
 
   passport.use('local-login', new LocalStrategy({
     usernameField: 'username',
@@ -25,7 +23,6 @@ module.exports = function(passport) {
   function(req, username, password, done) {
    User.find({ where: {username: username} })
     .then(function(user) {
-      console.log('hits found query')
       if (!user) {
         console.log('hit !user');
         // return done(err);
@@ -41,12 +38,7 @@ module.exports = function(passport) {
       }
       //login success
       console.log('login success');
-      var token = jwt.sign({user}, supersecret.secret, {
-          expiresIn: '90d' // expires in 90 days
-        });
-      console.log('token:', token);
-      user.update({ token: token });
-      // user = user.dataValues.username;
+      user = user.dataValues.username;
       return done(null, user);
     });
   }));
@@ -58,7 +50,6 @@ module.exports = function(passport) {
     passReqToCallback: true
   },
   function(req, username, password, done) {
-    console.log('req.body:',req.body);
       User.find({ where: {username: username} })
       .then(function(user) {
         if (user) {
@@ -67,23 +58,19 @@ module.exports = function(passport) {
           // return done(null, false, req.flash('signupMessage', 'That username is already taken!'));
         }
         else if (!user) {
-          var token = jwt.sign({user}, supersecret.secret, {
-              expiresIn: '90d' // expires in 90 days, unit seconds
-            });
           User.create({
             username: username,
             email: req.body.email,
-            password: User.generateHash(password),
-            token: token
+            password: User.generateHash(password)
           })
-          .then(function(user, test) {
+          .then(function(user) {
             //signup success
-            // var newUser = user.dataValues.username;
-            return done(null, user);
+            var newUser = user.dataValues.username;
+            return done(null, newUser);
           })
           .catch(function(err) {
-            return done(err);
-            // return done(null, false, {message: 'Error.'});
+            // return done(err);
+            return done(null, false, {message: 'Error.'});
           });
         }
       })
