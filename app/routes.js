@@ -43,13 +43,13 @@ module.exports = function(app, passport) {
       } else if (!user) {
         res.send(info);
       } else {
-        console.log('hit4')
+
         // send Email
         var mailOptions = {
           from: '"Blinky" <communication.vrpacman@gmail.com>',
           to: user.email,
           subject: 'Confirm registration for VR Pacman',
-          text: 'Please confirm your account by clicking the following link:'
+          text: `Hi ${user.username}!\n\nPlease verify your account by clicking the following link: http://localhost:3000/verifyemail?unique=${user.token}\n\nIf you believe you have received this email in error, please ignore this email.`
         };
 
         transporter.sendMail(mailOptions, function(error, info) {
@@ -320,6 +320,26 @@ module.exports = function(app, passport) {
 
   app.get('/verifyemail', function(req, res) {
     console.log(req.query);
+    var token = req.query.unique;
+    jwt.verify(token, supersecret.secret, function(err, decoded) {
+      if (err) {
+        return 'Sorry, your link is no longer valid. Please verify link within 2 days of signup.'
+      } else {
+        console.log('decoded:', decoded);
+        var username = decoded.unique.username;
+        var email = decoded.unique.email;
+        User.findOne({where: {username: username, email: email, token: token}})
+          .then(function(user) {
+            if (!user) {
+              res.send('Sorry, your link is no longer valid. Please verify link within 2 days of signup.')
+            } else {
+              console.log('user:',user);
+              user.update({active: true});
+              res.redirect('/profile');
+            }
+          })
+      }
+    })
     // decode query with username and email
     // findOne where token, username, and email all match
     // if exists, find in user table and update

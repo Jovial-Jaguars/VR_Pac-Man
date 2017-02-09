@@ -70,7 +70,6 @@ export default class LandingPage extends React.Component {
           var modal = document.getElementById('myModal');
           modal.style.display = 'none'
           alert('Please check your email to confirm registration and log in!');
-          // this.props.router.push({pathname: '/'});
         }
       }.bind(this),
       error: function(err) {
