@@ -14,64 +14,21 @@ import MultiplayerCustom from './multiplayerCustom';
 import MazeRunner from './mazeRunner';
 import About from './about';
 
-
-
-function requireAuth() {
-    $.ajax({
-        type: 'GET',
-        url: '/verifytoken',
-        async: false,
-        headers: {'x-access-token': document.cookie},
-        data: {username: localStorage.getItem('username')},
-        success: function(data) {
-            if (data.success) {
-                console.log(data.message);
-            } else {
-                console.log(data.message);
-                browserHistory.replace('/')
-            }
-        }.bind(this),
-        error: function(data) {
-            console.log('data', data);
-            browserHistory.replace({pathname: '/'})
-        }.bind(this)
-    })
-}
-
-function checkAuth() {
-    $.ajax({
-        type: 'GET',
-        url: '/verifytoken',
-        headers: {'x-access-token': document.cookie},
-        data: {username: localStorage.getItem('username')},
-        async: false,
-        success: function(data) {
-            if (data.success) {
-                browserHistory.replace('/profile');
-            }
-        },
-        error: function(data) {
-            console.log(data);
-        }
-    })
-}
-
 // React router that switches between signin, signup, and pet app
 
 var MainRouter = () => (
    <Router history={browserHistory}>
-    <Route path="/" component={LandingPage} onEnter={checkAuth} />
-     <Route path="/about" component={About}/>
-     <Route path="/unranked" component={Unranked} />
-    <Route path="/ranked" component={Ranked} onEnter={requireAuth}/>
-    <Route path="/profile" component={ProfilePage} onEnter={requireAuth}/>
-    <Route path="/mazebuilder" component={App} onEnter={requireAuth}/>
-    <Route path="/multiplayer" component={MultiplayerMazeRunner} onEnter={requireAuth}/>
-    <Route path="/multiplayerRanked" component={MultiplayerRanked} onEnter={requireAuth}/>
-    <Route path="/multiplayerCustom" component={MultiplayerCustom} onEnter={requireAuth}/>
-    <Route path="/mazestore" component={MazeStore} onEnter={requireAuth}/>
-    <Route path="/singleplayer" component={MazeRunner} onEnter={requireAuth}/>
-
+    <Route path="/" component={LandingPage}/>
+    <Route path="/ranked" component={Ranked}/>
+    <Route path="/unranked" component={Unranked} />
+    <Route path="/profile" component={ProfilePage} />
+    <Route path="/mazebuilder" component={App} />
+    <Route path="/multiplayer" component={MultiplayerMazeRunner} />
+    <Route path="/multiplayerRanked" component={MultiplayerRanked} />
+    <Route path="/multiplayerCustom" component={MultiplayerCustom} />
+    <Route path="/mazestore" component={MazeStore} />
+    <Route path="/singleplayer" component={MazeRunner}/>
+    <Route path="/about" component={About}/>
   </Router>
 );
 

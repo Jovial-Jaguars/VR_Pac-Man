@@ -8,7 +8,7 @@ var LoginForm = (props) => (
     </div>
     <div>
       <label>Password: </label>
-      <input type="password" name="password"/>
+      <input type="text" name="password"/>
     </div>
     <div>
       <input id="submitInput" type="submit" value="Log In" onClick={props.loginFormSubmit}/>
