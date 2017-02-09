@@ -45,18 +45,27 @@ module.exports = function(app, passport) {
       } else {
         console.log('hit4')
         // send Email
+        var mailOptions = {
+          from: '"Blinky" <communication.vrpacman@gmail.com>',
+          to: user.email,
+          subject: 'Confirm registration for VR Pacman',
+          text: 'Please confirm your account by clicking the following link:'
+        };
 
-        // to do!
+        transporter.sendMail(mailOptions, function(error, info) {
+          if (error) {
+            return console.log(error);
+          }
+          console.log('Message sent:', info.messageId, info.response);
+        })
 
 
         // send back a json web token upon successful signup
-        var token = user.dataValues.token;
-        var username = user.dataValues.username
-        // var token = jwt.sign({user}, supersecret.secret, {
-        //   expiresIn: '90d' // expires in 90 days, unit seconds
-        // });
+        // var token = user.token;
+        // var username = user.username
 
-        res.send({username: username, token: token});
+        // res.send({username: username, token: token});
+        res.end();
       }
     })(req, res, next);
   });
@@ -309,6 +318,14 @@ module.exports = function(app, passport) {
     })
   })
 
+  app.get('/verifyemail', function(req, res) {
+    console.log(req.query);
+    // decode query with username and email
+    // findOne where token, username, and email all match
+    // if exists, find in user table and update
+    // if doesn't exist say that there was either an error or token expired, sign up again
+  })
+
   app.get('*', function(req, res) {
     res.redirect('/');
   })
@@ -338,3 +355,10 @@ function checkToken(req, res) {
   })
 };
 
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'communication.vrpacman@gmail.com',
+    pass: 'rocketleague'
+  }
+});
