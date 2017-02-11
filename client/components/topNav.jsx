@@ -21,7 +21,8 @@ export default class TopNav extends React.Component {
   }
 
   navClickAbout() {
-    this.props.router.push({pathname: '/about'});
+    // this.props.router.push({pathname: '/about'});
+    this.props.router.push({pathname: '/resetpassword'});
   }
 
   render() {

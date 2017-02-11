@@ -1,7 +1,9 @@
 var User = require('../app/models/user');
 var Maps = require('../app/models/maps');
 var HighScores = require('../app/models/highscores');
+var ResetPassword = require('../app/models/resetpassword')
 
+var path = require('path');
 var jwt = require('jsonwebtoken');
 var supersecret = require('../config/config');
 var ExpressBrute = require('express-brute');
@@ -316,7 +318,7 @@ module.exports = function(app, passport) {
         return res.status(403).send({success: false, message: 'No token provided.'});
       }
     })
-  })
+  });
 
   app.get('/verifyemail', function(req, res) {
     console.log(req.query);
@@ -335,19 +337,67 @@ module.exports = function(app, passport) {
             } else {
               console.log('user:',user);
               user.update({active: true});
-              res.redirect('/profile');
+              res.redirect('/');
             }
           })
       }
     })
-    // decode query with username and email
-    // findOne where token, username, and email all match
-    // if exists, find in user table and update
-    // if doesn't exist say that there was either an error or token expired, sign up again
+  });
+
+  app.post('/forgotPassword', function(req, res) {
+    console.log('reqbody', req.body);
+    var email = req.body.email;
+    var token = jwt.sign({email}, supersecret.secret, {
+          expiresIn: '15m' // expires in 15 minutes
+        });
+    ResetPassword.create({
+      email: email,
+      token: token
+    }).then(function(temp) {
+      if (!temp) {
+        res.send('Error')
+      } else {
+        setTimeout(function(temp) {
+          temp.destroy();
+        }, 96000); // 16 minutes, destroy entry
+        res.send({token: token});
+      }
+      })
+    // create 15m token using email
+    // save into a reset password table
+    // send email that contains link to ajax request that grabs cookie token
+    var mailOptions = {
+      from: '"Blinky" <communication.vrpacman@gmail.com>',
+      to: email,
+      subject: 'Reset password for VR Pacman',
+      text: `Click the following link to reset your password: http://localhost:3000/changepassword\n\nIf you believe you have received this email in error, please ignore this email.`
+    };
+
+    transporter.sendMail(mailOptions, function(error, info) {
+      if (error) {
+        return console.log(error);
+      }
+      console.log('Message sent:', info.messageId, info.response);
+    })
+  });
+
+  app.get('/changepassword', function(req, res) {
+    // see if inside database
+    var token = req.headers['x-access-token'];;
+    console.log('token', token)
+    jwt.verify(token, supersecret.secret, function(err, decoded) {
+      if (err) {
+        return 'Error'
+      } else {
+        console.log('decoded:',decoded);
+      }
+    })
+    // ResetPassword
+
   })
 
-  app.get('*', function(req, res) {
-    res.redirect('/');
+  app.get('*', function (request, response){
+    response.sendFile(path.join(__dirname, '../client/index.html'))
   })
 };
 

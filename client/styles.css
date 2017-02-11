@@ -615,6 +615,10 @@ button:active {
   margin-left: 10px;
 }
 
+#modal-loginform>p>a {
+  margin-right: 10%;
+}
+
 #modal-loginform #submitInput {
   background-color: #01ABAA;
   /*background-color: black;*/
@@ -661,6 +665,10 @@ button:active {
   display: none;
   text-align: center;
   color: red;
+}
+
+#modal-forgotpassword {
+  display: none;
 }
 
 /*styling for the maze store*/
@@ -970,6 +978,14 @@ tbody {
   margin: 4px;
 }
 
+#resetPasswordForm {
+  text-align: right;
+}
+
+#resetPasswordForm div {
+  margin: 4px;
+}
+
 #topnav {
   height: 70px;
   background-color: black;
@@ -1147,7 +1163,7 @@ tbody {
   box-shadow: 10px 10px 5px #00004C;
 }
 
-.landingPageContent, .aboutPageContent{
+.landingPageContent, .aboutPageContent, .resetPasswordContent {
   display: inline-block;
   border-radius: 45px;
   background-color: rgba(0,0,0,1);

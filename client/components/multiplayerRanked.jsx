@@ -1481,11 +1481,11 @@ window.myEvent = window.attachEvent || window.addEventListener;
 window.chkevent = window.attachEvent ? 'onbeforeunload' : 'beforeunload'; /// make IE7, IE8 compitable
 
   myEvent(chkevent, function(e) { // For >=IE7, Chrome, Firefox
-      socket.emit('leave', room);
+      socket.emit('leave', window.room);
   $.ajax({
     type: 'POST',
     url: 'leaveGameRoomRanked',
-    data: {room: room},
+    data: {room: window.room},
     success: function() {
       console.log('left room');
       window.room = null;

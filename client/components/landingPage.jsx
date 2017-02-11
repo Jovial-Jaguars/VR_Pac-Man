@@ -17,6 +17,7 @@ export default class LandingPage extends React.Component {
   modalClickLogin() {
     $('.modal').css('display', 'block');
     $('#modal-signupform').css('display', 'none');
+    $('#modal-forgotpassword').css('display', 'none');
     $('#modal-loginform').css('display', 'block');
     $('#login-username').focus();
   }
@@ -24,6 +25,7 @@ export default class LandingPage extends React.Component {
   modalClickSignup() {
     $('.modal').css('display', 'block');
     $('#modal-loginform').css('display', 'none');
+    $('#modal-forgotpassword').css('display', 'none');
     $('#modal-signupform').css('display', 'block');
     $('#signup-username').focus();
   }
@@ -67,8 +69,7 @@ export default class LandingPage extends React.Component {
           // localStorage.setItem('username', data.username);
           // console.log(document.cookie);
           // this.props.router.push({pathname: '/profile'});
-          var modal = document.getElementById('myModal');
-          modal.style.display = 'none'
+          $('.modal').css('display', 'none');
           alert('Please check your email to confirm registration and log in!');
         }
       }.bind(this),
@@ -185,6 +186,36 @@ export default class LandingPage extends React.Component {
       this.props.router.push({pathname: '/unranked'});
   }
 
+  forgotPasswordClick(e) {
+    $('#modal-signupform').css('display', 'none');
+    $('#modal-forgotpassword').css('display', 'block');
+    $('#modal-loginform').css('display', 'none');
+    $('#forgotpassword-email').focus();
+  }
+
+  forgotPasswordSubmit(e) {
+    e.preventDefault();
+    var dataString = $('#forgotPasswordForm').serialize();
+    $.ajax({
+      type: 'POST',
+      url: '/forgotPassword',
+      data: dataString,
+      success: function(data) {
+        console.log('data:', data);
+        document.cookie = data.token;
+        alert('Check your email and follow instructions to reset your password');
+        $('.modal').css('display', 'none');
+      },
+      error: function(err) {
+        console.log(err);
+      }
+    })
+    // ajax, send email + create temporary token (15min) and store in cookie
+      // save into a resetPassword table that
+    // email contains link to ajax request that grabs cookie token
+    // on change password submit, check email with token
+  }
+
   componentWillMount() {
   }
 
@@ -209,12 +240,26 @@ export default class LandingPage extends React.Component {
             <h2 id="formheader">Login</h2>
             <LoginForm loginFormSubmit={this.loginFormSubmit.bind(this)}/><br/>
             <p className="authError loginError"></p>
+            <p><a onClick={this.forgotPasswordClick}>Forgot Password?</a></p>
           </div>
           <div id="modal-signupform">
             <h2 id="formheader">Signup</h2>
             <SignupForm signupFormSubmit={this.signupFormSubmit.bind(this)}/><br/>
             <p className="authError signupError"></p>
             <p>Already have an account? <a onClick={this.modalClickLogin}>Login</a></p>
+          </div>
+          <div id="modal-forgotpassword">
+            <h2 id="formheader">Forgot Password</h2>
+              <form id="forgotPasswordForm">
+                <div>
+                  <p>Enter the email associated with your account</p>
+                  <label>Email: </label>
+                  <input type="text" name="email" id="forgotpassword-email"/>
+                </div>
+                <div>
+                  <input id="submitInput" type="submit" value="Reset Password" onClick={this.forgotPasswordSubmit}/>
+                </div>
+              </form>
           </div>
           <div>
             <h3> </h3>
@@ -256,4 +301,3 @@ window.onclick = function(event) {
         customModal.style.display = 'none';
     }
 }
-

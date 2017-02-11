@@ -12,6 +12,7 @@ import MultiplayerMazeRunner from './multiplayerMazeRunner';
 import MultiplayerRanked from './multiplayerRanked';
 import MultiplayerCustom from './multiplayerCustom';
 import MazeRunner from './mazeRunner';
+import ResetPassword from './resetPassword';
 import About from './about';
 
 
@@ -56,11 +57,24 @@ function checkAuth() {
     })
 }
 
+function checkResetPassword() {
+    if (document.cookie) {
+        $.ajax({
+            type: 'GET',
+            headers: {'x-access-token': document.cookie},
+            url: '/changepassword',
+            success: function() {
+
+            }
+        })
+    }
+}
+
 // React router that switches between signin, signup, and pet app
 
 var MainRouter = () => (
    <Router history={browserHistory}>
-    <Route path="/" component={LandingPage} onEnter={checkAuth} />
+
      <Route path="/about" component={About}/>
      <Route path="/unranked" component={Unranked} />
     <Route path="/ranked" component={Ranked} onEnter={requireAuth}/>
@@ -71,7 +85,8 @@ var MainRouter = () => (
     <Route path="/multiplayerCustom" component={MultiplayerCustom} onEnter={requireAuth}/>
     <Route path="/mazestore" component={MazeStore} onEnter={requireAuth}/>
     <Route path="/singleplayer" component={MazeRunner} onEnter={requireAuth}/>
-
+    <Route path="/resetpassword" component={ResetPassword} />
+    <Route path="/" component={LandingPage} onEnter={checkAuth} />
   </Router>
 );
 
