@@ -370,7 +370,7 @@ module.exports = function(app, passport) {
       from: '"Blinky" <communication.vrpacman@gmail.com>',
       to: email,
       subject: 'Reset password for VR Pacman',
-      text: `Click the following link to reset your password: http://localhost:3000/changepassword\n\nIf you believe you have received this email in error, please ignore this email.`
+      text: `Click the following link to reset your password: http://localhost:3000/resetpassword?unique=${token}\n\nIf you believe you have received this email in error, please ignore this email.`
     };
 
     transporter.sendMail(mailOptions, function(error, info) {
@@ -381,19 +381,44 @@ module.exports = function(app, passport) {
     })
   });
 
-  app.get('/changepassword', function(req, res) {
+  app.get('/resetpasswordaccess', function(req, res) {
     // see if inside database
-    var token = req.headers['x-access-token'];;
-    console.log('token', token)
+    var token = req.query.token;
     jwt.verify(token, supersecret.secret, function(err, decoded) {
       if (err) {
-        return 'Error'
+        res.send(err);
       } else {
         console.log('decoded:',decoded);
+        // check database token active
+        ResetPassword.findOne({where: {
+          email: decoded.email,
+          token: token
+        }, raw: true})
+          .then(function(activeToken) {
+            console.log('activeToken:',activeToken)
+            if (!activeToken) {
+              res.send({access: false});
+            } else {
+              res.send({access: true});
+            }
+          })
       }
     })
-    // ResetPassword
+  });
 
+  app.post('/resetpassword', function(req, res) {
+    var email = req.body.email;
+    var password = User.generateHash(req.body.password);
+    // update record
+    User.findOne({where: {email: email}})
+      .then(function(user) {
+        if (!user) {
+          res.sendStatus(500)
+        } else {
+          user.update({password: password});
+          res.sendStatus(200);
+        }
+      })
   })
 
   app.get('*', function (request, response){

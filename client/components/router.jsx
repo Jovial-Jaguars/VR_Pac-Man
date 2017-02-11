@@ -57,14 +57,25 @@ function checkAuth() {
     })
 }
 
-function checkResetPassword() {
-    if (document.cookie) {
+function checkResetPasswordToken() {
+    if (location.search) {
+        console.log('location', location);
+        console.log('search.slice', location.search.slice(8));
+        var token = location.search.slice(8);
         $.ajax({
             type: 'GET',
-            headers: {'x-access-token': document.cookie},
-            url: '/changepassword',
-            success: function() {
-
+            url: '/resetpasswordaccess',
+            data: {token: token},
+            success: function(data) {
+                // do nothing
+                console.log('success. data:', data);
+                if (!data.access) {
+                    browserHistory.replace('/')
+                }
+            },
+            error: function() {
+                console.log('Access denied. Your link is probably expired.');
+                browserHistory.replace('/');
             }
         })
     }
@@ -74,7 +85,7 @@ function checkResetPassword() {
 
 var MainRouter = () => (
    <Router history={browserHistory}>
-
+    <Route path="/" component={LandingPage} onEnter={checkAuth} />
      <Route path="/about" component={About}/>
      <Route path="/unranked" component={Unranked} />
     <Route path="/ranked" component={Ranked} onEnter={requireAuth}/>
@@ -85,8 +96,8 @@ var MainRouter = () => (
     <Route path="/multiplayerCustom" component={MultiplayerCustom} onEnter={requireAuth}/>
     <Route path="/mazestore" component={MazeStore} onEnter={requireAuth}/>
     <Route path="/singleplayer" component={MazeRunner} onEnter={requireAuth}/>
-    <Route path="/resetpassword" component={ResetPassword} />
-    <Route path="/" component={LandingPage} onEnter={checkAuth} />
+    <Route path="/resetpassword" component={ResetPassword} onEnter={checkResetPasswordToken}/>
+
   </Router>
 );
 

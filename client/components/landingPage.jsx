@@ -202,7 +202,7 @@ export default class LandingPage extends React.Component {
       data: dataString,
       success: function(data) {
         console.log('data:', data);
-        document.cookie = data.token;
+        // document.cookie = data.token;
         alert('Check your email and follow instructions to reset your password');
         $('.modal').css('display', 'none');
       },
@@ -214,9 +214,6 @@ export default class LandingPage extends React.Component {
       // save into a resetPassword table that
     // email contains link to ajax request that grabs cookie token
     // on change password submit, check email with token
-  }
-
-  componentWillMount() {
   }
 
   render() {
