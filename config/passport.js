@@ -1,4 +1,5 @@
 var LocalStrategy = require('passport-local').Strategy;
+var FacebookStrategy = require('passport-facebook').Strategy;
 
 var User = require('../app/models/user');
 var jwt = require('jsonwebtoken');
@@ -6,16 +7,39 @@ var supersecret = require('../config/config');
 
 module.exports = function(passport) {
   // serialize and deserialize users for sessions
-  // passport.serializeUser(function(user, done) {
-  //   done(null, user);
-  // });
+  passport.serializeUser(function(user, done) {
+    console.log('hit serialize')
+    done(null, user);
+  });
 
-  // passport.deserializeUser(function(username, done) {
-  //   User.find({ username: username })
-  //   .then(function(user) {
-  //     done(null, user);
-  //   });
-  // });
+  passport.deserializeUser(function(username, done) {
+    console.log('hit deserialize')
+    User.find({ username: username })
+    .then(function(user) {
+      done(null, user);
+    });
+  });
+
+  passport.use(new FacebookStrategy({
+    clientID: supersecret.FACEBOOK_APP_ID,
+    clientSecret: supersecret.FACEBOOK_APP_SECRET,
+    callbackURL: "http://localhost:3000/auth/facebook/callback"
+    // profileFields: ['id', 'displayName'],
+    // enableProof: true
+  }, function(accessToken, refreshToken, profile, cb) {
+    console.log('profile:',profile)
+    var user = {oAuthID: profile.id, username: profile.displayName};
+    User.findOrCreate({where: {
+      oAuthID: profile.id,
+    }, defaults: {
+        username: profile.displayName,
+        active: true
+      }}).then(function(user) {
+      return cb(null, user);
+    }).catch(function(err) {
+      return cb(err, null);
+    })
+  }))
 
   passport.use('local-login', new LocalStrategy({
     usernameField: 'username',
@@ -44,11 +68,12 @@ module.exports = function(passport) {
       }
       //login success
       console.log('login success');
-      var token = jwt.sign({user}, supersecret.secret, {
-          expiresIn: '90d' // expires in 90 days
-        });
-      console.log('token:', token);
-      user.update({ token: token });
+      console.log('user:', user.dataValues)
+      // var token = jwt.sign({user}, supersecret.secret, {
+      //     expiresIn: '90d' // expires in 90 days
+      //   });
+      // console.log('token:', token);
+      // user.update({ token: token });
       // user = user.dataValues.username;
       return done(null, user);
     });
@@ -62,7 +87,7 @@ module.exports = function(passport) {
   },
   function(req, username, password, done) {
     console.log('req.body:',req.body);
-      User.find({ where: {username: username}, raw: true })
+      User.find({ where: {username: username}})
       .then(function(user) {
         if (user) {
           // return done(err);

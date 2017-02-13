@@ -13,30 +13,10 @@ var nodemailer = require('nodemailer');
 
 module.exports = function(app, passport) {
 
-  app.post('/login', bruteforce.prevent, function(req, res, next) {
-    passport.authenticate('local-login', function(err, user, info, status) {
-      if (err) {
-        return next(err);
-      } else if (!user) {
-        res.send(info);
-      } else {
-        // send back a json web token upon successful login
-        // var token = jwt.sign({user}, supersecret.secret, {
-        //   expiresIn: '90d' // expires in 90 days
-        // });
-        var username = user.dataValues.username;
-        var token = user.dataValues.token;
-        res.send({username: username, token: token});
-      }
-    })(req, res, next);
-  });
-
-  // app.post('/signup', passport.authenticate('local-signup', {
-  //   successRedirect: '/profile',
-  //   failureRedirect: '/#/failure',
-  //   failureFlash: true
-  //   })
-  // );
+  app.post('/login', bruteforce.prevent, passport.authenticate('local-login', {
+    failureRedirect: '/',
+    successRedirect: '/profile'
+  }));
 
   app.post('/signup', function(req, res, next) {
     passport.authenticate('local-signup', function(err, user, info, status) {
@@ -72,39 +52,41 @@ module.exports = function(app, passport) {
     })(req, res, next);
   });
 
-  app.post('/profileInfo', function(req, res) {
+  app.get('/profileInfo', isLoggedIn, function(req, res) {
     console.log('hit profileinfo request.');
-    // console.log('req.body:', req.body);
+    console.log('req.session:', req.session.passport);
+    var username = req.session.passport.user.username || req.session.passport.user[0].username;
     User.findOne({
       where: {
-        username: req.body.user
+        username: username
       }, raw:true
     }).then(function(user) {
+      console.log('user sent:', user)
       res.send(user);
     });
   });
 
-  app.post('/maps', function(req, res) {
+  app.post('/maps', isLoggedIn, function(req, res) {
     Maps.create({
       mapData: req.body.mapData,
       shareable: req.body.shareable,
-      user_id: req.body.username
+      user_id: req.session.passport.user.username
     }).then(function() {
       res.end();
     });
   })
 
-  app.get('/maps', function(req, res) {
-    if (!checkToken) {
-      res.sendStatus(403).send('Not authenticated')
-    }
+  app.get('/maps', isLoggedIn, function(req, res) {
+    // if (!checkToken) {
+    //   res.sendStatus(403).send('Not authenticated')
+    // }
     var getMaps = {};
     Maps.findAll({
       where: {shareable: true}
     }).then(function(publicMaps) {
       getMaps[0] = publicMaps;
       Maps.findAll({
-        where: {user_id: req.query.username}
+        where: {user_id: req.session.passport.user.username}
       }).then(function(userMaps) {
         getMaps[1] = userMaps;
         res.send(getMaps);
@@ -205,25 +187,21 @@ module.exports = function(app, passport) {
 
   app.post('/leaveGameRoomCustom', function(req, res) {
     var roomNumber = req.body.room.slice(4);
-    var username = req.body.username;
+    var username = req.session.passport.user.username;
     console.log(username + ' left room:', roomNumber);
 
   })
 
-  app.post('/submitScore', function(req, res) {
-    if (!checkToken) {
-      res.send('authentication error');
-    } else {
-      var table = req.body.table;
-      var score = Number(req.body.score);
-      var username = req.body.username;
-      HighScores[table].create({
-        username: username,
-        score: score
-      }).then(function() {
-        res.send('Score posted!');
-      })
-    }
+  app.post('/submitScore', isLoggedIn, function(req, res) {
+    var table = req.body.table;
+    var score = Number(req.body.score);
+    var username = req.session.passport.user.username;
+    HighScores[table].create({
+      username: username,
+      score: score
+    }).then(function() {
+      res.send('Score posted!');
+    })
   });
 
   app.get('/highScoreTable', function(req, res) {
@@ -236,11 +214,10 @@ module.exports = function(app, passport) {
     })
   });
 
-  app.post('/updateMyHighScores', function(req, res) {
-
+  app.post('/updateMyHighScores', isLoggedIn, function(req, res) {
     User.findOne({
       where: {
-        username: req.body.username
+        username: req.session.passport.user.username
       }, raw:true
     })
     .then(function(user) {
@@ -251,7 +228,6 @@ module.exports = function(app, passport) {
       console.log('user[table]', user[table]);
       // compare user.table high score with req.body.score
       if (req.body.score > user[table]) {
-        console.log('hit');
         User.update(
           {[table]: req.body.score},
           {
@@ -263,14 +239,14 @@ module.exports = function(app, passport) {
     });
   });
 
-  app.post('/updateMyMapSharing', function(req, res) {
+  app.post('/updateMyMapSharing', isLoggedIn, function(req, res) {
     console.log(req.body.apiPackage);
     var myMaps = req.body.apiPackage;
     myMaps.forEach(function(entry) {
       Maps.update(
         {shareable: entry.shareable},
         {
-          where: {user_id: req.body.username,
+          where: {user_id: req.session.passport.user.username,
                   mapData: entry.mapData}
         })
       .error(function() {
@@ -282,43 +258,21 @@ module.exports = function(app, passport) {
   });
 
   app.get('/logout', function(req, res) {
-    var username = req.query.username;
-    var token = req.query.token;
-    User.find({where: {username: username, token: token}})
-      .then(function(user) {
-        user.update({token: null});
-      })
+    // jwt.verify(token, supersecret.secret, function(err, decoded) {
+    //   if (decoded) {
+    //     var username = decoded.user.username;
+    //     User.find({where: {username: username}})
+    //   }
+    // })
+    // var username = req.query.username;
+    // var token = req.query.token;
+    // User.find({where: {username: username, token: token}})
+    //   .then(function(user) {
+    //     user.update({token: null});
+    //   })
     req.logout();
     res.redirect('/');
     });
-
-  app.get('/verifytoken', function(req, res) {
-    console.log('hit verify token in server, req.query', req.query);
-    var token = req.headers['x-access-token'];
-    var username = req.query.username;
-    User.findOne({where: {
-      username: username,
-      token: token
-    }}).then(function(user) {
-      if (!user) {
-        return res.json({success: false, message: 'Failed to authenticate token.'});
-      }
-      if (token) {
-        console.log('hit token exists in server')
-        jwt.verify(token, supersecret.secret, function(err, decoded) {
-          if (err) {
-            return res.json({success: false, message: 'Failed to authenticate token.'});
-          } else {
-            console.log('decoded:', decoded);
-            return res.json({success: true, message: 'Authenticated token.', decoded: decoded});
-          }
-        });
-      } else {
-        console.log('hit token doesnt exist in server');
-        return res.status(403).send({success: false, message: 'No token provided.'});
-      }
-    })
-  });
 
   app.get('/verifyemail', function(req, res) {
     console.log(req.query);
@@ -419,36 +373,28 @@ module.exports = function(app, passport) {
           res.sendStatus(200);
         }
       })
+  });
+
+  app.get('/auth/facebook',  passport.authenticate('facebook', {scope: 'email'}));
+
+  app.get('/auth/facebook/callback', passport.authenticate('facebook', {failureRedirect: '/'}), function(req, res) {
+    res.redirect('/profile')
   })
 
-  app.get('*', function (request, response){
-    response.sendFile(path.join(__dirname, '../client/index.html'))
-  })
-};
-
-function checkToken(req, res) {
-  var token = req.body.token;
-  var username = req.body.username;
-  User.findOne({where: {
-    username: username,
-    token: token
-  }}).then(function(user) {
-    if (!user) {
-      return false;
-    }
-    if (token) {
-      jwt.verify(token, supersecret.secret, function(err, decoded) {
-        if (err) {
-          return false;
-        } else {
-          return true;
-        }
-      });
+  app.get('/verifyAuth', function(req, res) {
+    if (req.isAuthenticated()) {
+      res.json({success: true});
     } else {
-      return false;
+      res.json({success: false});
     }
   })
+
+  app.get('*', function (req, res){
+    res.sendFile(path.join(__dirname, '../client/index.html'))
+  })
 };
+
+
 
 var transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -457,3 +403,11 @@ var transporter = nodemailer.createTransport({
     pass: 'rocketleague'
   }
 });
+
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  } else {
+    res.redirect('/')
+  }
+}

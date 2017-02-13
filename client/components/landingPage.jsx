@@ -101,8 +101,8 @@ export default class LandingPage extends React.Component {
           $('#login-username').focus();
         } else {
           $('.authError').css('display', 'none');
-          document.cookie = data.token;
-          localStorage.setItem('username', data.username);
+          // document.cookie = data.token;
+          // localStorage.setItem('username', username);
           this.props.router.push({pathname: '/profile'});
         }
         // console.log('successfully logged in!', data);
@@ -125,7 +125,8 @@ export default class LandingPage extends React.Component {
       }
     })
   }
-   demoButtonClick(e) {
+
+  demoButtonClick(e) {
     console.log(browserHistory.maze);
     browserHistory.maze = [[1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1],
                          [1, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1],
@@ -236,6 +237,7 @@ export default class LandingPage extends React.Component {
           <div id="modal-loginform">
             <h2 id="formheader">Login</h2>
             <LoginForm loginFormSubmit={this.loginFormSubmit.bind(this)}/><br/>
+            <p><a href="/auth/facebook"><img src="../assets/fb.png" width="40%"/></a></p>
             <p className="authError loginError"></p>
             <p><a onClick={this.forgotPasswordClick}>Forgot Password?</a></p>
           </div>
