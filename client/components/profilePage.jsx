@@ -24,10 +24,7 @@ export default class ProfilePage extends React.Component {
     $.ajax({
       type: 'GET',
       url: '/logout',
-      data: {username: localStorage.getItem('username'), token: document.cookie},
       success: function() {
-        console.log('logged out!');
-        document.cookie = '';
         localStorage.clear();
         this.props.router.push({pathname: '/'});
       }.bind(this)
@@ -36,9 +33,8 @@ export default class ProfilePage extends React.Component {
 
   componentWillMount() {
     $.ajax({
-      type: 'POST',
+      type: 'GET',
       url: 'profileInfo',
-      data: {user: localStorage.getItem('username'), token: document.cookie},
       async: false,
       success: function(data) {
         console.log('profile info data', data);
@@ -47,7 +43,7 @@ export default class ProfilePage extends React.Component {
           spHighScore: data.spHighScores_PC,
           mpHighScore: data.mpHighScores_PC
         });
-
+        localStorage.setItem('username', data.username);
       }.bind(this)
     });
     this.getMyMazes();
@@ -83,11 +79,13 @@ export default class ProfilePage extends React.Component {
   convertArray (string) {
     var oneMap = [];
     var oneArray = [];
-    for (var i = 0; string.length > i; i++){
-      oneArray.push(Number(string[i]));
-      if ((i+1) % 16 === 0){
-        oneMap.push(oneArray.slice());
-        oneArray = [];
+    if (string) {
+      for (var i = 0; string.length > i; i++){
+        oneArray.push(Number(string[i]));
+        if ((i+1) % 16 === 0){
+          oneMap.push(oneArray.slice());
+          oneArray = [];
+        }
       }
     }
     return oneMap;
@@ -101,7 +99,9 @@ export default class ProfilePage extends React.Component {
       url: '/maps',
       data: {username: localStorage.getItem('username'), token: document.cookie},
       success: function(data) {
-        console.log('success myMaps', that.convertData(data[1], 'myMaps'));
+        if (data[1]) {
+          // console.log('success myMaps', that.convertData(data[1], 'myMaps'));
+        }
       }
     });
   }

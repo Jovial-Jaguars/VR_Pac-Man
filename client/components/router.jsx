@@ -17,42 +17,65 @@ import About from './about';
 
 
 
+// function requireAuth() {
+//     $.ajax({
+//         type: 'GET',
+//         url: '/verifytoken',
+//         async: false,
+//         headers: {'x-access-token': document.cookie},
+//         success: function(data) {
+//             if (data.success) {
+//                 console.log(data.message);
+//             } else {
+//                 console.log(data.message);
+//                 browserHistory.replace('/')
+//             }
+//         }.bind(this),
+//         error: function(data) {
+//             console.log('data', data);
+//             browserHistory.replace({pathname: '/'})
+//         }.bind(this)
+//     })
+// }
+
+// function checkAuth() {
+//     $.ajax({
+//         type: 'GET',
+//         url: '/verifytoken',
+//         async: false,
+//         headers: {'x-access-token': document.cookie},
+//         success: function(data) {
+//             if (data.success) {
+//                 browserHistory.replace('/profile');
+//             }
+//         },
+//         error: function(data) {
+//             console.log(data);
+//         }
+//     })
+// }
+
 function requireAuth() {
     $.ajax({
         type: 'GET',
-        url: '/verifytoken',
-        async: false,
-        headers: {'x-access-token': document.cookie},
-        data: {username: localStorage.getItem('username')},
+        url: '/verifyAuth',
         success: function(data) {
-            if (data.success) {
-                console.log(data.message);
-            } else {
-                console.log(data.message);
+            if (!data.success) {
                 browserHistory.replace('/')
             }
-        }.bind(this),
-        error: function(data) {
-            console.log('data', data);
-            browserHistory.replace({pathname: '/'})
-        }.bind(this)
+        }
     })
+
 }
 
 function checkAuth() {
     $.ajax({
         type: 'GET',
-        url: '/verifytoken',
-        headers: {'x-access-token': document.cookie},
-        data: {username: localStorage.getItem('username')},
-        async: false,
+        url: '/verifyAuth',
         success: function(data) {
             if (data.success) {
-                browserHistory.replace('/profile');
+                browserHistory.replace('/profile')
             }
-        },
-        error: function(data) {
-            console.log(data);
         }
     })
 }
