@@ -61,8 +61,11 @@ module.exports = function(app, passport) {
         username: username
       }, raw:true
     }).then(function(user) {
-      console.log('user sent:', user)
-      res.send(user);
+      if (!user) {
+        res.json({success: false});
+      } else {
+        res.json({success: true, user: user});
+      }
     });
   });
 
