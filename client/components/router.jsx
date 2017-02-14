@@ -12,24 +12,78 @@ import MultiplayerMazeRunner from './multiplayerMazeRunner';
 import MultiplayerRanked from './multiplayerRanked';
 import MultiplayerCustom from './multiplayerCustom';
 import MazeRunner from './mazeRunner';
+import ResetPassword from './resetPassword';
 import About from './about';
+
+function requireAuth() {
+    $.ajax({
+        type: 'GET',
+        url: '/verifyAuth',
+        async: false,
+        success: function(data) {
+            if (!data.success) {
+                browserHistory.replace('/')
+            }
+        }
+    })
+}
+
+function checkAuth() {
+    $.ajax({
+        type: 'GET',
+        url: '/verifyAuth',
+        async: false,
+        success: function(data) {
+            if (data.success) {
+                browserHistory.replace('/profile')
+            }
+        }
+    })
+}
+
+
+
+function checkResetPasswordToken() {
+    if (location.search) {
+        console.log('location', location);
+        console.log('search.slice', location.search.slice(8));
+        var token = location.search.slice(8);
+        $.ajax({
+            type: 'GET',
+            url: '/resetpasswordaccess',
+            data: {token: token},
+            success: function(data) {
+                // do nothing
+                console.log('success. data:', data);
+                if (!data.access) {
+                    browserHistory.replace('/')
+                }
+            },
+            error: function() {
+                console.log('Access denied. Your link is probably expired.');
+                browserHistory.replace('/');
+            }
+        })
+    }
+}
 
 // React router that switches between signin, signup, and pet app
 
 var MainRouter = () => (
-   <Router history={browserHistory}>
-    <Route path="/" component={LandingPage}/>
-    <Route path="/ranked" component={Ranked}/>
-    <Route path="/unranked" component={Unranked} />
-    <Route path="/profile" component={ProfilePage} />
-    <Route path="/mazebuilder" component={App} />
-    <Route path="/multiplayer" component={MultiplayerMazeRunner} />
-    <Route path="/multiplayerRanked" component={MultiplayerRanked} />
-    <Route path="/multiplayerCustom" component={MultiplayerCustom} />
-    <Route path="/mazestore" component={MazeStore} />
-    <Route path="/singleplayer" component={MazeRunner}/>
-    <Route path="/about" component={About}/>
-  </Router>
+    <Router history={browserHistory}>
+        <Route path="/" component={LandingPage} onEnter={checkAuth} />
+        <Route path="/about" component={About} />
+        <Route path="/unranked" component={Unranked} />
+        <Route path="/ranked" component={Ranked} onEnter={requireAuth}/>
+        <Route path="/profile" component={ProfilePage} onEnter={requireAuth}/>
+        <Route path="/mazebuilder" component={App} onEnter={requireAuth}/>
+        <Route path="/multiplayer" component={MultiplayerMazeRunner} onEnter={requireAuth}/>
+        <Route path="/multiplayerRanked" component={MultiplayerRanked} onEnter={requireAuth}/>
+        <Route path="/multiplayerCustom" component={MultiplayerCustom} onEnter={requireAuth}/>
+        <Route path="/mazestore" component={MazeStore} onEnter={requireAuth}/>
+        <Route path="/singleplayer" component={MazeRunner} onEnter={requireAuth}/>
+        <Route path="/resetpassword" component={ResetPassword} onEnter={checkResetPasswordToken}/>
+    </Router>
 );
 
 
