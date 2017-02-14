@@ -20,43 +20,7 @@ export default class ProfilePage extends React.Component {
     this.convertData = this.convertData.bind(this);
   }
 
-  logout() {
-    $.ajax({
-      type: 'GET',
-      url: '/logout',
-      success: function() {
-        console.log('logged out!');
-        window.username = null;
-        this.props.router.push({pathname: '/'});
-      }.bind(this)
-    })
-  }
-
   componentWillMount() {
-    $.ajax({
-      type: 'POST',
-      url: 'profileInfo',
-      data: {user: username},
-      async: false,
-      success: function(data) {
-        if (!data.username) {
-          // console.log('compwillmount profpage data', data);
-
-          alert('Authentication error!');
-          console.log('data.username', data.username)
-          this.props.router.push({pathname: '/'});
-        } else {
-          console.log('reset high scores state');
-          console.log(data);
-          window.username = data.username;
-          this.setState({
-            username: data.username,
-            spHighScore: data.spHighScores_VR,
-            mpHighScore: data.mpHighScores_VR
-          });
-        }
-      }.bind(this)
-    });
     this.getMyMazes();
     window.selectedMaze = null;
   }
@@ -90,11 +54,13 @@ export default class ProfilePage extends React.Component {
   convertArray (string) {
     var oneMap = [];
     var oneArray = [];
-    for (var i = 0; string.length > i; i++){
-      oneArray.push(Number(string[i]));
-      if ((i+1) % 16 === 0){
-        oneMap.push(oneArray.slice());
-        oneArray = [];
+    if (string) {
+      for (var i = 0; string.length > i; i++){
+        oneArray.push(Number(string[i]));
+        if ((i+1) % 16 === 0){
+          oneMap.push(oneArray.slice());
+          oneArray = [];
+        }
       }
     }
     return oneMap;
@@ -102,11 +68,15 @@ export default class ProfilePage extends React.Component {
 
   getMyMazes() {
     var that = this;
+    console.log('test', localStorage.getItem('username'))
     $.ajax({
       type: 'GET',
       url: '/maps',
+      data: {username: localStorage.getItem('username'), token: document.cookie},
       success: function(data) {
-        console.log('success myMaps', that.convertData(data[1], 'myMaps'));
+        if (data[1]) {
+          // console.log('success myMaps', that.convertData(data[1], 'myMaps'));
+        }
       }
     });
   }
@@ -244,12 +214,6 @@ export default class ProfilePage extends React.Component {
     return (
       <div>
         <TopNav router={this.props.router}/>
-        <div id="profileStats">
-          <p id="welcomeMessage">Welcome {this.state.username}</p>
-          <p>SP High Score: {this.state.spHighScore}</p>
-          <p>MP High Score: {this.state.mpHighScore}</p>
-          <button id="logout" onClick={this.logout.bind(this)}>Log Out</button>
-        </div>
         <div className="profilePageContent">
           <div className="playScreen">
             <h1 className="headers">Play</h1>

@@ -11,6 +11,8 @@ var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var helmet = require('helmet');
+
 
 io.on('connection', function(socket) {
   console.log('a user connected');
@@ -47,15 +49,16 @@ io.on('connection', function(socket) {
 
 // DATABASE
 var mysql = require('mysql');
+var supersecret = require('./config/config');
 
 mysql.createConnection({
   user: root,
-  password: '',
+  password: supersecret.dbPassword,
   database: 'PacmanVR'
 });
 
 var Sequelize = require('sequelize');
-var sequelize = new Sequelize('PacmanVR', 'root', '');
+var sequelize = new Sequelize('PacmanVR', 'root', supersecret.dbpassword);
 
 sequelize
   .authenticate()
@@ -66,22 +69,19 @@ sequelize
     console.log('Unable to connect to the database:', err);
   });
 
-
-
 require('./config/passport')(passport); //pass passport for configuration
 
-
-
 // MIDDLEWARE
+app.use(helmet());
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({'extended': true}));
 app.use(express.static(path.join(__dirname, '/client')));
-app.use(session({ secret: 'wells', resave: true, saveUninitialized: true}));
+app.use(session({ secret: 'wells' }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(flash());
+// app.use(flash());
 
 
 // ROUTES

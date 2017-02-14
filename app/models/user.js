@@ -1,10 +1,15 @@
 var Sequelize = require('sequelize');
-var sequelize = new Sequelize('PacmanVR', 'root', '');
+var supersecret = require('../../config/config');
+var sequelize = new Sequelize('PacmanVR', 'root', supersecret.dbPassword);
 var bcrypt = require('bcrypt-nodejs');
 
 var Maps = require('./maps');
 
 var User = sequelize.define('User', {
+  oAuthID: {
+    type: Sequelize.STRING,
+    defaultValue: null
+  },
   username: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -16,8 +21,8 @@ var User = sequelize.define('User', {
   },
   email: {
     type: Sequelize.STRING,
-    allowNull: false,
     unique: true,
+    defaultValue: null,
     validate: {
       isEmail: true,
       notEmpty: true,
@@ -26,7 +31,15 @@ var User = sequelize.define('User', {
   },
   password: {
     type: Sequelize.STRING,
-    allowNull: false
+    defaultValue: null
+  },
+  active: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
+  },
+  token: {
+    type: Sequelize.TEXT,
+    allowNull: true
   },
   spHighScores_PC: {
     type: Sequelize.INTEGER,

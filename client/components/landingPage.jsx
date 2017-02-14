@@ -2,6 +2,7 @@ import React from 'react';
 import LoginForm from './login';
 import SignupForm from './signup';
 import TopNav from './topNav';
+import AuthModal from './authModal';
 import {Router, Route, browserHistory, Link} from 'react-router';
 
 export default class LandingPage extends React.Component {
@@ -9,23 +10,6 @@ export default class LandingPage extends React.Component {
     super(props);
     this.mazebuilderClick = this.mazebuilderClick.bind(this);
     this.mazestoreClick = this.mazestoreClick.bind(this);
-  }
-
-  navClickHome() {
-  }
-
-  modalClickLogin() {
-    $('.modal').css('display', 'block');
-    $('#modal-signupform').css('display', 'none');
-    $('#modal-loginform').css('display', 'block');
-    $('#login-username').focus();
-  }
-
-  modalClickSignup() {
-    $('.modal').css('display', 'block');
-    $('#modal-loginform').css('display', 'none');
-    $('#modal-signupform').css('display', 'block');
-    $('#signup-username').focus();
   }
 
   modalClickExit() {
@@ -40,48 +24,8 @@ export default class LandingPage extends React.Component {
     this.props.router.push({pathname: '/mazestore'});
   }
 
-  signupFormSubmit(e) {
-    e.preventDefault()
-    var username = $('#signup-username').val();
-    var dataString = $('#signupForm').serialize();
-    $.ajax({
-      type: 'POST',
-      url: '/signup',
-      data: dataString,
-      success: function() {
-        if (!username) {
-          console.log('signup !username', username);
-          this.props.router.push({pathname: '/'});
-        } else {
-          window.username = username;
-          this.props.router.push({pathname: '/profile'});
-        }
-      }.bind(this)
-    })
-  }
-
-  loginFormSubmit(e) {
-    e.preventDefault();
-    var username = $('#login-username').val();
-    console.log('username:', username);
-    var dataString = $('#loginForm').serialize();
-    $.ajax({
-      type: 'POST',
-      url: '/login',
-      data: dataString,
-      success: function(data) {
-        console.log('successfully logged in!', data);
-        if (!username) {
-          this.props.router.push({pathname: '/'});
-        } else {
-          window.username = username;
-          this.props.router.push({pathname: '/profile'});
-        }
-      }.bind(this)
-    })
-  }
-   demoButtonClick(e) {
-    console.log(browserHistory.maze);
+  demoButtonClick(e) {
+    // console.log(browserHistory.maze);
     browserHistory.maze = [[1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1],
                          [1, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1],
                          [1, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1],
@@ -138,62 +82,15 @@ export default class LandingPage extends React.Component {
     //                  [1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 1],
     //                  [1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1],
     //                  [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1]]
+      window.selectedMaze = browserHistory.maze;
       this.props.router.push({pathname: '/unranked'});
-  }
-
-  componentWillMount() {
-    $.ajax({
-      type: 'GET',
-      url: '/checkLoggedIn',
-      async: false,
-      success: function(data) {
-        if (!data.user) {
-          console.log('hit not authenticated');
-          this.props.router.push({pathname: '/'});
-        } else {
-          console.log("hit authenticated");
-          console.log(data.user);
-          window.username = data.user;
-          this.props.router.push({pathname: '/profile'});
-        }
-      }.bind(this),
-      error: function() {
-        console.log('Error!');
-      }
-    });
   }
 
   render() {
     return (
     <div>
       <TopNav router={this.props.router}/>
-      <nav>
-        <button id="nav-login" onClick={this.modalClickLogin}>Login</button>
-        <button id="nav-signup" onClick={this.modalClickSignup}>Signup</button>
-      </nav>
-      <div id="myModal" className="modal">
-        <div className="modal-content">
-          <div className="modal-header">
-            <div className="modal-header-flexbox">
-              <button id="modal-login" onClick={this.modalClickLogin}>Login</button>
-              <button id="modal-signup" onClick={this.modalClickSignup}>Signup</button>
-            </div>
-            <span className="close" onClick={this.modalClickExit}>&times;</span>
-          </div>
-          <div id="modal-loginform">
-            <h2 id="formheader">Login</h2>
-            <LoginForm loginFormSubmit={this.loginFormSubmit.bind(this)}/>
-          </div>
-          <div id="modal-signupform">
-            <h2 id="formheader">Signup</h2>
-            <SignupForm signupFormSubmit={this.signupFormSubmit.bind(this)}/><br/>
-            <p>Already have an account? <a onClick={this.modalClickLogin}>Login</a></p>
-          </div>
-          <div>
-            <h3> </h3>
-          </div>
-        </div>
-      </div>
+      <AuthModal  />
       <div className="landingPageContent">
           <h1 className="headers">Welcome to VR Pacman!</h1>
         <div className="playBtnContent">
@@ -213,20 +110,3 @@ export default class LandingPage extends React.Component {
     );
   }
 }
-
-
-window.onclick = function(event) {
-  var modal = document.getElementById('myModal');
-  var htpModal = document.getElementById('htpModal');
-  var customModal = document.getElementById('customModal');
-    if (event.target == modal) {
-        modal.style.display = 'none';
-    }
-    if (event.target == htpModal) {
-        htpModal.style.display = 'none';
-    }
-    if (event.target == customModal) {
-        customModal.style.display = 'none';
-    }
-}
-
