@@ -9,10 +9,6 @@ export default class MazeStore extends React.Component{
     super(props);
   };
 
-  componentWillMount() {
-
-  }
-
   render(){
     return <div className="pacmanapp">
       <MapList router={this.props.router}/>
@@ -246,14 +242,14 @@ componentWillMount(){
       content = <div>
       <div className="maps">{cartMapsArray.map((singleMap, index)=><Map key={index} mapId={index} singleMap={singleMap} showMaps={showMaps} purchaseOne={this.purchaseOne.bind(this)} returnOne={this.returnOne.bind(this)} makeUpdate={this.makeUpdate.bind(this)}/>)}</div>;
       <div id="customModal" className="modal">
-          <div className="modal-content custom">
-            <div className="customGameModalHeader">
-              <span id="customGametext">Purchase Mazes</span>
-            </div>
-            <span id="customGameModalClose" className="close" onClick={this.modalClickExit}>&times;</span>
-            <p className="customGameHeaders">Credit Card Information</p>
-            <img className='creditcard' src={'./assets/creditcard.png'} />
+        <div className="modal-content custom">
+          <div className="customGameModalHeader">
+            <span id="customGametext">Purchase Mazes</span>
           </div>
+          <span id="customGameModalClose" className="close" onClick={this.modalClickExit}>&times;</span>
+          <p className="customGameHeaders">Credit Card Information</p>
+          <img className='creditcard' src={'./assets/creditcard.png'} />
+        </div>
       </div>
       <button className='sendUpdate-mymaps' onClick={this.customGameClick.bind(this)}>Purchase</button>
       </div>

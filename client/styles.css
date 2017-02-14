@@ -145,6 +145,11 @@ button:active {
   background-position: center;
 
 }
+
+ul {
+  -webkit-padding-start: 2%;
+  -webkit-padding-end: 2%;
+}
 /* Let's get this party started */
 ::-webkit-scrollbar {
     width: 6px;
@@ -987,67 +992,41 @@ tbody {
 }
 
 #topnav {
-  height: 70px;
+  height: 2em;
   background-color: black;
   color: #FEDC3D;
   font-family: 'cp7';
-  font-size: 30px;
+  font-size: 2em;
   margin: 0;
   list-style: none;
   display: flex;
-  flex-wrap: wrap;
+  flex: 1;
+  flex-wrap: nowrap;
   align-items: center;
-  align-content: flex-start;
+  align-content: stretch;
   justify-content: space-around;
 }
 
 #topnav>li {
-
+ flex: 0.1;
 }
 
-#topleft {
+
+#topnav>#topleft {
   font-family: "Crackman Font";
-  font-size: 35px;
+  font-size: 1.2em;
   background-image: url('assets/vrpacmantxt.png');
-  width: 10em;
+  width: 8em;
   height: 4em;
+  flex: 0.2;
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
+  /*margin-left: 0;*/
 }
 
-#nav-login {
-  color: #FEDC3D;
-  background-color: black;
-  font-family: 'cp7';
-  /*font-family: 'Joystix';*/
-  /*font-family: 'PT Mono', sans-serif;*/
-  font-size: 30px;
-  border: none;
-  position: fixed;
-  top: 2.5%;
-  right: 13%;
-}
-
-#nav-login:hover {
-  color: #FFF7D2;
-}
-
-#nav-signup {
-  color: #FEDC3D;
-  background-color: black;
-  font-family: 'cp7';
-  /*font-family: 'Joystix';*/
-  /*font-family: 'PT Mono', sans-serif;*/
-  font-size: 30px;
-  border: none;
-  position: fixed;
-  top: 2.5%;
-  right: 4%;
-}
-
-#nav-signup:hover {
-  color: #FFF7D2;
+#nav-profile {
+  display: none;
 }
 
 #profileStats {

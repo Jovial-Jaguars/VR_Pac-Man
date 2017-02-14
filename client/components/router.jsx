@@ -15,63 +15,24 @@ import MazeRunner from './mazeRunner';
 import ResetPassword from './resetPassword';
 import About from './about';
 
-
-
-// function requireAuth() {
-//     $.ajax({
-//         type: 'GET',
-//         url: '/verifytoken',
-//         async: false,
-//         headers: {'x-access-token': document.cookie},
-//         success: function(data) {
-//             if (data.success) {
-//                 console.log(data.message);
-//             } else {
-//                 console.log(data.message);
-//                 browserHistory.replace('/')
-//             }
-//         }.bind(this),
-//         error: function(data) {
-//             console.log('data', data);
-//             browserHistory.replace({pathname: '/'})
-//         }.bind(this)
-//     })
-// }
-
-// function checkAuth() {
-//     $.ajax({
-//         type: 'GET',
-//         url: '/verifytoken',
-//         async: false,
-//         headers: {'x-access-token': document.cookie},
-//         success: function(data) {
-//             if (data.success) {
-//                 browserHistory.replace('/profile');
-//             }
-//         },
-//         error: function(data) {
-//             console.log(data);
-//         }
-//     })
-// }
-
 function requireAuth() {
     $.ajax({
         type: 'GET',
         url: '/verifyAuth',
+        async: false,
         success: function(data) {
             if (!data.success) {
                 browserHistory.replace('/')
             }
         }
     })
-
 }
 
 function checkAuth() {
     $.ajax({
         type: 'GET',
         url: '/verifyAuth',
+        async: false,
         success: function(data) {
             if (data.success) {
                 browserHistory.replace('/profile')
@@ -79,6 +40,8 @@ function checkAuth() {
         }
     })
 }
+
+
 
 function checkResetPasswordToken() {
     if (location.search) {
@@ -107,21 +70,20 @@ function checkResetPasswordToken() {
 // React router that switches between signin, signup, and pet app
 
 var MainRouter = () => (
-   <Router history={browserHistory}>
-    <Route path="/" component={LandingPage} onEnter={checkAuth} />
-     <Route path="/about" component={About}/>
-     <Route path="/unranked" component={Unranked} />
-    <Route path="/ranked" component={Ranked} onEnter={requireAuth}/>
-    <Route path="/profile" component={ProfilePage} onEnter={requireAuth}/>
-    <Route path="/mazebuilder" component={App} onEnter={requireAuth}/>
-    <Route path="/multiplayer" component={MultiplayerMazeRunner} onEnter={requireAuth}/>
-    <Route path="/multiplayerRanked" component={MultiplayerRanked} onEnter={requireAuth}/>
-    <Route path="/multiplayerCustom" component={MultiplayerCustom} onEnter={requireAuth}/>
-    <Route path="/mazestore" component={MazeStore} onEnter={requireAuth}/>
-    <Route path="/singleplayer" component={MazeRunner} onEnter={requireAuth}/>
-    <Route path="/resetpassword" component={ResetPassword} onEnter={checkResetPasswordToken}/>
-
-  </Router>
+    <Router history={browserHistory}>
+        <Route path="/" component={LandingPage} onEnter={checkAuth} />
+        <Route path="/about" component={About} />
+        <Route path="/unranked" component={Unranked} />
+        <Route path="/ranked" component={Ranked} onEnter={requireAuth}/>
+        <Route path="/profile" component={ProfilePage} onEnter={requireAuth}/>
+        <Route path="/mazebuilder" component={App} onEnter={requireAuth}/>
+        <Route path="/multiplayer" component={MultiplayerMazeRunner} onEnter={requireAuth}/>
+        <Route path="/multiplayerRanked" component={MultiplayerRanked} onEnter={requireAuth}/>
+        <Route path="/multiplayerCustom" component={MultiplayerCustom} onEnter={requireAuth}/>
+        <Route path="/mazestore" component={MazeStore} onEnter={requireAuth}/>
+        <Route path="/singleplayer" component={MazeRunner} onEnter={requireAuth}/>
+        <Route path="/resetpassword" component={ResetPassword} onEnter={checkResetPasswordToken}/>
+    </Router>
 );
 
 
