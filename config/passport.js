@@ -2,6 +2,8 @@ var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 
 var User = require('../app/models/user');
+var jwt = require('jsonwebtoken');
+var supersecret = require('../config/config');
 
 module.exports = function(passport) {
   // serialize and deserialize users for sessions

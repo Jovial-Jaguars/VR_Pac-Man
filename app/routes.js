@@ -80,6 +80,9 @@ module.exports = function(app, passport) {
   })
 
   app.get('/maps', isLoggedIn, function(req, res) {
+    // if (!checkToken) {
+    //   res.sendStatus(403).send('Not authenticated')
+    // }
     var getMaps = {};
     Maps.findAll({
       where: {shareable: true}
@@ -122,7 +125,8 @@ module.exports = function(app, passport) {
 
   app.post('/leaveGameRoomRanked', function(req, res) {
     var roomNumber = req.body.room.slice(4);
-    console.log(req.session.passport.user + ' left room number:', roomNumber);
+    var username = req.body.username;
+    console.log(username + ' left room number:', roomNumber);
     console.log('roomsInPlayRanked:', roomsInPlayRanked);
     if (roomsInPlayRanked[roomNumber]) {
       roomsInPlayRanked[roomNumber]--;
@@ -169,7 +173,8 @@ module.exports = function(app, passport) {
 
   app.post('/leaveGameRoomCustom', function(req, res) {
     var roomNumber = req.body.room.slice(4);
-    console.log(req.session.passport.user + ' left room number:', roomNumber);
+    var username = req.body.username;
+    console.log(username + ' left room number:', roomNumber);
     customRooms[roomNumber]--;
     if (customRooms[roomNumber] <= 0) {
       delete customRooms[roomNumber];
@@ -187,6 +192,7 @@ module.exports = function(app, passport) {
     var roomNumber = req.body.room.slice(4);
     var username = req.session.passport.user.username;
     console.log(username + ' left room:', roomNumber);
+
   })
 
   app.post('/submitScore', isLoggedIn, function(req, res) {
@@ -228,7 +234,7 @@ module.exports = function(app, passport) {
         User.update(
           {[table]: req.body.score},
           {
-            where: {username: req.session.passport.user}
+            where: {username: req.body.username}
           }
         )
       }
@@ -255,9 +261,21 @@ module.exports = function(app, passport) {
   });
 
   app.get('/logout', function(req, res) {
+    // jwt.verify(token, supersecret.secret, function(err, decoded) {
+    //   if (decoded) {
+    //     var username = decoded.user.username;
+    //     User.find({where: {username: username}})
+    //   }
+    // })
+    // var username = req.query.username;
+    // var token = req.query.token;
+    // User.find({where: {username: username, token: token}})
+    //   .then(function(user) {
+    //     user.update({token: null});
+    //   })
     req.logout();
     res.redirect('/');
-  });
+    });
 
   app.get('/verifyemail', function(req, res) {
     console.log(req.query);
