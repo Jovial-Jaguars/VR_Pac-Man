@@ -58,7 +58,7 @@ mysql.createConnection({
 });
 
 var Sequelize = require('sequelize');
-var sequelize = new Sequelize('PacmanVR', 'root', supersecret.dbpassword);
+var sequelize = new Sequelize('PacmanVR', 'root', supersecret.dbPassword);
 
 sequelize
   .authenticate()
