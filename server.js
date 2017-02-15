@@ -52,7 +52,7 @@ var mysql = require('mysql');
 var supersecret = require('./config/config');
 
 mysql.createConnection({
-  user: root,
+  user: 'root',
   password: supersecret.dbPassword,
   database: 'PacmanVR'
 });

@@ -41,6 +41,8 @@ function checkAuth() {
     })
 }
 
+
+
 function checkResetPasswordToken() {
     if (location.search) {
         console.log('location', location);

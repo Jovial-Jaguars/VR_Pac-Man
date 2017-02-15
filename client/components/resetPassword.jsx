@@ -1,6 +1,6 @@
 import React from 'react';
 import TopNav from './topNav';
-import {Router, Route, browserHistory, Link} from 'react-router';
+import {Router, withRouter, Route, browserHistory, Link} from 'react-router';
 
 
 export default class ResetPassword extends React.Component {
@@ -62,7 +62,7 @@ export default class ResetPassword extends React.Component {
             <input className="retypePassword" type="password" name="password"/>
           </div>
           <div>
-            <input id="submitInput" type="submit" value="Reset Password" onClick={this.resetPasswordClick}/>
+            <input id="submitInput" type="submit" value="Reset Password" onClick={this.resetPasswordClick.bind(this)}/>
           </div>
           <p className="resetPasswordError"></p>
         </form>

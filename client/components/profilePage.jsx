@@ -68,9 +68,11 @@ export default class ProfilePage extends React.Component {
 
   getMyMazes() {
     var that = this;
+    console.log('test', localStorage.getItem('username'))
     $.ajax({
       type: 'GET',
       url: '/maps',
+      data: {username: localStorage.getItem('username'), token: document.cookie},
       success: function(data) {
         if (data[1]) {
           // console.log('success myMaps', that.convertData(data[1], 'myMaps'));
