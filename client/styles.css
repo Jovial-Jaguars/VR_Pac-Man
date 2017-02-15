@@ -737,7 +737,7 @@ html, body {
     background-repeat: no-repeat;
 }
 
-.maps-sub-container {
+.maps-container {
     display: block;
     margin-top: 120px;
 }

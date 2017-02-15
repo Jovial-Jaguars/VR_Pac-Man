@@ -68,7 +68,13 @@ module.exports = function(passport) {
       }
       //login success
       console.log('login success');
-      user = user.dataValues.username;
+      console.log('user:', user.dataValues)
+      // var token = jwt.sign({user}, supersecret.secret, {
+      //     expiresIn: '90d' // expires in 90 days
+      //   });
+      // console.log('token:', token);
+      // user.update({ token: token });
+      // user = user.dataValues.username;
       return done(null, user);
     });
   }));
@@ -80,7 +86,8 @@ module.exports = function(passport) {
     passReqToCallback: true
   },
   function(req, username, password, done) {
-      User.find({ where: {username: username} })
+    console.log('req.body:',req.body);
+      User.find({ where: {username: username}})
       .then(function(user) {
         if (user) {
           // return done(err);
@@ -88,19 +95,27 @@ module.exports = function(passport) {
           // return done(null, false, req.flash('signupMessage', 'That username is already taken!'));
         }
         else if (!user) {
+          // var token = jwt.sign({user}, supersecret.secret, {
+          //     expiresIn: '90d' // expires in 90 days, unit seconds
+          //   });
+          var unique = {username: req.body.username, email: req.body.email};
+          var token = jwt.sign({unique}, supersecret.secret, {
+          expiresIn: '2d' // expires in 2 days
+        });
           User.create({
             username: username,
             email: req.body.email,
-            password: User.generateHash(password)
+            password: User.generateHash(password),
+            token: token
           })
-          .then(function(user) {
+          .then(function(user, test) {
             //signup success
-            var newUser = user.dataValues.username;
-            return done(null, newUser);
+            // var newUser = user.dataValues.username;
+            return done(null, user);
           })
           .catch(function(err) {
-            // return done(err);
-            return done(null, false, {message: 'Error.'});
+            return done(err);
+            // return done(null, false, {message: 'Error.'});
           });
         }
       })

@@ -90,7 +90,7 @@ export default class LandingPage extends React.Component {
     return (
     <div>
       <TopNav router={this.props.router}/>
-      <AuthModal  />
+      <AuthModal router={this.props.router} />
       <div className="landingPageContent">
           <h1 className="headers">Welcome to VR Pacman!</h1>
         <div className="playBtnContent">

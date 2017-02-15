@@ -833,7 +833,7 @@ window.addEventListener("resize", function () {
     $.ajax({
       type: 'POST',
       url: 'leaveGameRoomCustom',
-      data: room,
+      data: {room: room, username: localStorage.getitem('username')},
       success: function() {
         console.log('left room');
         window.room = null;
@@ -853,7 +853,7 @@ window.addEventListener("resize", function () {
     $.ajax({
       type: 'POST',
       url: 'leaveGameRoomCustom',
-      data: {room: room},
+      data: {room: room, username: localStorage.getItem('username')},
       success: function() {
         console.log('left room');
         window.room = null;
