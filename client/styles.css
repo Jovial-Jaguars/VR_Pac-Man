@@ -46,7 +46,10 @@ button:hover {
 button:active {
   border: none;
 }
-
+table {
+    border-collapse: separate;
+    border-spacing: 5px  15px;
+}
 .element {
   display: inline-block;
   width: 4.5%;
@@ -365,66 +368,26 @@ ul {
 }
 
 .legend {
-  height: 50%;
+  height: 60%;
   width: 100%;
 }
 
-.legend-table-head {
-  display: inline-block;
-  height: 10%;
-  width: 100%
-}
-.legend-table-head-row {
-  display: inline-block;
-  height: 100%;
-  width: 100%;
-}
 .legend-table-header {
-  display: inline-block;
   text-align: center;
-  height: 100%;
-  width: 100%;
 }
 .legend-container {
-  display: inline-block;
   float: left;
-  height: 100%;
-  width: 49%;
-}
-.legend-table-body {
-  display: inline-block;
-  height: 90%;
-  width: 100%;
-}
-
-.legend-table {
-  display: inline-block;
-  float: left;
-  width: 100%;
-  height: 40%;
-  background-color: purple;
-}
-
-.legend-table-row {
-  display: inline-block;
-  margin-bottom: 2%;
-  margin-top: 2%;
-  width: 100%;
-  height: 15%;
-  margin-bottom: 5px;
 }
 
 .legend-block1 {
-  display: inline-block;
   border-radius: 5px;
-  float: left;
   width: 20%;
   height: 100%;
+  float: left;
   background-color: blue;
 }
 
 .legend-block2 {
-  display: inline-block;
   float: left;
   border-radius: 5px;
   width: 20%;
@@ -432,7 +395,6 @@ ul {
   background-color: black;
 }
 .legend-block3 {
-  display: inline-block;
   float: left;
   border-radius: 5px;
   width: 20%;
@@ -444,7 +406,6 @@ ul {
   background-repeat: no-repeat;
 }
 .legend-block4 {
-  display: inline-block;
   float: left;
   border-radius: 5px;
   width: 20%;
@@ -457,7 +418,6 @@ ul {
 }
 
 .legend-block5 {
-  display: inline-block;
   float: left;
   border-radius: 5px;
   width: 20%;
@@ -470,7 +430,6 @@ ul {
 }
 
 .legend-block6 {
-  display: inline-block;
   float: left;
   border-radius: 5px;
   width: 20%;
@@ -482,7 +441,6 @@ ul {
   background-repeat: no-repeat;
 }
 .legend-block7 {
-  display: inline-block;
   float: left;
   border-radius: 5px;
   width: 20%;
@@ -494,11 +452,8 @@ ul {
   background-repeat: no-repeat;
 }
 .legend-empty {
-  display: inline-block;
   float: left;
-  text-align: left;
-  margin-top: 4%;
-  width: 50%;
+  width: 70%;
   height: 100%;
   padding: 2px;
 }
