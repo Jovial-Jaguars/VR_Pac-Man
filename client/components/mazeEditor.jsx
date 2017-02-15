@@ -6,7 +6,7 @@ var MazeEditor = (props) => (
         <table className="legend">
          <thead className="legend-table-head">
           <tr className="legend-table-head-row">
-             <th className="legend-table-header">Legend</th>
+             <th colspan="2" className="legend-table-header">Legend</th>
           </tr>
          </thead>
          <tbody className="legend-table-body">
@@ -32,11 +32,11 @@ var MazeEditor = (props) => (
           </tr>
           <tr className="legend-table-row" onClick={props.clickLegend.bind(this, 6)}>
             <td className="legend-block6" ></td>
-            <td className="legend-empty">Positive Gravity Switch</td>
+            <td className="legend-empty">+ve Switch</td>
           </tr>
           <tr className="legend-table-row" onClick={props.clickLegend.bind(this, 7)}>
             <td className="legend-block7" ></td>
-            <td className="legend-empty">Neagtive Gravity Switch</td>
+            <td className="legend-empty">-ve Switch</td>
           </tr>
           </tbody>
         </table>
