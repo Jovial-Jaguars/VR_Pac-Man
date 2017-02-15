@@ -66,11 +66,7 @@ sequelize
     console.log('Unable to connect to the database:', err);
   });
 
-
-
 require('./config/passport')(passport); //pass passport for configuration
-
-
 
 // MIDDLEWARE
 app.use(morgan('dev'));
@@ -78,10 +74,10 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({'extended': true}));
 app.use(express.static(path.join(__dirname, '/client')));
-app.use(session({ secret: 'wells', resave: true, saveUninitialized: true}));
+app.use(session({ secret: 'wells' }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(flash());
+// app.use(flash());
 
 
 // ROUTES

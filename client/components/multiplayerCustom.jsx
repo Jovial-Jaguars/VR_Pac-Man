@@ -886,18 +886,20 @@ window.addEventListener("resize", function () {
 window.myEvent = window.attachEvent || window.addEventListener;
 window.chkevent = window.attachEvent ? 'onbeforeunload' : 'beforeunload'; /// make IE7, IE8 compitable
 
-  myEvent(chkevent, function(e) { // For >=IE7, Chrome, Firefox
-      socket.emit('leave', room);
-  $.ajax({
-    type: 'POST',
-    url: 'leaveGameRoomCustom',
-    data: {room: room},
-    success: function() {
-      console.log('left room');
-      window.room = null;
-    },
-    error: function() {
-      console.log('error leaving room');
-    }
-  })
-  });
+myEvent(chkevent, function(e) { // For >=IE7, Chrome, Firefox
+  if (window.room) {
+    socket.emit('leave', window.room);
+    $.ajax({
+      type: 'POST',
+      url: 'leaveGameRoomCustom',
+      data: {room: window.room},
+      success: function() {
+        console.log('left room');
+        window.room = null;
+      },
+      error: function() {
+        console.log('error leaving room');
+      }
+    })
+  }
+});
