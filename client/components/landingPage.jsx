@@ -95,6 +95,7 @@ export default class LandingPage extends React.Component {
           <h1 className="headers">Welcome to VR Pacman!</h1>
         <div className="playBtnContent">
           <button id="demobutton" onClick={this.demoButtonClick.bind(this)}><span className="playText">Play</span><br/>Demo Version</button>
+          <p>See if you can find the hidden reverse gravity switch before the ghost catches you!</p>
           <p>For multiplayer mode, high scores, custom mazes and more, create a FREE account!</p>
         </div>
         <h1 className="headers">How to Play:</h1>

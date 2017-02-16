@@ -17,6 +17,19 @@ export default class Unranked extends React.Component {
     console.log(maze);
   }
 
+  routerWillLeave() {
+    engine.stopRenderLoop();
+    engine.clear(BABYLON.Color3.Black(),false,false);
+  }
+
+  componentWillMount() {
+    this.props.router.setRouteLeaveHook(
+        this.props.route,
+        this.routerWillLeave
+      )
+   }
+
+
   componentDidMount() {
     var pacmanIntro = new Audio('../assets/pacman_beginning.wav');
     pacmanIntro.loop = false;
@@ -83,6 +96,7 @@ export default class Unranked extends React.Component {
     // Load the BABYLON 3D engine
 
     this.engine = new BABYLON.Engine(canvas, true,{ stencil: true });
+    window.engine = this.engine;
     class Queue {
       constructor() {
         this._storage = {};
@@ -108,7 +122,7 @@ export default class Unranked extends React.Component {
       if(arr[coordz + 1] !== undefined) {
         if (arr[coordz + 1][coordx] !== 1 && arr[coordz + 1][coordx] !== undefined) {
         suc.push([[coordz + 1,coordx], 'S']);
-        }  
+        }
       }
       if (arr[coordz][coordx - 1] !== 1 && arr[coordz][coordx - 1] !== undefined) {
         suc.push([[coordz,coordx - 1], 'W']);
@@ -132,7 +146,7 @@ export default class Unranked extends React.Component {
       while(arr[curr[0][0]][curr[0][1]] !== 3) {
         if(!((curr[0][0] * 16) + curr[0][1] in recur)) {
           recur[(curr[0][0] * 16) + curr[0][1]] = curr[0];
-        } 
+        }
         Successors = getSuccessors(curr[0][0], curr[0][1], arr);
         for(var suc in Successors) {
           var calc = (Successors[suc][0][0] * 16) + Successors[suc][0][1]
@@ -228,28 +242,28 @@ export default class Unranked extends React.Component {
           if (arr[i][j] === 1) {
             if(flipMaze === 1) {
               newInstanceWall = wall.createInstance("j" + (i *16) + j);
-              newInstanceWall.position.z = z; 
-              newInstanceWall.position.x = x; 
+              newInstanceWall.position.z = z;
+              newInstanceWall.position.x = x;
               newInstanceWall.position.y = 900;
               createWallBody(newInstanceWall.getBoundingInfo().boundingBox.center, new CANNON.Vec3(wall.scaling.x, wall.scaling.y, wall.scaling.z), 0);
             } else {
               newInstanceWall = wall.createInstance("i" + (i *16) + j);
-              newInstanceWall.position.z = z; 
+              newInstanceWall.position.z = z;
               newInstanceWall.position.x = x;
               createWallBody(newInstanceWall.getBoundingInfo().boundingBox.center, new CANNON.Vec3(wall.scaling.x, wall.scaling.y, wall.scaling.z), 0);
             }
           } else if (arr[i][j] === 2) {
             if(flipMaze === 1) {
               newInstanceSphere = pellet.createInstance("j" + (i *16) + j);
-              newInstanceSphere.position.z = z; 
+              newInstanceSphere.position.z = z;
               newInstanceSphere.position.x = x;
               newInstanceSphere.position.y = 990;
               var sphereBody = createSphereBody(newInstanceSphere.getBoundingInfo().boundingBox.center, 4, newInstanceSphere.uniqueId);
               pelletMeshes[newInstanceSphere.uniqueId] = newInstanceSphere;
             } else {
               newInstanceSphere = pellet.createInstance("i" + (i *16) + j);
-              newInstanceSphere.position.z = z; 
-              newInstanceSphere.position.x = x; 
+              newInstanceSphere.position.z = z;
+              newInstanceSphere.position.x = x;
               newInstanceSphere.position.y = 5;
               var sphereBody = createSphereBody(newInstanceSphere.getBoundingInfo().boundingBox.center, 4, newInstanceSphere.uniqueId);
               pelletMeshes[newInstanceSphere.uniqueId] = newInstanceSphere;
@@ -377,14 +391,14 @@ export default class Unranked extends React.Component {
         plane2.scaling.z = 200;
         plane2.scaling.y = 1000;
         plane2.scaling.x = .2;
-        plane2.position.x = 400; 
+        plane2.position.x = 400;
         createWallBody(plane2.getBoundingInfo().boundingBox.center, new CANNON.Vec3(plane2.scaling.x, plane2.scaling.y, plane2.scaling.z), 0);
         var plane3 = plane.createInstance("i" + 302);
         plane3.scaling.z = 200;
         plane3.scaling.y = 1000;
         plane3.scaling.x = .2;
         plane3.rotation.y = Math.PI/2;
-        plane3.position.x = 200; 
+        plane3.position.x = 200;
         plane3.position.z = 200;
         createWallBody(plane3.getBoundingInfo().boundingBox.center, new CANNON.Vec3(plane3.scaling.x, plane3.scaling.y, plane3.scaling.z), 2);
         var plane4 = plane.createInstance("i" + 403);
@@ -392,12 +406,12 @@ export default class Unranked extends React.Component {
         plane4.scaling.y = 1000;
         plane4.scaling.x = 0.2;
         plane4.rotation.y = Math.PI/2;
-        plane4.position.x = 200; 
+        plane4.position.x = 200;
         plane4.position.z = -200;
         createWallBody(plane4.getBoundingInfo().boundingBox.center, new CANNON.Vec3(plane4.scaling.x, plane4.scaling.y, plane4.scaling.z), 2);
         ball.position.y = 5;
         ball.position.z = posz;
-        ball.position.x = posx; 
+        ball.position.x = posx;
         var ground = BABYLON.Mesh.CreateGround("ground1", 900, 900, 2, scene);
         ground.material = new BABYLON.StandardMaterial("texture1", scene);
         ground.material.emissiveTexture = new BABYLON.Texture('../assets/ground2.jpg', scene);
@@ -415,7 +429,7 @@ export default class Unranked extends React.Component {
           var groundShape = new CANNON.Box(new CANNON.Vec3(ground2.scaling.x, ground2.scaling.y, ground2.scaling.z));
           var groundBody = new CANNON.Body({ mass: 0, shape: groundShape });
           groundBody.position.y = 1000;
-          groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(0,0,1),-Math.PI/2); 
+          groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(0,0,1),-Math.PI/2);
           world.add(groundBody);
         }
         // var getOptions = function() {
@@ -439,7 +453,7 @@ export default class Unranked extends React.Component {
         // }, function() {
         //    // FPS target not reached
         // })
-        
+
         return scene;
   };  // End of createScene function
   var createWorld = function(){
@@ -471,7 +485,7 @@ export default class Unranked extends React.Component {
     ghostBody = new CANNON.Body({mass: 1, shape: ghostShape}); // Step 2
     ghostBody.position.set(ghostx,1,ghostz);
     ghostBody.rotation = new CANNON.Vec3();
-    ghostBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);  
+    ghostBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);
     ghostBody.addEventListener('collide', function(e){
       console.log('collide');
       if (e.body.isPlayer) {
@@ -544,26 +558,26 @@ export default class Unranked extends React.Component {
     var groundShape = new CANNON.Plane();
     var groundBody = new CANNON.Body({ mass: 0, shape: groundShape });
     world.add(groundBody);
-    groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);  
+    groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);
 
     return world;
   };
 
-  var createWallBody = function(position, size, flag){  
+  var createWallBody = function(position, size, flag){
     var boxShape = new CANNON.Box(size);
     var boxBody = new CANNON.Body({shape: boxShape, mass:0});
     boxBody.position = position;
     if(flag === 1) {
-      boxBody.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0),-Math.PI/2);  
+      boxBody.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0),-Math.PI/2);
     } else if(flag === 2) {
-      boxBody.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0),Math.PI/2); 
+      boxBody.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0),Math.PI/2);
     } else if(flag === 3) {
-      boxBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2); 
+      boxBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);
     }
-    world.add(boxBody); 
+    world.add(boxBody);
   };
 
-  var createSphereBody = function(position, radius, id){  
+  var createSphereBody = function(position, radius, id){
     var pelletShape = new CANNON.Sphere(radius);
     var pelletBody = new CANNON.Body({mass: 0, shape: pelletShape});
     pelletBody.position = position;
@@ -571,11 +585,11 @@ export default class Unranked extends React.Component {
     pelletBody.collisionResponse = 0;
     pelletBody.pelletId = id;
     pellets[id] = pelletBody;
-    world.add(pelletBody); 
+    world.add(pelletBody);
   };
 
 
-  var world = createWorld();     
+  var world = createWorld();
   var scene = createScene();
 
   if(cameraFlag) {
@@ -595,19 +609,19 @@ export default class Unranked extends React.Component {
       }
       if (cameraFlag && camera.rotationQuaternion !==undefined) {
         cam1 = parseFloat(Math.cos(camera.rotationQuaternion.toEulerAngles().y));
-        cam2 = parseFloat(Math.sin(camera.rotationQuaternion.toEulerAngles().y));   
+        cam2 = parseFloat(Math.sin(camera.rotationQuaternion.toEulerAngles().y));
         sphereBody.velocity.z = cam1* 20;
         sphereBody.velocity.x = cam2* 20;
       } else {
         cam1 = parseFloat(Math.cos(camera.rotation.y));
-        cam2 = parseFloat(Math.sin(camera.rotation.y));   
+        cam2 = parseFloat(Math.sin(camera.rotation.y));
         sphereBody.velocity.z = cam1* 50;
         sphereBody.velocity.x = cam2* 50;
       }
-      
-      ball.position.x = sphereBody.position.x; 
-      ball.position.y = sphereBody.position.y; 
-      ball.position.z = sphereBody.position.z; 
+
+      ball.position.x = sphereBody.position.x;
+      ball.position.y = sphereBody.position.y;
+      ball.position.z = sphereBody.position.z;
       camera.position.x = sphereBody.position.x + .4;
       camera.position.y = sphereBody.position.y + 5;
       camera.position.z = sphereBody.position.z;
@@ -637,21 +651,21 @@ export default class Unranked extends React.Component {
         if(ghostdirections[0] === 'E') {
           ghostBody.velocity.z = 0;
           ghostBody.velocity.x = 30;
-        } 
+        }
         if(ghostdirections[0] === 'W') {
           ghostBody.velocity.z = 0;
           ghostBody.velocity.x = -30;
-        } 
+        }
         if(ghostdirections[0] === 'S') {
           ghostBody.velocity.z = -30;
           ghostBody.velocity.x = 0;
-        } 
+        }
         if(ghostdirections[0] === 'N') {
           ghostBody.velocity.z = 30;
           ghostBody.velocity.x = 0;
-        } 
-      } 
-      
+        }
+      }
+
   });
   var resize = function(){
     that.engine.resize();
@@ -761,7 +775,7 @@ componentDidUpdate() {
       if(arr[coordz + 1] !== undefined) {
         if (arr[coordz + 1][coordx] !== 1 && arr[coordz + 1][coordx] !== undefined) {
         suc.push([[coordz + 1,coordx], 'S']);
-        }  
+        }
       }
       if (arr[coordz][coordx - 1] !== 1 && arr[coordz][coordx - 1] !== undefined) {
         suc.push([[coordz,coordx - 1], 'W']);
@@ -785,7 +799,7 @@ componentDidUpdate() {
       while(arr[curr[0][0]][curr[0][1]] !== 3) {
         if(!((curr[0][0] * 16) + curr[0][1] in recur)) {
           recur[(curr[0][0] * 16) + curr[0][1]] = curr[0];
-        } 
+        }
         Successors = getSuccessors(curr[0][0], curr[0][1], arr);
         for(var suc in Successors) {
           var calc = (Successors[suc][0][0] * 16) + Successors[suc][0][1]
@@ -881,28 +895,28 @@ componentDidUpdate() {
           if (arr[i][j] === 1) {
             if(flipMaze === 1) {
               newInstanceWall = wall.createInstance("j" + (i *16) + j);
-              newInstanceWall.position.z = z; 
-              newInstanceWall.position.x = x; 
+              newInstanceWall.position.z = z;
+              newInstanceWall.position.x = x;
               newInstanceWall.position.y = 900;
               createWallBody(newInstanceWall.getBoundingInfo().boundingBox.center, new CANNON.Vec3(wall.scaling.x, wall.scaling.y, wall.scaling.z), 0);
             } else {
               newInstanceWall = wall.createInstance("i" + (i *16) + j);
-              newInstanceWall.position.z = z; 
+              newInstanceWall.position.z = z;
               newInstanceWall.position.x = x;
               createWallBody(newInstanceWall.getBoundingInfo().boundingBox.center, new CANNON.Vec3(wall.scaling.x, wall.scaling.y, wall.scaling.z), 0);
             }
           } else if (arr[i][j] === 2) {
             if(flipMaze === 1) {
               newInstanceSphere = pellet.createInstance("j" + (i *16) + j);
-              newInstanceSphere.position.z = z; 
+              newInstanceSphere.position.z = z;
               newInstanceSphere.position.x = x;
               newInstanceSphere.position.y = 986;
               var sphereBody = createSphereBody(newInstanceSphere.getBoundingInfo().boundingBox.center, 4, newInstanceSphere.uniqueId);
               pelletMeshes[newInstanceSphere.uniqueId] = newInstanceSphere;
             } else {
               newInstanceSphere = pellet.createInstance("i" + (i *16) + j);
-              newInstanceSphere.position.z = z; 
-              newInstanceSphere.position.x = x; 
+              newInstanceSphere.position.z = z;
+              newInstanceSphere.position.x = x;
               newInstanceSphere.position.y = 5;
               var sphereBody = createSphereBody(newInstanceSphere.getBoundingInfo().boundingBox.center, 4, newInstanceSphere.uniqueId);
               pelletMeshes[newInstanceSphere.uniqueId] = newInstanceSphere;
@@ -1030,14 +1044,14 @@ componentDidUpdate() {
         plane2.scaling.z = 200;
         plane2.scaling.y = 1000;
         plane2.scaling.x = .2;
-        plane2.position.x = 400; 
+        plane2.position.x = 400;
         createWallBody(plane2.getBoundingInfo().boundingBox.center, new CANNON.Vec3(plane2.scaling.x, plane2.scaling.y, plane2.scaling.z), 0);
         var plane3 = plane.createInstance("i" + 302);
         plane3.scaling.z = 200;
         plane3.scaling.y = 1000;
         plane3.scaling.x = .2;
         plane3.rotation.y = Math.PI/2;
-        plane3.position.x = 200; 
+        plane3.position.x = 200;
         plane3.position.z = 200;
         createWallBody(plane3.getBoundingInfo().boundingBox.center, new CANNON.Vec3(plane3.scaling.x, plane3.scaling.y, plane3.scaling.z), 2);
         var plane4 = plane.createInstance("i" + 403);
@@ -1045,12 +1059,12 @@ componentDidUpdate() {
         plane4.scaling.y = 1000;
         plane4.scaling.x = 0.2;
         plane4.rotation.y = Math.PI/2;
-        plane4.position.x = 200; 
+        plane4.position.x = 200;
         plane4.position.z = -200;
         createWallBody(plane4.getBoundingInfo().boundingBox.center, new CANNON.Vec3(plane4.scaling.x, plane4.scaling.y, plane4.scaling.z), 2);
         ball.position.y = 5;
         ball.position.z = posz;
-        ball.position.x = posx; 
+        ball.position.x = posx;
         var ground = BABYLON.Mesh.CreateGround("ground1", 900, 900, 2, scene);
         ground.material = new BABYLON.StandardMaterial("texture1", scene);
         ground.material.emissiveTexture = new BABYLON.Texture('../assets/ground2.jpg', scene);
@@ -1068,7 +1082,7 @@ componentDidUpdate() {
           var groundShape = new CANNON.Box(new CANNON.Vec3(ground2.scaling.x, ground2.scaling.y, ground2.scaling.z));
           var groundBody = new CANNON.Body({ mass: 0, shape: groundShape });
           groundBody.position.y = 1000;
-          groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(0,0,1),-Math.PI/2); 
+          groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(0,0,1),-Math.PI/2);
           world.add(groundBody);
         }
         // var getOptions = function() {
@@ -1092,7 +1106,7 @@ componentDidUpdate() {
         // }, function() {
         //    // FPS target not reached
         // })
-        
+
         return scene;
   };  // End of createScene function
   var createWorld = function(){
@@ -1124,7 +1138,7 @@ componentDidUpdate() {
     ghostBody = new CANNON.Body({mass: 1, shape: ghostShape}); // Step 2
     ghostBody.position.set(ghostx,1,ghostz);
     ghostBody.rotation = new CANNON.Vec3();
-    ghostBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);  
+    ghostBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);
     ghostBody.addEventListener('collide', function(e){
       console.log('collide');
       if (e.body.isPlayer) {
@@ -1197,26 +1211,26 @@ componentDidUpdate() {
     var groundShape = new CANNON.Plane();
     var groundBody = new CANNON.Body({ mass: 0, shape: groundShape });
     world.add(groundBody);
-    groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);  
+    groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);
 
     return world;
   };
 
-  var createWallBody = function(position, size, flag){  
+  var createWallBody = function(position, size, flag){
     var boxShape = new CANNON.Box(size);
     var boxBody = new CANNON.Body({shape: boxShape, mass:0});
     boxBody.position = position;
     if(flag === 1) {
-      boxBody.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0),-Math.PI/2);  
+      boxBody.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0),-Math.PI/2);
     } else if(flag === 2) {
-      boxBody.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0),Math.PI/2); 
+      boxBody.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0),Math.PI/2);
     } else if(flag === 3) {
-      boxBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2); 
+      boxBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);
     }
-    world.add(boxBody); 
+    world.add(boxBody);
   };
 
-  var createSphereBody = function(position, radius, id){  
+  var createSphereBody = function(position, radius, id){
     var pelletShape = new CANNON.Sphere(radius);
     var pelletBody = new CANNON.Body({mass: 0, shape: pelletShape});
     pelletBody.position = position;
@@ -1224,11 +1238,11 @@ componentDidUpdate() {
     pelletBody.collisionResponse = 0;
     pelletBody.pelletId = id;
     pellets[id] = pelletBody;
-    world.add(pelletBody); 
+    world.add(pelletBody);
   };
 
 
-  var world = createWorld();     
+  var world = createWorld();
   var scene = createScene();
 
   if(cameraFlag) {
@@ -1248,19 +1262,19 @@ componentDidUpdate() {
       }
       if (cameraFlag && camera.rotationQuaternion !==undefined) {
         cam1 = parseFloat(Math.cos(camera.rotationQuaternion.toEulerAngles().y));
-        cam2 = parseFloat(Math.sin(camera.rotationQuaternion.toEulerAngles().y));   
+        cam2 = parseFloat(Math.sin(camera.rotationQuaternion.toEulerAngles().y));
         sphereBody.velocity.z = cam1* 20;
         sphereBody.velocity.x = cam2* 20;
       } else {
         cam1 = parseFloat(Math.cos(camera.rotation.y));
-        cam2 = parseFloat(Math.sin(camera.rotation.y));   
+        cam2 = parseFloat(Math.sin(camera.rotation.y));
         sphereBody.velocity.z = cam1* 50;
         sphereBody.velocity.x = cam2* 50;
       }
-      
-      ball.position.x = sphereBody.position.x; 
-      ball.position.y = sphereBody.position.y; 
-      ball.position.z = sphereBody.position.z; 
+
+      ball.position.x = sphereBody.position.x;
+      ball.position.y = sphereBody.position.y;
+      ball.position.z = sphereBody.position.z;
       camera.position.x = sphereBody.position.x + .4;
       camera.position.y = sphereBody.position.y + 5;
       camera.position.z = sphereBody.position.z;
@@ -1290,21 +1304,21 @@ componentDidUpdate() {
         if(ghostdirections[0] === 'E') {
           ghostBody.velocity.z = 0;
           ghostBody.velocity.x = 30;
-        } 
+        }
         if(ghostdirections[0] === 'W') {
           ghostBody.velocity.z = 0;
           ghostBody.velocity.x = -30;
-        } 
+        }
         if(ghostdirections[0] === 'S') {
           ghostBody.velocity.z = -30;
           ghostBody.velocity.x = 0;
-        } 
+        }
         if(ghostdirections[0] === 'N') {
           ghostBody.velocity.z = 30;
           ghostBody.velocity.x = 0;
-        } 
-      } 
-      
+        }
+      }
+
   });
   var resize = function(){
     that.engine.resize();

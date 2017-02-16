@@ -13,10 +13,25 @@ var nodemailer = require('nodemailer');
 
 module.exports = function(app, passport) {
 
-  app.post('/login', bruteforce.prevent, passport.authenticate('local-login', {
-    failureRedirect: '/',
-    successRedirect: '/profile'
-  }));
+  app.post('/login', bruteforce.prevent, function(req, res) {
+    passport.authenticate('local-login', function(err, user, info) {
+      if (!user) {
+        console.log('hit !user')
+        res.send(info);
+      } else {
+        req.logIn(user, function() {
+          return res.redirect('/profile')
+        })
+      }
+    })(req, res)
+  }
+
+  //   passport.authenticate('local-login', {
+  //   failureRedirect: '/',
+  //   successRedirect: '/profile'
+  // })
+
+    );
 
   app.post('/signup', function(req, res, next) {
     passport.authenticate('local-signup', function(err, user, info, status) {
