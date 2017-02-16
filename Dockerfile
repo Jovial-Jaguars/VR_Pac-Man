@@ -1,15 +1,22 @@
-FROM node:boron
+FROM node:7.5.0
 
-# Create app directory
+# Create a new folder for our application
 RUN mkdir -p /usr/src/app
+
+# Set the working dir when our container executes
 WORKDIR /usr/src/app
 
-# Install app dependencies
-COPY package.json /usr/src/app/
+# Copy our package.json file
+ADD package.json /usr/src/app
+
+# Install our packages
 RUN npm install
 
-# Bundle app source
+# Copy the rest of our application
 COPY . /usr/src/app
 
+#Expose our application port
 EXPOSE 3000
-CMD [ "npm", "start" ]
+
+# Set start command
+CMD ["node", "server.js"]
