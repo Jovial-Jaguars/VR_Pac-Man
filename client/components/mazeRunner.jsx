@@ -405,7 +405,7 @@ export default class MazeRunner extends React.Component {
         ground.material.emissiveTexture.vScale = 100.0;
         pelletSound = new BABYLON.Sound("pellet", "../assets/pellet.wav", scene);
         canvas2 = create(scene, score);
-        if (ghostx !== undefined) {
+        if (gravityPositivei !== undefined) {
           var ground2 = ground.createInstance("hk2000");
           ground2.scaling.z = 900;
           ground2.scaling.y = 1500;
@@ -1058,7 +1058,7 @@ componentDidUpdate() {
         ground.material.emissiveTexture.vScale = 100.0;
         pelletSound = new BABYLON.Sound("pellet", "../assets/pellet.wav", scene);
         canvas2 = create(scene, score);
-        if (ghostx !== undefined) {
+        if (gravityPositivei !== undefined) {
           var ground2 = ground.createInstance("hk2000");
           ground2.scaling.z = 900;
           ground2.scaling.y = 1500;
