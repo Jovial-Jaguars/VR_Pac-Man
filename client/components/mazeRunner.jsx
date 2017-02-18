@@ -373,6 +373,7 @@ export default class MazeRunner extends React.Component {
         }
         wall.position.x = -200
         wall.isVisible = false;
+        pellet.isVisible = false;
         var plane2 = plane.createInstance("i" + 201);
         plane2.scaling.z = 200;
         plane2.scaling.y = 1000;
@@ -1026,6 +1027,7 @@ componentDidUpdate() {
         }
         wall.position.x = -200
         wall.isVisible = false;
+        pellet.isVisible = false;
         var plane2 = plane.createInstance("i" + 201);
         plane2.scaling.z = 200;
         plane2.scaling.y = 1000;
