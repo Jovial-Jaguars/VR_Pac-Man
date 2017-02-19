@@ -371,9 +371,7 @@ export default class MazeRunner extends React.Component {
         if (gravityPositivei !== undefined) {
           mazemaker(that.maze, wall, pellet, hl, 1);
         }
-        wall.position.x = -200
-        wall.isVisible = false;
-        pellet.isVisible = false;
+        
         var plane2 = plane.createInstance("i" + 201);
         plane2.scaling.z = 200;
         plane2.scaling.y = 1000;
@@ -418,6 +416,25 @@ export default class MazeRunner extends React.Component {
           groundBody.position.y = 1000;
           groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(0,0,1),-Math.PI/2); 
           world.add(groundBody);
+          var posSwitch = wall.clone('hello');
+          posSwitch.material = new BABYLON.StandardMaterial("+veSwitch", scene);
+          posSwitch.material.emissiveColor = new BABYLON.Color3.Yellow();
+          posSwitch.visibility = 0.4;
+          posSwitch.position.x = 100;
+          posSwitch.position.y = 5;
+          posSwitch.position.z = 0;
+          var cylinder = BABYLON.Mesh.CreateCylinder("cylinder", 70, 10, 10, 24, 1, scene);
+          cylinder.material = new BABYLON.StandardMaterial("cyl", scene);
+          cylinder.material.emissiveColor = new BABYLON.Color3.Red();
+          cylinder.position.x = 100;
+          cylinder.position.y = 0;
+          cylinder.position.z = 0;
+          var cone = BABYLON.Mesh.CreateCylinder("cone", 15, 0, 20, 24, 1, scene);
+          cone.material = new BABYLON.StandardMaterial("cyl", scene);
+          cone.material.emissiveColor = new BABYLON.Color3.Blue();
+          cone.position.x = 100;
+          cone.position.y = 40;
+          cone.position.z = 0;
         }
         // var getOptions = function() {
         //   var result = new BABYLON.SceneOptimizerOptions(60, 2000);
@@ -440,7 +457,9 @@ export default class MazeRunner extends React.Component {
         // }, function() {
         //    // FPS target not reached
         // })
-        
+        wall.position.x = -200
+        wall.isVisible = false;
+        pellet.isVisible = false;
         return scene;
   };  // End of createScene function
   var createWorld = function(){
@@ -1025,9 +1044,7 @@ componentDidUpdate() {
         if (gravityPositivei !== undefined) {
           mazemaker(that.maze, wall, pellet, hl, 1);
         }
-        wall.position.x = -200
-        wall.isVisible = false;
-        pellet.isVisible = false;
+        wall.position.x = -200;
         var plane2 = plane.createInstance("i" + 201);
         plane2.scaling.z = 200;
         plane2.scaling.y = 1000;
@@ -1072,6 +1089,11 @@ componentDidUpdate() {
           groundBody.position.y = 1000;
           groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(0,0,1),-Math.PI/2); 
           world.add(groundBody);
+          var posSwitch = wall.clone('+veswitch');
+          posSwitch.material = new BABYLON.StandardMaterial("+veSwitch", scene);
+          posSwitch.material.emissiveColor = new BABYLON.Color3.Yellow();
+          posSwitch.position.z = 400;
+          posSwitch.position.x = 400;
         }
         // var getOptions = function() {
         //   var result = new BABYLON.SceneOptimizerOptions(60, 2000);
@@ -1094,7 +1116,8 @@ componentDidUpdate() {
         // }, function() {
         //    // FPS target not reached
         // })
-        
+        wall.isVisible = false;
+        pellet.isVisible = false;
         return scene;
   };  // End of createScene function
   var createWorld = function(){
