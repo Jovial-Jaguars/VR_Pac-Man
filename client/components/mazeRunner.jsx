@@ -172,7 +172,7 @@ export default class MazeRunner extends React.Component {
       });
       return canvas;
     };
-    var switchCamera = function (cam) {
+    var switchCamera = function (cam) { //copy ove all of current camera parameters to new camera either vr or 3d view
       if (scene.activeCameras[0].rotation) {
         cam.rotation = scene.activeCameras[0].rotation.clone();
       }
@@ -183,9 +183,6 @@ export default class MazeRunner extends React.Component {
       if (scene.activeCameras[0].ellipsoid) {
         cam.ellipsoid = scene.activeCameras[0].ellipsoid.clone();
       }
-      //cam.checkCollisions = scene.activeCameras[0].checkCollisions;
-      //cam.applyGravity = scene.activeCameras[0].applyGravity;
-
       cam.speed = scene.activeCameras[0].speed;
 
       cam.postProcesses = scene.activeCameras[0].postProcesses;
@@ -194,7 +191,7 @@ export default class MazeRunner extends React.Component {
       if (scene.activeCameras[0].dispose) {
         scene.activeCameras[0].dispose();
       }
-      var cool = scene.activeCameras.pop();
+      var cool = scene.activeCameras.pop();// remove and replace currently active camera
       scene.activeCameras.pop();
       scene.activeCameras.push(camera);
       scene.activeCameras.push(cool);
@@ -204,15 +201,15 @@ export default class MazeRunner extends React.Component {
       cameraFlag = !cameraFlag;
 
     };
-    var c2 = document.getElementsByClassName("camera-toggle")[0];
+    var c2 = document.getElementsByClassName("camera-toggle")[0]; //if camera tiggle is clicked
     c2.addEventListener("click", function () {
       //console.log(scene.activeCameras[0] instanceof BABYLON.VRDeviceOrientationFreeCamera);
       window.scrollTo(0,1);
-      if (scene.activeCameras[0] instanceof BABYLON.FreeCamera && !(scene.activeCameras[0] instanceof BABYLON.VRDeviceOrientationFreeCamera)) {
+      if (scene.activeCameras[0] instanceof BABYLON.FreeCamera && !(scene.activeCameras[0] instanceof BABYLON.VRDeviceOrientationFreeCamera)) { //if 3d camera
         camera = new BABYLON.VRDeviceOrientationFreeCamera("deviceOrientationCamera", scene.activeCameras[0].position, scene);
         switchCamera(camera);
-        cam1 = parseFloat(Math.cos(camera.rotationQuaternion.toEulerAngles().y));
-        cam2 = parseFloat(Math.sin(camera.rotationQuaternion.toEulerAngles().y));
+        cam1 = parseFloat(Math.cos(camera.rotationQuaternion.toEulerAngles().y));   // vr camera uses something called quaternion
+        cam2 = parseFloat(Math.sin(camera.rotationQuaternion.toEulerAngles().y));   // basically the way the current camera is facing
       } else {
         //console.log('yes');
         camera = new BABYLON.FreeCamera("freeeCamera", scene.activeCameras[0].position, scene);
@@ -220,25 +217,27 @@ export default class MazeRunner extends React.Component {
       }
       return;
     });
+    //mazemake function
+    //converts 16 x 16 array to maze
     var mazemaker = function(arr, wall, pellet, hl, flipMaze) {
-      var x = 13;
-      var z = 187;
+      var x = 13;                                                                     //starting x position
+      var z = 187;                                                                    //starting z position
       for (var i = 0; i < arr.length; i++) {
-        for (var j = 0; j < arr[i].length; j++) {
-          if (arr[i][j] === 1) {
-            if(flipMaze === 1) {
-              newInstanceWall = wall.createInstance("j" + (i *16) + j);
+        for (var j = 0; j < arr[i].length; j++) {                                                         
+          if (arr[i][j] === 1) {  ///if theres a wall
+            if(flipMaze === 1) {  //if theres an upside down maze, gravity switch
+              newInstanceWall = wall.createInstance("j" + (i *16) + j);  //creates instance/copy  of a single block as many times needed
               newInstanceWall.position.z = z; 
               newInstanceWall.position.x = x; 
-              newInstanceWall.position.y = 900;
-              createWallBody(newInstanceWall.getBoundingInfo().boundingBox.center, new CANNON.Vec3(wall.scaling.x, wall.scaling.y, wall.scaling.z), 0);
-            } else {
-              newInstanceWall = wall.createInstance("i" + (i *16) + j);
+              newInstanceWall.position.y = 900; // set positions relative to array
+              createWallBody(newInstanceWall.getBoundingInfo().boundingBox.center, new CANNON.Vec3(wall.scaling.x, wall.scaling.y, wall.scaling.z), 0); /// create cannon physics version of block with the same size
+            } else { 
+              newInstanceWall = wall.createInstance("i" + (i *16) + j); //creates instance/copy  of a single block as many times needed
               newInstanceWall.position.z = z; 
               newInstanceWall.position.x = x;
-              createWallBody(newInstanceWall.getBoundingInfo().boundingBox.center, new CANNON.Vec3(wall.scaling.x, wall.scaling.y, wall.scaling.z), 0);
+              createWallBody(newInstanceWall.getBoundingInfo().boundingBox.center, new CANNON.Vec3(wall.scaling.x, wall.scaling.y, wall.scaling.z), 0); //t gives block physics in cannon world
             }
-          } else if (arr[i][j] === 2) {
+          } else if (arr[i][j] === 2) { // same thing but for pellets
             if(flipMaze === 1) {
               newInstanceSphere = pellet.createInstance("j" + (i *16) + j);
               newInstanceSphere.position.z = z; 
@@ -420,21 +419,34 @@ export default class MazeRunner extends React.Component {
           posSwitch.material = new BABYLON.StandardMaterial("+veSwitch", scene);
           posSwitch.material.emissiveColor = new BABYLON.Color3.Yellow();
           posSwitch.visibility = 0.4;
-          posSwitch.position.x = 100;
+          posSwitch.position.x = (gravityPositivej * 25) + 13;
           posSwitch.position.y = 5;
-          posSwitch.position.z = 0;
+          posSwitch.position.z = 187 - (gravityPositivei * 25);
           var cylinder = BABYLON.Mesh.CreateCylinder("cylinder", 70, 10, 10, 24, 1, scene);
           cylinder.material = new BABYLON.StandardMaterial("cyl", scene);
           cylinder.material.emissiveColor = new BABYLON.Color3.Red();
-          cylinder.position.x = 100;
+          cylinder.position.x = (gravityPositivej * 25) + 13;
           cylinder.position.y = 0;
-          cylinder.position.z = 0;
+          cylinder.position.z = 187 - (gravityPositivei * 25);
           var cone = BABYLON.Mesh.CreateCylinder("cone", 15, 0, 20, 24, 1, scene);
           cone.material = new BABYLON.StandardMaterial("cyl", scene);
           cone.material.emissiveColor = new BABYLON.Color3.Blue();
-          cone.position.x = 100;
+          cone.position.x = (gravityPositivej * 25) + 13;
           cone.position.y = 40;
-          cone.position.z = 0;
+          cone.position.z = 187 - (gravityPositivei * 25);
+          var negSwitch = posSwitch.createInstance('swcopy');
+          negSwitch.position.x = (gravityNegativej * 25) + 13;
+          negSwitch.position.y = 995;
+          negSwitch.position.z = 187 - (gravityNegativei * 25);
+          var cylinder2 = cylinder.createInstance('cylcopy');
+          cylinder2.position.x = (gravityNegativej * 25) + 13;
+          cylinder2.position.y = 965;
+          cylinder2.position.z = 187 - (gravityNegativei * 25);
+          var cone2 = cone.createInstance('conecopy');
+          cone2.position.x = (gravityNegativej * 25) + 13;
+          cone2.rotation.x = Math.PI;
+          cone2.position.y = 920;
+          cone2.position.z = 187 - (gravityNegativei * 25);
         }
         // var getOptions = function() {
         //   var result = new BABYLON.SceneOptimizerOptions(60, 2000);
