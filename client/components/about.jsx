@@ -17,18 +17,13 @@ export default class About extends React.Component {
     for (var i = 0; i < len; i++) {
       randomized.push(creators.splice(randIdx(creators),1));
     }
-    console.log(JSON.stringify(randomized));
     for (var i = 0; i < randomized.length; i++) {
       var id = '#creatorsSlot' + (i + 1);
-      console.log('id:', id);
       if (randomized[i][0] === 'wells') {
-        console.log('hit wells')
         $(id).html("<img id='creatorPics' src='../assets/Wells.jpg'/>Wells Tsai<br/><a target='_blank' href='https://www.linkedin.com/in/wells-tsai'><img id='linkedInIcon' src='../assets/linkedin.png'/></a><a target='_blank' href='https://github.com/wellstsai'><img id='gitIcon' src='../assets/git.png'/></a>");
       } else if (randomized[i][0] === 'humaid') {
-        console.log('hit humaid')
         $(id).html("<img id='creatorPics' src='../assets/Humaid.jpg'/>Humaid Khan<br/><a target='_blank' href='https://www.linkedin.com/in/humaidk2'><img id='linkedInIcon' src='../assets/linkedin.png'/></a><a target='_blank' href='https://github.com/humaidk2'><img id='gitIcon' src='../assets/git.png'/></a>")
       } else if (randomized[i][0] === 'don') {
-        console.log('hit don')
         $(id).html("<img id='creatorPics' src='../assets/Don.jpg'/>Don Nguyen<br/><a target='_blank' href='http://www.google.com'><img id='linkedInIcon' src='../assets/linkedin.png'/></a><a target='_blank' href='https://github.com/nguyendkim'><img id='gitIcon' src='../assets/git.png'/></a>")
       }
     }
