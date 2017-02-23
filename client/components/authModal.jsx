@@ -40,11 +40,9 @@ export default class AuthModal extends React.Component {
       url: '/signup',
       data: dataString,
       success: function(data) {
-        console.log(data)
         $('#signupForm input[type=text]').val('');
         $('#signupForm input[type=password]').val('');
         if (data.message) {
-          console.log(data.message);
           // render error message on form
           $('.authError.signupError').css('display', 'block');
           $('.authError.signupError').text(data.message);
@@ -71,16 +69,13 @@ export default class AuthModal extends React.Component {
   loginFormSubmit(e) {
     e.preventDefault();
     var username = $('#login-username').val();
-    console.log('username:', username);
     var dataString = $('#loginForm').serialize();
     $.ajax({
       type: 'POST',
       url: '/login',
       data: dataString,
       success: function(data) {
-        console.log('success cb:',data);
         if (data.message) {
-          console.log(data.message);
           // render error on form
           $('.authError.loginError').css('display', 'block');
           $('.authError.loginError').text(data.message);
@@ -134,7 +129,6 @@ export default class AuthModal extends React.Component {
       url: '/forgotPassword',
       data: dataString,
       success: function(data) {
-        console.log('data:', data);
         // document.cookie = data.token;
         alert('Check your email and follow instructions to reset your password');
         $('.modal').css('display', 'none');
