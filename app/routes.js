@@ -46,7 +46,7 @@ module.exports = function(app, passport) {
           from: '"Blinky" <communication.vrpacman@gmail.com>',
           to: user.email,
           subject: 'Confirm registration for VR Pacman',
-          text: `Hi ${user.username}!\n\nPlease verify your account by clicking the following link: http://localhost:3000/verifyemail?unique=${user.token}\n\nIf you believe you have received this email in error, please ignore this email.`
+          text: `Hi ${user.username}!\n\nPlease verify your account by clicking the following link: http://vrpacman.com/verifyemail?unique=${user.token}\n\nIf you believe you have received this email in error, please ignore this email.`
         };
 
         transporter.sendMail(mailOptions, function(error, info) {
@@ -342,7 +342,7 @@ module.exports = function(app, passport) {
       from: '"Blinky" <communication.vrpacman@gmail.com>',
       to: email,
       subject: 'Reset password for VR Pacman',
-      text: `Click the following link to reset your password: http://localhost:3000/resetpassword?unique=${token}\n\nIf you believe you have received this email in error, please ignore this email.`
+      text: `Click the following link to reset your password: http://vrpacman.com/resetpassword?unique=${token}\n\nIf you believe you have received this email in error, please ignore this email.`
     };
 
     transporter.sendMail(mailOptions, function(error, info) {
