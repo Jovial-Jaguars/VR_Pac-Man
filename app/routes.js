@@ -46,7 +46,7 @@ module.exports = function(app, passport) {
           from: '"Blinky" <communication.vrpacman@gmail.com>',
           to: user.email,
           subject: 'Confirm registration for VR Pacman',
-          text: `Hi ${user.username}!\n\nPlease verify your account by clicking the following link: http://vrpacman.com/verifyemail?unique=${user.token}\n\nIf you believe you have received this email in error, please ignore this email.`
+          text: `Hi ${user.username}!\n\nPlease verify your account by clicking the following link: ${supersecret.link}/verifyemail?unique=${user.token}\n\nIf you believe you have received this email in error, please ignore this email.`
         };
 
         transporter.sendMail(mailOptions, function(error, info) {
@@ -140,7 +140,7 @@ module.exports = function(app, passport) {
 
   app.post('/leaveGameRoomRanked', function(req, res) {
     var roomNumber = req.body.room.slice(4);
-    var username = req.body.username;
+    var username = req.session.passport.user.username;
     console.log(username + ' left room number:', roomNumber);
     console.log('roomsInPlayRanked:', roomsInPlayRanked);
     if (roomsInPlayRanked[roomNumber]) {
@@ -188,7 +188,7 @@ module.exports = function(app, passport) {
 
   app.post('/leaveGameRoomCustom', function(req, res) {
     var roomNumber = req.body.room.slice(4);
-    var username = req.body.username;
+    var username = req.session.passport.user.username;
     console.log(username + ' left room number:', roomNumber);
     customRooms[roomNumber]--;
     if (customRooms[roomNumber] <= 0) {
@@ -249,7 +249,7 @@ module.exports = function(app, passport) {
         User.update(
           {[table]: req.body.score},
           {
-            where: {username: req.body.username}
+            where: {username: req.session.passport.user.username}
           }
         )
       }
@@ -342,7 +342,7 @@ module.exports = function(app, passport) {
       from: '"Blinky" <communication.vrpacman@gmail.com>',
       to: email,
       subject: 'Reset password for VR Pacman',
-      text: `Click the following link to reset your password: http://vrpacman.com/resetpassword?unique=${token}\n\nIf you believe you have received this email in error, please ignore this email.`
+      text: `Click the following link to reset your password: ${supersecret.link}/resetpassword?unique=${token}\n\nIf you believe you have received this email in error, please ignore this email.`
     };
 
     transporter.sendMail(mailOptions, function(error, info) {
