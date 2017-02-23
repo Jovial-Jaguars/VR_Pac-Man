@@ -23,7 +23,7 @@ module.exports = function(passport) {
   passport.use(new FacebookStrategy({
     clientID: supersecret.FACEBOOK_APP_ID,
     clientSecret: supersecret.FACEBOOK_APP_SECRET,
-    callbackURL: "http://vrpacman.com/auth/facebook/callback"
+    callbackURL: `${supersecret.link}/auth/facebook/callback`
     // profileFields: ['id', 'displayName'],
     // enableProof: true
   }, function(accessToken, refreshToken, profile, cb) {
