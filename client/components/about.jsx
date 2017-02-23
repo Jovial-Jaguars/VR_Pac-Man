@@ -18,31 +18,32 @@ export default class About extends React.Component {
       randomized.push(creators.splice(randIdx(creators),1));
     }
     console.log(JSON.stringify(randomized));
+    for (var i = 0; i < randomized.length; i++) {
+      var id = '#creatorsSlot' + (i + 1);
+      console.log('id:', id);
+      if (randomized[i][0] === 'wells') {
+        console.log('hit wells')
+        $(id).html("<img id='creatorPics' src='../assets/Wells.jpg'/>Wells Tsai<br/><a target='_blank' href='https://www.linkedin.com/in/wells-tsai'><img id='linkedInIcon' src='../assets/linkedin.png'/></a><a target='_blank' href='https://github.com/wellstsai'><img id='gitIcon' src='../assets/git.png'/></a>");
+      } else if (randomized[i][0] === 'humaid') {
+        console.log('hit humaid')
+        $(id).html("<img id='creatorPics' src='../assets/Humaid.jpg'/>Humaid Khan<br/><a target='_blank' href='https://www.linkedin.com/in/humaidk2'><img id='linkedInIcon' src='../assets/linkedin.png'/></a><a target='_blank' href='https://github.com/humaidk2'><img id='gitIcon' src='../assets/git.png'/></a>")
+      } else if (randomized[i][0] === 'don') {
+        console.log('hit don')
+        $(id).html("<img id='creatorPics' src='../assets/Don.jpg'/>Don Nguyen<br/><a target='_blank' href='http://www.google.com'><img id='linkedInIcon' src='../assets/linkedin.png'/></a><a target='_blank' href='https://github.com/nguyendkim'><img id='gitIcon' src='../assets/git.png'/></a>")
+      }
+    }
     return randomized;
   }
 
   componentWillMount() {
-    // $.ajax({
-    //   type: 'GET',
-    //   url: '/verifyAuth',
-    //   async: false,
-    //   success: function(data) {
-    //     if (!data.success) {
-    //         console.log('auth fail')
-    //         $('#nav-profile').css('display', 'none');
-    //         $('#nav-auth').css('display', 'block')
-    //     } else {
-    //         console.log('auth success')
-    //         $('#nav-profile').css('display', 'block');
-    //         $('#nav-auth').css('display', 'none')
-    //     }
-    //   }
-    // })
-    this.randomizeCreatorsOrder();
     this.props.router.setRouteLeaveHook(
         this.props.route,
         this.routerWillLeave
       )
+  }
+
+  componentDidMount() {
+    this.randomizeCreatorsOrder();
   }
 
   routerWillLeave() {
@@ -90,24 +91,11 @@ export default class About extends React.Component {
         <h1 className="headers">The Creators</h1>
         <p>We are a team of 3 software engineers excited about VR and web development.</p>
         <div className="creatorsFlexBox">
-          <div><img id="creatorPics" src="../assets/Wells.jpg"/>
-                Wells Tsai<br/>
-                <a target="_blank" href="https://www.linkedin.com/in/wells-tsai">
-                  <img id="linkedInIcon" src="../assets/linkedin.png"/></a>
-                <a target="_blank" href="https://github.com/wellstsai">
-                <img id="gitIcon" src="../assets/git.png"/></a>
+          <div id="creatorsSlot1">
           </div>
-          <div><img id="creatorPics" src="../assets/Humaid.jpg"/>Humaid Khan<br/>
-                <a target="_blank" href="https://www.linkedin.com/in/humaidk2">
-                  <img id="linkedInIcon" src="../assets/linkedin.png"/></a>
-                <a target="_blank" href="https://github.com/humaidk2">
-                <img id="gitIcon" src="../assets/git.png"/></a>
+          <div id="creatorsSlot2">
           </div>
-          <div><img id="creatorPics" src="../assets/Don.jpg"/>Don Nguyen<br/>
-                <a target="_blank" href="http://www.google.com">
-                  <img id="linkedInIcon" src="../assets/linkedin.png"/></a>
-                <a target="_blank" href="https://github.com/nguyendkim">
-                <img id="gitIcon" src="../assets/git.png"/></a>
+          <div id="creatorsSlot3">
           </div>
         </div>
         <p>Contact us at&nbsp;<a href="https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=contact@VRpacman.com">contact@VRpacman.com</a></p>
