@@ -146,11 +146,12 @@ export default class ProfilePage extends React.Component {
             if (data === 'created') {
               roomSuccess = true;
               console.log('room created');
+              this.props.router.push({pathname: '/multiplayerCustom'})
             } else if (data === 'taken') {
               roomSuccess = false;
               console.log('room taken');
             }
-          },
+          }.bind(this),
           error: function() {
             console.log('error creating room');
           }
@@ -168,11 +169,12 @@ export default class ProfilePage extends React.Component {
             } else if (data === 'joined') {
               roomSuccess = true;
               console.log('room joined');
+              this.props.router.push({pathname: '/multiplayerCustom'})
             } else if (data === 'room full') {
               roomSuccess = false;
               console.log('room full');
             }
-          },
+          }.bind(this),
           error: function() {
             console.log('error joining room');
           }
