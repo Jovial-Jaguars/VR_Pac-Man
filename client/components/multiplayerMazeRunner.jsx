@@ -26,6 +26,7 @@ export default class MultiplayerMazeRunner extends React.Component {
 
     var pacmanIntro = new Audio('../assets/pacman_beginning.wav');
     pacmanIntro.loop = false;
+    pacmanIntro.volume = 0.01;
     pacmanIntro.play();
 
   // Get the canvas element from our HTML above

@@ -20,6 +20,7 @@ export default class MazeRunner extends React.Component {
   componentDidMount() {
     var pacmanIntro = new Audio('../assets/pacman_beginning.wav');
     pacmanIntro.loop = false;
+    pacmanIntro.volume = 0.01;
     pacmanIntro.play();
     var obj= {};
     var checkObj;
