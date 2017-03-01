@@ -33,6 +33,7 @@ export default class Unranked extends React.Component {
   componentDidMount() {
     var pacmanIntro = new Audio('../assets/pacman_beginning.wav');
     pacmanIntro.loop = false;
+    pacmanIntro.volume = 0.01;
     pacmanIntro.play();
     var obj= {};
     var checkObj;
@@ -687,6 +688,7 @@ componentDidUpdate() {
     this.engine.clear(BABYLON.Color3.Black(),false,false);
     var pacmanIntro = new Audio('../assets/pacman_beginning.wav');
     pacmanIntro.loop = false;
+    pacmanIntro.volume = 0.01;
     pacmanIntro.play();
     var obj= {};
     var checkObj;
