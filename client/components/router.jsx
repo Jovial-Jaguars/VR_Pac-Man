@@ -22,7 +22,6 @@ function requireAuth() {
         async: false,
         success: function(data) {
             if (!data.success) {
-                console.log('checking 123')
                 alert('Login or Signup to view this page. Signup is free!');
                 browserHistory.replace('/')
             }
