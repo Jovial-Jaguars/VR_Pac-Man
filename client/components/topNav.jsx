@@ -47,7 +47,6 @@ export default class TopNav extends React.Component {
   }
 
   navClickHome() {
-    console.log('clicked home')
     this.props.router.push({pathname: '/'});
   }
 
@@ -56,8 +55,6 @@ export default class TopNav extends React.Component {
   }
 
   navClickStore() {
-    this.props.router.push({pathname: '/mazestore'});
-    console.log('clicked store')
     this.props.router.push({pathname: '/mazestore'});
   }
 
