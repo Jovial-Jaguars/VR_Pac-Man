@@ -1,5 +1,4 @@
 import React from 'react';
-import {Router, Route, browserHistory, Link} from 'react-router';
 
 export default class MazeRunner extends React.Component {
   constructor(props){
@@ -14,19 +13,64 @@ export default class MazeRunner extends React.Component {
       }
     }
     this.maze = maze;
+    this.path = this.path.bind(this);
+    this.pacmanIntro = new Audio('../assets/pacman_beginning.wav');
+    this.score = 0;
     console.log(maze);
   }
 
+  getSuccessors(coordz, coordx, arr) {
+    var suc = [];
+    if(arr[coordz + 1] !== undefined) {
+      if (arr[coordz + 1][coordx] !== 1 && arr[coordz + 1][coordx] !== undefined) {
+        suc.push([[coordz + 1,coordx], 'S']);
+      }  
+    }
+    if (arr[coordz][coordx - 1] !== 1 && arr[coordz][coordx - 1] !== undefined) {
+      suc.push([[coordz,coordx - 1], 'W']);
+    }
+    if(arr[coordz - 1] !== undefined) {
+      if (arr[coordz - 1][coordx] !== 1 && arr[coordz - 1][coordx] !== undefined) {
+        suc.push([[coordz - 1,coordx], 'N']);
+      }
+    }
+    if (arr[coordz][coordx + 1] !== 1 && arr[coordz][coordx + 1] !== undefined) {
+      suc.push([[coordz, coordx + 1], 'E']);
+    }
+    return suc;
+  }
+
+  path(start, arr) {
+    var q = [];
+    var recur = {};
+    var suc = [];
+    var Successors;
+    var curr = [start, []];
+    do {
+      if(!((curr[0][0] * 16) + curr[0][1] in recur)) {
+        recur[(curr[0][0] * 16) + curr[0][1]] = curr[0];
+      } 
+      Successors = this.getSuccessors(curr[0][0], curr[0][1], arr);
+      for(var suc in Successors) {
+        var calc = (Successors[suc][0][0] * 16) + Successors[suc][0][1]
+        if (!(calc in recur)) {
+          q.unshift([[Successors[suc][0][0], Successors[suc][0][1]], curr[1] + Successors[suc][1]]);
+          if (arr[Successors[suc][0][0]][Successors[suc][0][1]] !== 3) {
+            recur[calc] = Successors[suc];
+          }
+        }
+      }
+      curr = q.pop();
+    } while(arr[curr[0][0]][curr[0][1]] !== 3 && q.length !== 0);
+    return curr[1];
+  }
+
   componentDidMount() {
-    var pacmanIntro = new Audio('../assets/pacman_beginning.wav');
-    pacmanIntro.loop = false;
-    pacmanIntro.volume = 0.01;
-    pacmanIntro.play();
-    var obj= {};
-    var checkObj;
+    this.pacmanIntro.loop = false;
+    this.pacmanIntro.volume = 0.01;
+    this.pacmanIntro.play();
     var that = this;
     var canvas = document.getElementById("renderCanvas");
-    var score = 0;
     var canvas2;
     var pelletSound;
     var angleX = 0;
@@ -61,6 +105,7 @@ export default class MazeRunner extends React.Component {
     var gameOverCanvas
     var gameOverFlag = 0;
     var currPacmani, currPacmanj;
+    var assetsManager;
     for (var i = 0; i < that.maze.length; i++) {
       for (var j = 0; j < that.maze[i].length; j++) {
         if (that.maze[i][j] === 3) {
@@ -84,74 +129,52 @@ export default class MazeRunner extends React.Component {
     // Load the BABYLON 3D engine
 
     this.engine = new BABYLON.Engine(canvas, true,{ stencil: true });
-    var getSuccessors = function(coordz, coordx, arr) {
-      var suc = [];
-      if(arr[coordz + 1] !== undefined) {
-        if (arr[coordz + 1][coordx] !== 1 && arr[coordz + 1][coordx] !== undefined) {
-          suc.push([[coordz + 1,coordx], 'S']);
-        }  
-      }
-      if (arr[coordz][coordx - 1] !== 1 && arr[coordz][coordx - 1] !== undefined) {
-        suc.push([[coordz,coordx - 1], 'W']);
-      }
-      if(arr[coordz - 1] !== undefined) {
-        if (arr[coordz - 1][coordx] !== 1 && arr[coordz - 1][coordx] !== undefined) {
-          suc.push([[coordz - 1,coordx], 'N']);
-        }
-      }
-      if (arr[coordz][coordx + 1] !== 1 && arr[coordz][coordx + 1] !== undefined) {
-        suc.push([[coordz, coordx + 1], 'E']);
-      }
-      return suc;
-    }
-    var path = function (start, arr) {
-      var q = [];
-      var recur = {};
-      var suc = [];
-      var Successors;
-      var curr = [start, []];
-      while(arr[curr[0][0]][curr[0][1]] !== 3) {
-        if(!((curr[0][0] * 16) + curr[0][1] in recur)) {
-          recur[(curr[0][0] * 16) + curr[0][1]] = curr[0];
-        } 
-        Successors = getSuccessors(curr[0][0], curr[0][1], arr);
-        for(var suc in Successors) {
-          var calc = (Successors[suc][0][0] * 16) + Successors[suc][0][1]
-          if (!(calc in recur)) {
-            q.unshift([[Successors[suc][0][0], Successors[suc][0][1]], curr[1] + Successors[suc][1]]);
-            if (arr[Successors[suc][0][0]][Successors[suc][0][1]] !== 3) {
-              recur[calc] = Successors[suc];
-            }
-          }
-        }
-        curr = q.pop();
-      }
-      return curr[1];
-    }
+
+    this.engine.loadingUIText = "Loading...";
+    this.engine.loadingUIBackgroundColor = "blue";
+    
+    
     //console.log(path([0,0], that.maze));
     if(ghostx !== undefined) {
       setInterval(function() {
-      var curr = path([Math.abs(Math.floor((ghostBody.position.z - 87.5) / 12.5)),Math.abs(Math.floor((ghostBody.position.x) / 12.5))], that.maze);
+      var curr = this.path([Math.abs(Math.floor((ghostBody.position.z - 87.5) / 12.5)),Math.abs(Math.floor((ghostBody.position.x) / 12.5))], that.maze);
+      console.log(curr);
       if(typeof curr === 'string') {
         ghostdirections = curr.split('');
       }
-    }, 500);
+    }.bind(this), 500);
     }
-    var create = function (scene, string) {
-      var canvas = new BABYLON.ScreenSpaceCanvas2D(scene, {
-        id: "ScreenCanvas",
-        size: new BABYLON.Size(300, 100),
+    var create = function (scene, score) {
+      var controls = new BABYLON.ScreenSpaceCanvas2D(scene, {
+        id: "Controls",
+        size: new BABYLON.Size(400, 500),
+        renderingPhase: { camera: scene.activeCameras[0], renderingGroupID: 0 },
         backgroundFill: "#4040408F",
-        backgroundRoundRadius: 50,
-        children: [
-        new BABYLON.Text2D(score.toString(), {
-          id: "text",
-          marginAlignment: "h: center, v:center",
-          fontName: "20pt Arial",
-        })
-        ]
+        backgroundRoundRadius: 50
       });
-      return canvas;
+      var rect = new BABYLON.Rectangle2D({
+            id: "mainRect", parent: controls, width: 400, height: 100, 
+            fill: "#404080FF", border: "#A040A0D0, #FFFFFFFF", borderThickness: 10, 
+            roundRadius: 10, 
+            children: 
+              [
+                new BABYLON.Text2D('camera toggle', {
+                  id: "text",
+                  marginAlignment: "h: center, v:center",
+                  fontName: "20pt Arial",
+                })
+              ]
+          });
+      var txt = new BABYLON.Text2D(score.toString(), {
+            id: "text",
+            parent: controls, 
+            marginAlignment: "h: center, v:center",
+            fontName: "20pt Arial",
+          });
+      controls.pointerEventObservable.add(function (d, s) {
+          console.log("UP");
+      }, BABYLON.PrimitivePointerInfo.PointerUp);
+      return controls;
     };
     var switchCamera = function (cam) { //copy ove all of current camera parameters to new camera either vr or 3d view
       if (scene.activeCameras[0].rotation) {
@@ -249,6 +272,7 @@ export default class MazeRunner extends React.Component {
 
     // Now create a basic Babylon Scene object
     var scene = new BABYLON.Scene(that.engine);
+    assetsManager = new BABYLON.AssetsManager(scene);
     scene.ambientColor = new BABYLON.Color3(0.3, 0.3, 0.3);
     var hl = new BABYLON.HighlightLayer("hl1", scene);
     //VRDeviceOrientationFreeCamera
@@ -256,11 +280,45 @@ export default class MazeRunner extends React.Component {
     camera.inputs.addGamepad();
     camera.setTarget(BABYLON.Vector3.Zero());
     camera.attachControl(canvas, true);
-    ball = BABYLON.Mesh.CreateSphere("sphere", 1.0, 1.0, scene);
-    ball.material = new BABYLON.StandardMaterial("wow", scene);
-    ball.material.diffuseColor = new BABYLON.Color3(0, 0.2, 0.7);
-    ball.material.emissiveColor = new BABYLON.Color3(0, .2, .7);
     scene.activeCameras.push(camera);
+    scene.cameraToUseForPointers = camera;
+    // This the minimap
+    var mm = new BABYLON.FreeCamera("minimap", new BABYLON.Vector3(0,400,0), scene);
+    mm.setTarget(new BABYLON.Vector3(0.1,0.1,0.1));
+    mm.mode = BABYLON.Camera.ORTHOGRAPHIC_CAMERA;
+    mm.orthoLeft = -50;
+    mm.orthoRight = 300;
+    mm.orthoTop =  100;
+    mm.orthoBottom = -100;
+    mm.rotation.y = 0;//Camera Toggle
+    var xstart = 0.9; // 80% from the left
+    var ystart = 0.85; // 75% from the bottom
+    var width = 0.99-xstart // Almost until the right edge of the screen
+    var height = 1-ystart;  // Until the top edge of the screen
+    mm.viewport = new BABYLON.Viewport(xstart, ystart, width, height); 
+    // add the minimap to the list of active cameras
+    scene.activeCameras.push(mm);
+    mm.layerMask = 2;
+    camera.layerMask = 1;
+
+
+    canvas2 = create(scene, this.score);
+
+
+
+    var hl = new BABYLON.HighlightLayer("hl1", scene);
+    var pacTask = assetsManager.addMeshTask("pacman task", "", "../assets/", "pac.babylon");
+    pacTask.onSuccess = function (task) {
+      ball = task.loadedMeshes[0]
+      ball.material = new BABYLON.StandardMaterial("wow", scene);
+      ball.material.emissiveColor = new BABYLON.Color3.Yellow();
+      // position the initial pacman to the specified starting position
+      ball.position.y = 5;
+      ball.position.z = posz;
+      ball.position.x = posx; 
+      ball.scaling.x = 4;
+      ball.scaling.z = 4;
+    }.bind(this)
     // var skybox = BABYLON.Mesh.CreateBox("skyBox", 1000.0, scene);
     // var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
     // skyboxMaterial.backFaceCulling = false;
@@ -273,13 +331,36 @@ export default class MazeRunner extends React.Component {
     // skybox.infiniteDistance = true;
     // skybox.renderingGroupId = 0;
     console.log(ghostx);
+    // var cc = new BABYLON.ScreenSpaceCanvas2D(scene, 
+    // { 
+    //     id: "ScreenCanvas", size: new BABYLON.Size(500, 500), 
+    //     backgroundFill: "#C0C0C040", backgroundRoundRadius: 50 
+    // });
+
+    // var rect = new BABYLON.Rectangle2D({
+    //     id: "mainRect", parent: cc, x: 200, y: 200, width: 100, height: 100, 
+    //     fill: "#404080FF", border: "#A040A0D0, #FFFFFFFF", borderThickness: 10, 
+    //     roundRadius: 10, 
+    //     children: 
+    //     [
+    //         new BABYLON.Rectangle2D(
+    //         { 
+    //             id: "insideRect", marginAlignment: "v: center, h: center", 
+    //             width: 40, height: 40, fill: "#FAFF75FF", roundRadius: 10 
+    //         })
+    // ]});
+    // rect.pointerEventObservable.add(function (d, s) {
+    // console.log('hellllo');
+    // }, BABYLON.PrimitivePointerInfo.PointerUp);
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //if there's a ghost that needs to be added
     // the mesh gets imported from the .babylon file
     if(ghostx !== undefined) {
-      BABYLON.SceneLoader.ImportMesh("", "../assets/", "ghostparent.babylon", scene, function (newMeshes, particleSystems, skeletons) {
-        for (var i = 0; i < newMeshes.length; i++) {
-          var ghosty = newMeshes[i];
+      var meshTask = assetsManager.addMeshTask("ghost task", "", "../assets/", "ghostparent.babylon");
+      meshTask.onSuccess = function (task) {
+        task.loadedMeshes[0].position = BABYLON.Vector3.Zero();
+        for (var i = 0; i < task.loadedMeshes.length; i++) {
+          var ghosty = task.loadedMeshes[i];
           //this.ghost = newMeshes[0];
           // var light0 = new BABYLON.SpotLight("Spot0", new BABYLON.Vector3(0, 50, 0), new BABYLON.Vector3(0, -1, 0), 0.7, 3, scene);
           // light0.parent = ghosty;
@@ -307,7 +388,7 @@ export default class MazeRunner extends React.Component {
           }
 
         }
-      }.bind(obj));
+      }.bind(this);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -324,30 +405,13 @@ export default class MazeRunner extends React.Component {
     pellet = BABYLON.Mesh.CreateSphere("sphere", 16.0, 4.0, scene);
     pellet.material = new BABYLON.StandardMaterial("wow", scene);
     pellet.material.emissiveColor = new BABYLON.Color3.Yellow();
-    // This the minimap
-    var mm = new BABYLON.FreeCamera("minimap", new BABYLON.Vector3(0,1000,0), scene);
-    mm.setTarget(new BABYLON.Vector3(0.1,0.1,0.1));
-    mm.mode = BABYLON.Camera.ORTHOGRAPHIC_CAMERA;
-    mm.orthoLeft = -canvas.size/2;
-    mm.orthoRight = canvas.size/2;
-    mm.orthoTop =  canvas.size/2;
-    mm.orthoBottom = -canvas.size/2;
-    mm.rotation.y = 0;//Camera Toggle
-    var xstart = 0.8 // 80% from the left
-    var ystart = 0.75; // 75% from the bottom
-    var width = 0.99-xstart // Almost until the right edge of the screen
-    var height = 1-ystart;  // Until the top edge of the screen
-    mm.viewport = new BABYLON.Viewport(xstart, ystart, width, height);
-    // add the minimap to the list of active cameras
-    scene.activeCameras.push(mm);
-    mm.layerMask = 1;
-    camera.layerMask = 2;
+    
 
     // add a spot light that follows the camera
-    var light0 = new BABYLON.SpotLight("Spot0", new BABYLON.Vector3(0, 50, 0), new BABYLON.Vector3(0, -1, 0), 0.4, 3, scene);
-    light0.diffuse = new BABYLON.Color3(1, 0, 0);
-    light0.specular = new BABYLON.Color3(1, 1, 1);
-    light0.parent = camera;
+    // var light0 = new BABYLON.SpotLight("Spot0", new BABYLON.Vector3(0, 50, 0), new BABYLON.Vector3(0, -1, 0), 0.4, 3, scene);
+    // light0.diffuse = new BABYLON.Color3(1, 0, 0);
+    // light0.specular = new BABYLON.Color3(1, 1, 1);
+    // light0.parent = camera;
 
     // there will be 4 walls that enclose the maze
     // they will be copies/instances of this wall for optimization
@@ -390,25 +454,21 @@ export default class MazeRunner extends React.Component {
     plane4.position.x = 100; 
     plane4.position.z = -100;
     createWallBody(plane4.getBoundingInfo().boundingBox.center, new CANNON.Vec3(plane4.scaling.x, plane4.scaling.y, plane4.scaling.z), 2);
-    // position the initial pacman to the specified starting position
-    ball.position.y = 5;
-    ball.position.z = posz;
-    ball.position.x = posx; 
     // create the ground
-    var ground = BABYLON.Mesh.CreateGround("ground1", 900, 900, 2, scene);
+    var ground = BABYLON.Mesh.CreateGround("ground1", 450, 450, 2, scene);
     ground.material = new BABYLON.StandardMaterial("texture1", scene);
     ground.material.emissiveTexture = new BABYLON.Texture('../assets/ground2.jpg', scene);
     ground.material.emissiveTexture.uScale = 100.0;
     ground.material.emissiveTexture.vScale = 100.0;
     // add pellet sound to the scene
     pelletSound = new BABYLON.Sound("pellet", "../assets/pellet.wav", scene);
-    canvas2 = create(scene, score);
+    pelletSound.volume = 0.005;
     // if there's a gravity switch
     if (gravityPositivei !== undefined) {
       // create a second ground
       var ground2 = ground.createInstance("hk2000");
-      ground2.scaling.z = 900;
-      ground2.scaling.y = 1500;
+      ground2.scaling.z = 450;
+      ground2.scaling.y = 500;
       ground2.scaling.x = 10;
       ground2.position.y = 1000; // but place it way high in the sky
       ground2.rotation.z = -Math.PI;
@@ -476,15 +536,17 @@ export default class MazeRunner extends React.Component {
     window.addEventListener('keyup', function(e) {
       if(e.keyCode === 39) {
         camera.rotation.y += Math.PI/2;
+        ball.rotation.y += Math.PI/2;
       } else if (e.keyCode === 37) {
         camera.rotation.y -= Math.PI/2;
+        ball.rotation.y -= Math.PI/2;
       }
     })
     wall.position.x = -200
     wall.isVisible = false;
     pellet.isVisible = false;
     return scene;
-  };  // End of createScene function
+  }.bind(this);  // End of createScene function
   /////////////////////////////////////////////////////////////////
 
 
@@ -492,7 +554,7 @@ export default class MazeRunner extends React.Component {
   var createWorld = function(){
     var world = new CANNON.World();
     world.gravity.set(0,-40,0);
-    var mass = 5, radius = 1.25;
+    var mass = 5, radius = 1.5;
     var sphereShape = new CANNON.Sphere(radius); // Step 1
     sphereBody = new CANNON.Body({mass: mass, shape: sphereShape}); // Step 2
     sphereBody.position.set(posx,5,posz);
@@ -504,14 +566,14 @@ export default class MazeRunner extends React.Component {
        for (var p in pellets){
          if (pellets[p] === pellets[e.body.pelletId]){
            pelletMeshes[p].dispose();
-             pelletRemover = p;
-             pelletSound.play();
-             score++;
-             canvas2.children[0].text = score.toString();
-           }
+           pelletRemover = p;
+           pelletSound.play();
+           this.score++;
+           canvas2.children[0].text = this.score.toString();
          }
        }
-     });
+     }
+    }.bind(this));
     world.add(sphereBody);
     if(ghostx !== undefined) {
       var ghostShape = new CANNON.Sphere(3); // Step 1
@@ -544,7 +606,7 @@ export default class MazeRunner extends React.Component {
                 marginAlignment: "h: left, v:center",
                 fontName: "20pt Arial",
             }));
-            scores.push(new BABYLON.Text2D(score.toString(), {
+            scores.push(new BABYLON.Text2D(this.score.toString(), {
                 id: "text4",
                 y: -60,
                 marginAlignment: "h: center, v:center",
@@ -584,7 +646,7 @@ export default class MazeRunner extends React.Component {
               });
               gameOverFlag = 1;
       }
-    });
+    }.bind(this));
     world.add(ghostBody);
     }
 
@@ -594,7 +656,7 @@ export default class MazeRunner extends React.Component {
     groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);  
 
     return world;
-  };
+  }.bind(this);
 
   var createWallBody = function(position, size, flag){  
     var boxShape = new CANNON.Box(size);
@@ -632,6 +694,9 @@ export default class MazeRunner extends React.Component {
     cam1 = parseFloat(Math.cos(camera.rotation.y));
     cam2 = parseFloat(Math.sin(camera.rotation.y));
   }
+  assetsManager.onFinish = function(tasks) {
+    
+
 
   that.engine.runRenderLoop(function () {
     scene.render();
@@ -671,15 +736,15 @@ export default class MazeRunner extends React.Component {
         upsidedown = 0;
       }
     }
-    if (obj.ghost !== undefined && gameOverFlag === 0) {
+    if (this.ghost !== undefined && gameOverFlag === 0) {
       if (upsidedown == 1) {
-        obj.ghost.position.x = ghostBody.position.x;
-        obj.ghost.position.y = ghostBody.position.y - 2;
-        obj.ghost.position.z = ghostBody.position.z;
+        this.ghost.position.x = ghostBody.position.x;
+        this.ghost.position.y = ghostBody.position.y - 2;
+        this.ghost.position.z = ghostBody.position.z;
       } else {
-        obj.ghost.position.x = ghostBody.position.x;
-        obj.ghost.position.y = ghostBody.position.y + 10;
-        obj.ghost.position.z = ghostBody.position.z;
+        this.ghost.position.x = ghostBody.position.x;
+        this.ghost.position.y = ghostBody.position.y + 10;
+        this.ghost.position.z = ghostBody.position.z;
       }
       if(ghostdirections[0] === 'E') {
         ghostBody.velocity.z = 0;
@@ -699,7 +764,9 @@ export default class MazeRunner extends React.Component {
       } 
     } 
       
-  });
+  }.bind(this));
+  }.bind(this);
+  assetsManager.load();
   var resize = function(){
     that.engine.resize();
   }
