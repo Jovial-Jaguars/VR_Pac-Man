@@ -149,9 +149,11 @@ export default class App extends React.Component {
 
     };
     this.enterMaze = this.enterMaze.bind(this);
-    this.clickLevel = this.clickLevel.bind(this);
+    this.clickMyLevel = this.clickMyLevel.bind(this);
+    this.clickPublicLevel = this.clickPublicLevel.bind(this);
     this.clickLegend = this.clickLegend.bind(this);
     this.convertData = this.convertData.bind(this);
+    this.getMaps();
   }
   componentWillMount(){
 
@@ -207,12 +209,24 @@ export default class App extends React.Component {
       choice: !this.state.choice
     });
   }
-  clickLevel (index, e) {
+  clickMyLevel (index, e) {
     var arr = [];
     for (var i = 0; i < 16; i++) {
       arr[i] = [];
       for(var j = 0; j < 16; j++) {
         arr[i].push(this.state.myMaps[index][i][j]);
+      }
+    }
+    this.setState({
+      maze: arr
+    });
+  }
+  clickPublicLevel (index, e) {
+    var arr = [];
+    for (var i = 0; i < 16; i++) {
+      arr[i] = [];
+      for(var j = 0; j < 16; j++) {
+        arr[i].push(this.state.publicMaps[index][i][j]);
       }
     }
     this.setState({
@@ -240,6 +254,8 @@ export default class App extends React.Component {
       curr[indy][index] = 5;
     } else if (this.state.legend === 7) {
       curr[indy][index] = 6;
+    } else if (this.state.legend === 8) {
+      curr[indy][index] = 7;
     } else {
       if (curr[indy][index] === 0) {
         curr[indy][index] = 1;
@@ -293,7 +309,7 @@ export default class App extends React.Component {
       <div className="maze">
       { this.state.choice ?
         <MazeRunner maze={this.state.maze} />
-        : <MazeEditor clickLegend={this.clickLegend} mazes={this.state.myMaps} def={this.state.default1} clickLevel={this.clickLevel.bind(this)} click={this.click.bind(this)} maze={this.state.maze} enterMaze={this.enterMaze.bind(this)} saveMaze={this.saveMaze.bind(this)}/>
+        : <MazeEditor clickLegend={this.clickLegend} myMaps={this.state.myMaps} publicMaps={this.state.publicMaps} def={this.state.default1} clickMyLevel={this.clickMyLevel.bind(this)} clickPublicLevel={this.clickPublicLevel.bind(this)} click={this.click.bind(this)} maze={this.state.maze} enterMaze={this.enterMaze.bind(this)} saveMaze={this.saveMaze.bind(this)}/>
       }
       </div>
     );
