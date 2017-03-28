@@ -37,12 +37,12 @@ export default class MazeRunner extends React.Component {
     this.cameraFlag = false;
     this.pelletRemover = 0;
     this.pacmanPosition = {'x': 6.5,'y': 5,'z': 93.5};
-    this.ghostPosition = {'x': 0,'y': 1,'z': 0};
+    this.ghostPosition = {};
     this.isGhost = false;
     this.isPosGrav = false;
     this.isNegGrav = false;
-    this.posGravVec = {'i': 0, 'j': 0};
-    this.negGravVec = {'i': 0, 'j': 0};
+    this.posGravVec = {};
+    this.negGravVec = {};
     this.ghostBody;
     this.blockMesh;
     this.pelletMesh;
@@ -51,6 +51,7 @@ export default class MazeRunner extends React.Component {
     this.isGameOver = false;
     this.currPacVec = {'i': 0, 'j': 0};
     this.assetsManager;
+    this.pacVelocity = 30;
     console.log(maze);
   }
 
@@ -315,9 +316,9 @@ export default class MazeRunner extends React.Component {
           // var light0 = new BABYLON.SpotLight("Spot0", new BABYLON.Vector3(0, 50, 0), new BABYLON.Vector3(0, -1, 0), 0.7, 3, scene);
           // light0.parent = ghosty;
           if (ghosty.name === 'Plane') {
-            ghosty.position.y = 10;
-            ghosty.position.x = -200;
-            ghosty.position.z = -10;
+            ghosty.position.y = this.ghostPosition.y;
+            ghosty.position.x = this.ghostPosition.x;
+            ghosty.position.z = this.ghostPosition.z;
             ghosty.scaling.x = 4;
             ghosty.scaling.y = 2;
             ghosty.scaling.z = 4;
@@ -338,6 +339,10 @@ export default class MazeRunner extends React.Component {
           }
 
         }
+        var ghostTwo = this.ghost.createInstance('ghost2');
+        ghostTwo.position.y = this.ghostPosition.y + 5;
+        ghostTwo.position.x = this.ghostPosition.x + 5;
+        ghostTwo.position.z = this.ghostPosition.z + 5;
       }.bind(this);
     }
 
@@ -354,7 +359,9 @@ export default class MazeRunner extends React.Component {
     // The rest are copies
     this.pelletMesh = BABYLON.Mesh.CreateSphere("sphere", 16.0, 4.0, scene);
     this.pelletMesh.material = new BABYLON.StandardMaterial("wow", scene);
-    this.pelletMesh.material.emissiveColor = new BABYLON.Color3.Yellow();
+    // this.pelletMesh.material.emissiveColor = new BABYLON.Color3.Yellow();
+    this.pelletMesh.material.emissiveTexture = new BABYLON.Texture('../assets/ground3.jpg', scene);
+    // this.pelletMesh.visibility = 0.4;
     
 
     // add a spot light that follows the camera
@@ -588,11 +595,11 @@ export default class MazeRunner extends React.Component {
       this.pelletRemover = 0;
     }
     if (this.cameraFlag && this.camera.rotationQuaternion !== undefined) {
-      this.pacmanBody.velocity.z = 30 * parseFloat(Math.cos(this.camera.rotationQuaternion.toEulerAngles().y));
-      this.pacmanBody.velocity.x = 30 * parseFloat(Math.sin(this.camera.rotationQuaternion.toEulerAngles().y));
+      this.pacmanBody.velocity.z = this.pacVelocity * parseFloat(Math.cos(this.camera.rotationQuaternion.toEulerAngles().y));
+      this.pacmanBody.velocity.x = this.pacVelocity * parseFloat(Math.sin(this.camera.rotationQuaternion.toEulerAngles().y));
     } else {
-      this.pacmanBody.velocity.z = 30 * parseFloat(Math.cos(this.camera.rotation.y));
-      this.pacmanBody.velocity.x = 30 * parseFloat(Math.sin(this.camera.rotation.y));
+      this.pacmanBody.velocity.z = this.pacVelocity * parseFloat(Math.cos(this.camera.rotation.y));
+      this.pacmanBody.velocity.x = this.pacVelocity * parseFloat(Math.sin(this.camera.rotation.y));
     }
       
     this.pacmanMesh.position.x = this.pacmanBody.position.x; 
@@ -647,10 +654,10 @@ export default class MazeRunner extends React.Component {
         this.ghostBody.velocity.z = 30;
         this.ghostBody.velocity.x = 0;
       } 
-    } 
-      
+    }    
   }
-
+  
+  
   componentDidMount() {
     this.pacmanIntro.play();
     var that = this;
@@ -662,10 +669,12 @@ export default class MazeRunner extends React.Component {
           this.currPacVec.i = i;
           this.currPacVec.j = j;
           this.pacmanPosition.x = (j * 12.5) + 6.5;
+          this.pacmanPosition.y = 1;
           this.pacmanPosition.z = 93.5 - (i * 12.5);
         } else if (this.maze[i][j] === 4) {
           this.isGhost = true;
           this.ghostPosition.x = (j * 12.5) + 6.5;
+          this.ghostPosition.y = 1;
           this.ghostPosition.z = 93.5 - (i * 12.5);
         } else if (this.maze[i][j] === 5) {
           this.isPosGrav = true;
@@ -692,10 +701,6 @@ export default class MazeRunner extends React.Component {
     }.bind(this), 500);
     }
     
-    //mazemaker function
-    //converts 16 x 16 array to maze
-    // 1s become a wall
-    // 2s become pellets
   this.world = this.createWorld();
   this.createScene = this.createScene.bind(this, canvas);     
   this.scene = this.createScene();
