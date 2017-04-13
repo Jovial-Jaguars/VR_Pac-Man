@@ -1,4 +1,5 @@
 import React from 'react';
+import {Router, Route, browserHistory, Link} from 'react-router';
 
 var MazeEditor = (props) => (
   <div className= "maze-editor">
@@ -26,15 +27,15 @@ var MazeEditor = (props) => (
       </div>
       <div className="legend-table-row" onClick={props.clickLegend.bind(this, 6)}>
         <div className="legend-block6" ></div>
-        <div className="legend-empty">+ve Switch</div>
+        <div className="legend-empty">Gravity Pellet</div>
       </div>
       <div className="legend-table-row" onClick={props.clickLegend.bind(this, 7)}>
         <div className="legend-block7" ></div>
-        <div className="legend-empty">-ve Switch</div>
+        <div className="legend-empty">Ghost Pellet</div>
       </div>
       <div className="legend-table-row" onClick={props.clickLegend.bind(this, 8)}>
         <div className="legend-block8" ></div>
-        <div className="legend-empty">-ve Switch</div>
+        <div className="legend-empty">Speed Pellet</div>
       </div>
     </div>
     <div className="maze-editor-table-div">
@@ -57,7 +58,7 @@ var MazeEditor = (props) => (
             } else if (num === 6) {
               return (<div key={index*100 + indy} className="down" onDragEnter={props.click.bind(this, indy, index)} onMouseDown={props.click.bind(this, indy, index)}></div>);
             } else if (num === 7) {
-              return (<div key={index*100 + indy} className="orange" onDragEnter={props.click.bind(this, indy, index)} onMouseDown={props.click.bind(this, indy, index)}></div>);
+              return (<div key={index*100 + indy} className="speed" onDragEnter={props.click.bind(this, indy, index)} onMouseDown={props.click.bind(this, indy, index)}></div>);
             }
           })
           }</div>
@@ -88,6 +89,8 @@ var MazeEditor = (props) => (
                   return (<div key={index*56 + indy} className="block6"></div>);
                 } else if (num === 6) {
                   return (<div key={index*56 + indy} className="block7"></div>);
+                } else if (num === 7) {
+                  return (<div key={index*56 + indy} className="block8"></div>);
                 }
               })}
               </div>
@@ -116,6 +119,8 @@ var MazeEditor = (props) => (
                   return (<div key={index*56 + indy + 9999} className="block6"></div>);
                 } else if (num === 6) {
                   return (<div key={index*56 + indy + 9999} className="block7"></div>);
+                } else if (num === 7) {
+                  return (<div key={index*56 + indy + 9999} className="block8"></div>);
                 }
               })}
               </div>
