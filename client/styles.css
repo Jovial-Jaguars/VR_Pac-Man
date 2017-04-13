@@ -125,7 +125,7 @@ table {
   margin-left: 2px;
   margin-right: 2px;
   border-radius: 5px;
-  background-image: url('/assets/up2.png');
+  background-image: url('/assets/white.png');
   background-size: contain;
   background-color: blue;
   background-repeat: no-repeat;
@@ -141,14 +141,14 @@ table {
   margin-left: 2px;
   margin-right: 2px;
   border-radius: 5px;
-  background-image: url('/assets/down.png');
+  background-image: url('/assets/purple.png');
   background-size: contain;
   background-color: blue;
   background-repeat: no-repeat;
   background-position: center;
 
 }
-.orange {
+.speed {
   display: inline-block;
   max-width:100%;
   max-height:100%;
@@ -157,7 +157,7 @@ table {
   margin-left: 2px;
   margin-right: 2px;
   border-radius: 5px;
-  background-image: url('/assets/orange.png');
+  background-image: url('/assets/red.png');
   background-size: contain;
   background-color: blue;
   background-repeat: no-repeat;
@@ -290,7 +290,7 @@ ul {
   display: inline-block;
   width: 6.25%;
   height: 100%;
-  background-image: url('assets/up2.png');
+  background-image: url('assets/white.png');
   background-size: contain;
   background-color: blue;
   background-position: center;
@@ -300,7 +300,18 @@ ul {
   display: inline-block;
   width: 6.25%;
   height: 100%;
-  background-image: url('assets/down.png');
+  background-image: url('assets/purple.png');
+  background-size: contain;
+  background-color: blue;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.block8 {
+  display: inline-block;
+  width: 6.25%;
+  height: 100%;
+  background-image: url('assets/red.png');
   background-size: contain;
   background-color: blue;
   background-position: center;
@@ -492,7 +503,7 @@ ul {
   border-radius: 5px;
   width: 20%;
   height: 100%;
-  background-image: url('assets/up2.png');
+  background-image: url('assets/white.png');
   background-size: contain;
   background-color: blue;
   background-position: center;
@@ -503,7 +514,7 @@ ul {
   border-radius: 5px;
   width: 20%;
   height: 100%;
-  background-image: url('assets/down.png');
+  background-image: url('assets/purple.png');
   background-size: contain;
   background-color: blue;
   background-position: center;
@@ -515,7 +526,7 @@ ul {
   border-radius: 5px;
   width: 20%;
   height: 100%;
-  background-image: url('assets/orange.png');
+  background-image: url('assets/red.png');
   background-repeat: no-repeat;
   background-size: contain;
   background-color: blue;
