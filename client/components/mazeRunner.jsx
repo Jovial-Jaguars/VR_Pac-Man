@@ -702,6 +702,9 @@ export default class MazeRunner extends React.Component {
               }
             } else if(this.pellets[p].type === 'ghost') {
               this.isGhostPellet = true;
+              setTimeout(function(){
+                this.isGhostPellet = false;
+              }.bind(this), 10000);
             }
             this.scoreboard.children[0].text = 'Score: ' + this.score.toString();
           }
