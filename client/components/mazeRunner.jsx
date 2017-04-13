@@ -76,7 +76,6 @@ export default class MazeRunner extends React.Component {
     }
     return suc;
   }
-
   path(start, arr) {
     var q = [];
     var recur = {};
@@ -570,7 +569,6 @@ export default class MazeRunner extends React.Component {
     plane.material = new BABYLON.StandardMaterial("texture1", scene);
     plane.material.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.8);
     plane.material.alpha = 0.2;
-
     //create the same wall in cannon 
     this.createWallBody({x: 0, y: 0, z: 0}, new CANNON.Vec3(plane.scaling.x, plane.scaling.y, plane.scaling.z), 0);
     this.mazemaker(this.maze, this.blockMesh, this.pelletMesh, false, scene);
@@ -591,7 +589,7 @@ export default class MazeRunner extends React.Component {
     plane3.scaling.y = 1000;
     plane3.scaling.x = .2;
     plane3.rotation.y = Math.PI/2;
-    plane3.position.x = 100; 
+    plane3.position.x = 100;
     plane3.position.z = 100;
     this.createWallBody({x: plane3.position.x, y: 0, z: plane3.position.z}, new CANNON.Vec3(plane3.scaling.x, plane3.scaling.y, plane3.scaling.z), 2);
     var plane4 = plane.createInstance("i" + 403);
@@ -599,7 +597,7 @@ export default class MazeRunner extends React.Component {
     plane4.scaling.y = 1000;
     plane4.scaling.x = 0.2;
     plane4.rotation.y = Math.PI/2;
-    plane4.position.x = 100; 
+    plane4.position.x = 100;
     plane4.position.z = -100;
     this.createWallBody({x: plane4.position.x, y: 0, z: plane4.position.z}, new CANNON.Vec3(plane4.scaling.x, plane4.scaling.y, plane4.scaling.z), 2);
     // create the ground
@@ -717,7 +715,7 @@ export default class MazeRunner extends React.Component {
     var groundShape = new CANNON.Plane();
     var groundBody = new CANNON.Body({ mass: 0, position: new CANNON.Vec3(0, 0 , 0), shape: groundShape });
     world.add(groundBody);
-    groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);  
+    groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);
 
     return world;
   }
