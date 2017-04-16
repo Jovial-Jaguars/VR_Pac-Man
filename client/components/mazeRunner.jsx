@@ -1,5 +1,4 @@
 import React from 'react';
-import {Router, Route, browserHistory, Link} from 'react-router';
 
 export default class MazeRunner extends React.Component {
   constructor(props){
@@ -21,6 +20,7 @@ export default class MazeRunner extends React.Component {
     this.create = this.create.bind(this);
     this.createWorld = this.createWorld.bind(this);
     this.runLoop = this.runLoop.bind(this);
+    this.routerWillLeave = this.routerWillLeave.bind(this);
     this.createGhostBody = this.createGhostBody.bind(this); 
     this.pacmanIntro = new Audio('../assets/pacman_beginning.wav');
     this.pacmanIntro.loop = false;
@@ -53,7 +53,19 @@ export default class MazeRunner extends React.Component {
     this.isGrav = false;
     this.isGhostPellet = false;
     this.ghostRemover = 0;
-    console.log(maze);
+  }
+
+
+  routerWillLeave() {
+    this.engine.stopRenderLoop();
+    this.engine.clear(BABYLON.Color3.Black(),false,false);
+  }
+
+  componentWillMount() {
+    this.props.router.setRouteLeaveHook(
+      this.props.route,
+      this.routerWillLeave
+    )
   }
 
   getSuccessors(coordz, coordx, arr) {
@@ -268,14 +280,12 @@ export default class MazeRunner extends React.Component {
                 newInstanceSphere.position.y = 995;
                 newInstanceSphere.material = new BABYLON.StandardMaterial("gravity1", scene);
                 newInstanceSphere.material.emissiveColor = new BABYLON.Color3.White();
-                console.log('gravity1', flipMaze + '' + (i *16) + j);
                 this.createSphereBody({x: newInstanceSphere.position.x, y: newInstanceSphere.position.y, z: newInstanceSphere.position.z}, 6, flipMaze + '' + (i *16) + j, 'gravity');
               } else if(arr[i][j] === 6){
                 var newInstanceSphere = pellet.clone(flipMaze + "ghost i" + (i *16) + j);
                 newInstanceSphere.position.z = z; 
                 newInstanceSphere.position.x = x; 
                 newInstanceSphere.position.y = 995;
-                console.log('ghost1', flipMaze + '' + (i *16) + j);
                 newInstanceSphere.material = new BABYLON.StandardMaterial("ghostPellet1", scene);
                 newInstanceSphere.material.emissiveColor = new BABYLON.Color3.Purple();
                 this.createSphereBody({x: newInstanceSphere.position.x, y: newInstanceSphere.position.y, z: newInstanceSphere.position.z}, 6, flipMaze + '' + (i *16) + j, 'ghost');
@@ -284,7 +294,6 @@ export default class MazeRunner extends React.Component {
                 newInstanceSphere.position.z = z; 
                 newInstanceSphere.position.x = x; 
                 newInstanceSphere.position.y = 995;
-                console.log('speed1', flipMaze + '' + (i *16) + j);
                 newInstanceSphere.material = new BABYLON.StandardMaterial("orange1", scene);
                 newInstanceSphere.material.emissiveColor = new BABYLON.Color3.Red();
                 this.createSphereBody({x: newInstanceSphere.position.x, y: newInstanceSphere.position.y, z: newInstanceSphere.position.z}, 6, flipMaze + '' + (i *16) + j, 'orange');
@@ -299,22 +308,18 @@ export default class MazeRunner extends React.Component {
                 newInstanceSphere.position.y = 5;
                 this.createSphereBody({x: newInstanceSphere.position.x, y: newInstanceSphere.position.y, z: newInstanceSphere.position.z}, 6, flipMaze + '' + (i *16) + j, 'normal');
               } else if(arr[i][j] === 5){
-                console.log('hello');
                 var newInstanceSphere = pellet.clone("gravity i" + (i *16) + j);
                 newInstanceSphere.position.z = z; 
                 newInstanceSphere.position.x = x; 
                 newInstanceSphere.position.y = 5;
-                console.log('gravity2', flipMaze + '' + (i *16) + j);
                 newInstanceSphere.material = new BABYLON.StandardMaterial("gravity2", scene);
                 newInstanceSphere.material.emissiveColor = new BABYLON.Color3.White();
                 this.createSphereBody({x: newInstanceSphere.position.x, y: newInstanceSphere.position.y, z: newInstanceSphere.position.z}, 6, flipMaze + '' + (i *16) + j, 'gravity');
               } else if(arr[i][j] === 6){
-                console.log('hello');
                 var newInstanceSphere = pellet.clone("ghost i" + (i *16) + j);
                 newInstanceSphere.position.z = z; 
                 newInstanceSphere.position.x = x; 
                 newInstanceSphere.position.y = 5;
-                console.log('ghost2', flipMaze + '' + (i *16) + j);
                 newInstanceSphere.material = new BABYLON.StandardMaterial("ghostPellet2", scene);
                 newInstanceSphere.material.emissiveColor = new BABYLON.Color3.Purple();
                 this.createSphereBody({x: newInstanceSphere.position.x, y: newInstanceSphere.position.y, z: newInstanceSphere.position.z}, 6, flipMaze + '' + (i *16) + j, 'ghost');
@@ -323,7 +328,6 @@ export default class MazeRunner extends React.Component {
                 newInstanceSphere.position.z = z; 
                 newInstanceSphere.position.x = x; 
                 newInstanceSphere.position.y = 5;
-                console.log('gravity1', flipMaze + '' + (i *16) + j);
                 newInstanceSphere.material = new BABYLON.StandardMaterial("orange2", scene);
                 newInstanceSphere.material.emissiveColor =new BABYLON.Color3.Red();
                 this.createSphereBody({x: newInstanceSphere.position.x, y: newInstanceSphere.position.y, z: newInstanceSphere.position.z}, 6, flipMaze + '' + (i *16) + j, 'orange');
@@ -644,19 +648,16 @@ export default class MazeRunner extends React.Component {
     // BABYLON.SceneOptimizer.OptimizeAsync(scene);
     window.addEventListener('keyup', function(e) {
       if(e.keyCode === 37) {//left
-        this.camera.rotation.y = (3 * Math.PI)/2;
-        this.pacmanMesh.rotation.y = (3 * Math.PI)/2;
-      } else if (e.keyCode === 38) {//up
-        this.camera.rotation.y = 0;
-        this.pacmanMesh.rotation.y = 0;
-      } else if (e.keyCode === 39) { //right
-        this.camera.rotation.y = Math.PI/2;
-        this.pacmanMesh.rotation.y = Math.PI/2;
+        this.camera.rotation.y -= Math.PI/2;
+        this.pacmanMesh.rotation.y -= Math.PI/2;
+      }else if (e.keyCode === 39) { //right
+        this.camera.rotation.y += Math.PI/2;
+        this.pacmanMesh.rotation.y += Math.PI/2;
       } else if (e.keyCode === 40) { //down
-        this.camera.rotation.y =  Math.PI;
-        this.pacmanMesh.rotation.y = Math.PI;
+        this.camera.rotation.y +=  Math.PI;
+        this.pacmanMesh.rotation.y += Math.PI;
       }
-    }.bind(this))
+    }.bind(this));
     this.blockMesh.position.x = -200
     this.blockMesh.isVisible = false;
     this.pelletMesh.isVisible = false;
@@ -924,21 +925,18 @@ export default class MazeRunner extends React.Component {
       this.ghosts[0].directions = this.path([Math.abs(Math.floor((this.ghosts[0].body.position.z - 87.5) / 12.5)),Math.abs(Math.floor((this.ghosts[0].body.position.x) / 12.5))], this.maze).split('');
     }.bind(this), 500);
     this.ghosts[0].directions = this.path([Math.abs(Math.floor((this.ghosts[0].body.position.z - 87.5) / 12.5)),Math.abs(Math.floor((this.ghosts[0].body.position.x) / 12.5))], this.maze).split('');
-    console.log(this.ghosts[0].directions);
   }
   if(this.isGhostTwo) {
     this.ghosts[1].interval = setInterval(function() {
       this.ghosts[1].directions = this.path([Math.abs(Math.floor((this.ghosts[1].body.position.z - 87.5) / 12.5)),Math.abs(Math.floor((this.ghosts[1].body.position.x) / 12.5))], this.maze).split('');
     }.bind(this), 500);
     this.ghosts[1].directions = this.path([Math.abs(Math.floor((this.ghosts[1].body.position.z - 87.5) / 12.5)),Math.abs(Math.floor((this.ghosts[1].body.position.x) / 12.5))], this.maze).split('');
-    console.log(this.ghosts[1].directions);
   }
   if(this.isGhostThree) {
     this.ghosts[2].interval = setInterval(function() {
       this.ghosts[2].directions = this.path([Math.abs(Math.floor((this.ghosts[2].body.position.z - 87.5) / 12.5)),Math.abs(Math.floor((this.ghosts[2].body.position.x) / 12.5))], this.maze).split('');
     }.bind(this), 500);
     this.ghosts[2].directions = this.path([Math.abs(Math.floor((this.ghosts[2].body.position.z - 87.5) / 12.5)),Math.abs(Math.floor((this.ghosts[2].body.position.x) / 12.5))], this.maze).split('');
-    console.log(this.ghosts[2].directions);
   }
   this.assetsManager.onFinish = function(tasks) {
     this.engine.runRenderLoop(this.runLoop);
@@ -1045,21 +1043,17 @@ componentDidUpdate() {
       this.ghosts[0].directions = this.path([Math.abs(Math.floor((this.ghosts[0].body.position.z - 87.5) / 12.5)),Math.abs(Math.floor((this.ghosts[0].body.position.x) / 12.5))], this.maze).split('');
     }.bind(this), 500);
     this.ghosts[0].directions = this.path([Math.abs(Math.floor((this.ghosts[0].body.position.z - 87.5) / 12.5)),Math.abs(Math.floor((this.ghosts[0].body.position.x) / 12.5))], this.maze).split('');
-    console.log(this.ghosts[0].directions);
   }
   if(this.isGhostTwo) {
     this.ghosts[1].interval = setInterval(function() {
       this.ghosts[1].directions = this.path([Math.abs(Math.floor((this.ghosts[1].body.position.z - 87.5) / 12.5)),Math.abs(Math.floor((this.ghosts[1].body.position.x) / 12.5))], this.maze).split('');
     }.bind(this), 500);
     this.ghosts[1].directions = this.path([Math.abs(Math.floor((this.ghosts[1].body.position.z - 87.5) / 12.5)),Math.abs(Math.floor((this.ghosts[1].body.position.x) / 12.5))], this.maze).split('');
-    console.log(this.ghosts[1].directions);
   }
   if(this.isGhostThree) {
     this.ghosts[2].interval = setInterval(function() {
       this.ghosts[2].directions = this.path([Math.abs(Math.floor((this.ghosts[2].body.position.z - 87.5) / 12.5)),Math.abs(Math.floor((this.ghosts[2].body.position.x) / 12.5))], this.maze).split('');
     }.bind(this), 500);
-    this.ghosts[2].directions = this.path([Math.abs(Math.floor((this.ghosts[2].body.position.z - 87.5) / 12.5)),Math.abs(Math.floor((this.ghosts[2].body.position.x) / 12.5))], this.maze).split('');
-    console.log(this.ghosts[2].directions);
   }
   this.assetsManager.onFinish = function(tasks) {
     this.engine.runRenderLoop(this.runLoop);
