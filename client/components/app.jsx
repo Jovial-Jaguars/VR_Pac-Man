@@ -8,7 +8,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       choice: 0,
-      legend: 1,
+      legend: 2,
       publicMaps: 5,
       maze: [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -335,7 +335,7 @@ export default class App extends React.Component {
     return (
       <div className="maze">
       { this.state.choice ?
-        <MazeRunner maze={this.state.maze} router={this.props.router} />
+        <MazeRunner maze={this.state.maze} router={this.props.router} route={this.props.route} />
         : <MazeEditor clickLegend={this.clickLegend} myMaps={this.state.myMaps} publicMaps={this.state.publicMaps} def={this.state.default1} clickMyLevel={this.clickMyLevel.bind(this)} clickPublicLevel={this.clickPublicLevel.bind(this)} click={this.click.bind(this)} maze={this.state.maze} enterMaze={this.enterMaze.bind(this)} saveMaze={this.saveMaze.bind(this)}/>
       }
       </div>
