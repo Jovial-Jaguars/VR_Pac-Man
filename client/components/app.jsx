@@ -7,9 +7,8 @@ export default class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      pacFlag: 0,
       choice: 0,
-      legend: 0,
+      legend: 2,
       publicMaps: 5,
       maze: [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -149,9 +148,11 @@ export default class App extends React.Component {
 
     };
     this.enterMaze = this.enterMaze.bind(this);
-    this.clickLevel = this.clickLevel.bind(this);
+    this.clickMyLevel = this.clickMyLevel.bind(this);
+    this.clickPublicLevel = this.clickPublicLevel.bind(this);
     this.clickLegend = this.clickLegend.bind(this);
     this.convertData = this.convertData.bind(this);
+    this.getMaps();
   }
   componentWillMount(){
 
@@ -207,12 +208,24 @@ export default class App extends React.Component {
       choice: !this.state.choice
     });
   }
-  clickLevel (index, e) {
+  clickMyLevel (index, e) {
     var arr = [];
     for (var i = 0; i < 16; i++) {
       arr[i] = [];
       for(var j = 0; j < 16; j++) {
         arr[i].push(this.state.myMaps[index][i][j]);
+      }
+    }
+    this.setState({
+      maze: arr
+    });
+  }
+  clickPublicLevel (index, e) {
+    var arr = [];
+    for (var i = 0; i < 16; i++) {
+      arr[i] = [];
+      for(var j = 0; j < 16; j++) {
+        arr[i].push(this.state.publicMaps[index][i][j]);
       }
     }
     this.setState({
@@ -231,29 +244,59 @@ export default class App extends React.Component {
       curr[indy][index] = 1;
     } else if (this.state.legend === 3) {
       curr[indy][index] = 2;
-    } else if (this.state.legend === 4 && this.state.pacFlag === 0) {
+    } else if (this.state.legend === 4) {
+      for(var i = 0;i < curr.length; i++) {
+        for(var j = 0; j < curr[i].length; j++) {
+          if(curr[i][j] === 3) {
+            curr[i][j] = 0;
+          }
+        }
+      }
       curr[indy][index] = 3;
-      this.setState({pacFlag : 1})
     } else if (this.state.legend === 5) {
+      var count = 0;
+      for(var i = 0;i < curr.length; i++) {
+        for(var j = 0; j < curr[i].length; j++) {
+          if(curr[i][j] === 4) {
+            count++;
+            if(count >= 3) {
+              curr[i][j] = 0;
+            }
+          }
+        }
+      }
       curr[indy][index] = 4;
     } else if (this.state.legend === 6) {
+      for(var i = 0;i < curr.length; i++) {
+        for(var j = 0; j < curr[i].length; j++) {
+          if(curr[i][j] === 5) {
+            curr[i][j] = 0;
+          }
+        }
+      }
       curr[indy][index] = 5;
     } else if (this.state.legend === 7) {
-      curr[indy][index] = 6;
-    } else {
-      if (curr[indy][index] === 0) {
-        curr[indy][index] = 1;
-      } else if (curr[indy][index] === 1) {
-        curr[indy][index] = 2;
-      } else if (curr[indy][index] === 2 && this.state.pacFlag === 0) {
-        curr[indy][index] = 3;
-        this.setState({pacFlag: 1});
-      } else if (curr[indy][index] === 3) {
-        curr[indy][index] = 0;
-        this.setState({pacFlag: 0});
-      } else if (curr[indy][index] === 2 && this.state.pacFlag === 1) {
-        curr[indy][index] = 0;
+      for(var i = 0;i < curr.length; i++) {
+        for(var j = 0; j < curr[i].length; j++) {
+          if(curr[i][j] === 6) {
+            curr[i][j] = 0;
+          }
+        }
       }
+      curr[indy][index] = 6;
+    } else if (this.state.legend === 8) {
+      var count = 0;
+      for(var i = 0;i < curr.length; i++) {
+        for(var j = 0; j < curr[i].length; j++) {
+          if(curr[i][j] === 7) {
+            count++;
+            if(count >= 4) {
+              curr[i][j] = 0;
+            }
+          }
+        }
+      }
+      curr[indy][index] = 7;
     }
     this.setState({
       maze: curr
@@ -292,8 +335,8 @@ export default class App extends React.Component {
     return (
       <div className="maze">
       { this.state.choice ?
-        <MazeRunner maze={this.state.maze} />
-        : <MazeEditor clickLegend={this.clickLegend} mazes={this.state.myMaps} def={this.state.default1} clickLevel={this.clickLevel.bind(this)} click={this.click.bind(this)} maze={this.state.maze} enterMaze={this.enterMaze.bind(this)} saveMaze={this.saveMaze.bind(this)}/>
+        <MazeRunner maze={this.state.maze} router={this.props.router} route={this.props.route} />
+        : <MazeEditor clickLegend={this.clickLegend} myMaps={this.state.myMaps} publicMaps={this.state.publicMaps} def={this.state.default1} clickMyLevel={this.clickMyLevel.bind(this)} clickPublicLevel={this.clickPublicLevel.bind(this)} click={this.click.bind(this)} maze={this.state.maze} enterMaze={this.enterMaze.bind(this)} saveMaze={this.saveMaze.bind(this)}/>
       }
       </div>
     );

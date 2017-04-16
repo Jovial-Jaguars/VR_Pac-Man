@@ -54,7 +54,7 @@ var mpHighScores_VR = sequelize.define('mpHighScores_VR', {
 spHighScores_VR.sync({force: true}).then(function () {
   spHighScores_VR.create({
     username: 'wells',
-    score: 999999
+    score: 20
   });
   spHighScores_VR.create({
     username: 'don',

@@ -52,7 +52,7 @@ table {
 }
 .element {
   display: inline-block;
-  width: 4.5%;
+  width: 4.85%;
   height: 100%;
   margin-left: 2px;
   margin-right: 2px;
@@ -61,7 +61,7 @@ table {
 }
 .elemental {
   display: inline-block;
-  width: 4.5%;
+  width: 4.85%;
   height: 100%;
   margin-left: 2px;
   margin-right: 2px;
@@ -72,7 +72,7 @@ table {
   display: inline-block;
   max-width:100%;
   max-height:100%;
-  width: 4.5%;
+  width: 4.85%;
   height: 100%;
   margin-left: 2px;
   margin-right: 2px;
@@ -88,7 +88,7 @@ table {
   display: inline-block;
   max-width:100%;
   max-height:100%;
-  width: 4.5%;
+  width: 4.85%;
   height: 100%;
   margin-left: 2px;
   margin-right: 2px;
@@ -104,7 +104,7 @@ table {
   display: inline-block;
   max-width:100%;
   max-height:100%;
-  width: 4.5%;
+  width: 4.85%;
   height: 100%;
   margin-left: 2px;
   margin-right: 2px;
@@ -120,12 +120,12 @@ table {
   display: inline-block;
   max-width:100%;
   max-height:100%;
-  width: 4.5%;
+  width: 4.85%;
   height: 100%;
   margin-left: 2px;
   margin-right: 2px;
   border-radius: 5px;
-  background-image: url('/assets/up2.png');
+  background-image: url('/assets/white.png');
   background-size: contain;
   background-color: blue;
   background-repeat: no-repeat;
@@ -136,12 +136,28 @@ table {
   display: inline-block;
   max-width:100%;
   max-height:100%;
-  width: 4.5%;
+  width: 4.85%;
   height: 100%;
   margin-left: 2px;
   margin-right: 2px;
   border-radius: 5px;
-  background-image: url('/assets/down.png');
+  background-image: url('/assets/purple.png');
+  background-size: contain;
+  background-color: blue;
+  background-repeat: no-repeat;
+  background-position: center;
+
+}
+.speed {
+  display: inline-block;
+  max-width:100%;
+  max-height:100%;
+  width: 4.85%;
+  height: 100%;
+  margin-left: 2px;
+  margin-right: 2px;
+  border-radius: 5px;
+  background-image: url('/assets/red.png');
   background-size: contain;
   background-color: blue;
   background-repeat: no-repeat;
@@ -176,17 +192,30 @@ ul {
   background: rgba(0,0,0,0.4);
 }
 .side-bar {
-  display: inline-block;
+  display: flex;
   float: right;
-  height: 80%;
-  width: 20%;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  flex-basis: 80%;
+  width: 100%;
   overflow-y: scroll;
   background-color: rgba(0,0,0,0);
   color: white;
 }
 
+.mazes-list {
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
 .default1 {
-  display: inline-block;
+  display: inline-flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-content: : center;
   width: 80%;
   height: 50%;
   background-color: blue;
@@ -194,16 +223,26 @@ ul {
   border-radius: 5px;
 }
 
-.tablerow {
+.mazes-table-body {
   display: inline-block;
   width: 100%;
-  height: 5%;
+  height: 100%;
+}
+
+.tablerow {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 6.25%;
+  margin-top: 20%
   background-color: blue;
 }
 
 .block1 {
   display: inline-block;
-  width: 5.2%;
+  width: 6.25%;
   height: 100%;
   background-color: blue;
 
@@ -211,14 +250,14 @@ ul {
 
 .block2 {
   display: inline-block;
-  width: 5.2%;
+  width: 6.25%;
   height: 100%;
   background-color: black;
 }
 
 .block3 {
   display: inline-block;
-  width: 5.2%;
+  width: 6.25%;
   height: 100%;
   background-image: url('assets/dot.png');
   background-size: contain;
@@ -229,7 +268,7 @@ ul {
 
 .block4 {
   display: inline-block;
-  width: 5.2%;
+  width: 6.25%;
   height: 100%;
   background-image: url('assets/pacman.png');
   background-size: contain;
@@ -239,7 +278,7 @@ ul {
 }
 .block5 {
   display: inline-block;
-  width: 5.2%;
+  width: 6.25%;
   height: 100%;
   background-image: url('assets/ghost1.png');
   background-size: contain;
@@ -249,9 +288,9 @@ ul {
 }
 .block6 {
   display: inline-block;
-  width: 5.2%;
+  width: 6.25%;
   height: 100%;
-  background-image: url('assets/up2.png');
+  background-image: url('assets/white.png');
   background-size: contain;
   background-color: blue;
   background-position: center;
@@ -259,51 +298,64 @@ ul {
 }
 .block7 {
   display: inline-block;
-  width: 5.2%;
+  width: 6.25%;
   height: 100%;
-  background-image: url('assets/down.png');
+  background-image: url('assets/purple.png');
+  background-size: contain;
+  background-color: blue;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.block8 {
+  display: inline-block;
+  width: 6.25%;
+  height: 100%;
+  background-image: url('assets/red.png');
   background-size: contain;
   background-color: blue;
   background-position: center;
   background-repeat: no-repeat;
 }
 .maze-editor {
-  width: 100%;
-  height: 100%;
+  display: flex;
+  flex-grow: 1;
+  flex-flow: row nowrap;
   background: rgba(39, 26, 124, 0.9);
   background-size: cover;
+  height: 100%;
+  width: 100%;
   color: white;
 }
 
-.maze-editor-table {
-  float: left;
-  width: 100%;
-  height: 83%;
-  margin-top: 100px;
-  display: inline-block;
-
-}
 .maze-editor-table-div {
-  height: 100%;
-  width: 65%;
+  display: inline-flex;
+  justify-content: center;
+  flex-flow: column nowrap;
+  flex: auto;
   background: url(assets/gba.png);
   background-repeat: no-repeat;
   background-size: 100% 100%;
   background-position: center;
-  align-items: stretch;
+  align-content: space-between;
+  flex-basis: 60%;
+  height: 100%;
   float: left;
 
 }
 
 .maze-editor-row {
   width: 100%;
-  height: 5.2%;
-  display: inline-block;
-  margin-bottom: 5px;
+  height:4.85%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: space-around;
+  margin-top: 0.5%;
 }
 .gamepad {
-  width: 20%;
-  height: 20%;
+  width: 100%;
+  flex-basis: 20%;
   float: right;
   background-color: rgba(0,0,0,0);
 }
@@ -359,12 +411,29 @@ ul {
 }
 
 .legend-div {
-  display: inline-block;
-  clear: both;
-  float: left;
-  background-color: rgba(0,0,0,0);
+  display: flex;
+  flex-basis: 25%;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-content: space-between;
   height: 100%;
-  width: 15%;
+  flex: auto;
+  background-color: rgba(0,0,0,0);
+}
+
+.legend-table-row{
+  display: flex;
+  flex-flow: row nowrap;
+  height: 6%;
+  margin-top: 10%;
+}
+
+.maze-controls{
+  display: flex;
+  flex: auto;
+  flex-flow: column nowrap;
+  flex-basis: 10%;
+  height: 100%;
 }
 
 .legend {
@@ -434,7 +503,7 @@ ul {
   border-radius: 5px;
   width: 20%;
   height: 100%;
-  background-image: url('assets/up2.png');
+  background-image: url('assets/white.png');
   background-size: contain;
   background-color: blue;
   background-position: center;
@@ -445,11 +514,23 @@ ul {
   border-radius: 5px;
   width: 20%;
   height: 100%;
-  background-image: url('assets/down.png');
+  background-image: url('assets/purple.png');
   background-size: contain;
   background-color: blue;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+.legend-block8 {
+  float: left;
+  border-radius: 5px;
+  width: 20%;
+  height: 100%;
+  background-image: url('assets/red.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-color: blue;
+  background-position: center;
 }
 .legend-empty {
   float: left;
