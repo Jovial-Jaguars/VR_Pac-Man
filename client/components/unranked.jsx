@@ -286,6 +286,7 @@ export default class Unranked extends React.Component {
                 newInstanceSphere.position.z = z; 
                 newInstanceSphere.position.x = x; 
                 newInstanceSphere.position.y = 995;
+                newInstanceSphere.material = new BABYLON.StandardMaterial("ghostPellet1", scene);
                 newInstanceSphere.material.emissiveColor = new BABYLON.Color3.Purple();
                 this.createSphereBody({x: newInstanceSphere.position.x, y: newInstanceSphere.position.y, z: newInstanceSphere.position.z}, 6, flipMaze + '' + (i *16) + j, 'ghost');
               } else if(arr[i][j] === 7){
@@ -644,7 +645,7 @@ export default class Unranked extends React.Component {
     // }, function() {
     //    // FPS target not reached
     // })
-    BABYLON.SceneOptimizer.OptimizeAsync(scene);
+    // BABYLON.SceneOptimizer.OptimizeAsync(scene);
     window.addEventListener('keyup', function(e) {
       if(e.keyCode === 37) {//left
         this.camera.rotation.y -= Math.PI/2;
@@ -1053,7 +1054,6 @@ componentDidUpdate() {
     this.ghosts[2].interval = setInterval(function() {
       this.ghosts[2].directions = this.path([Math.abs(Math.floor((this.ghosts[2].body.position.z - 87.5) / 12.5)),Math.abs(Math.floor((this.ghosts[2].body.position.x) / 12.5))], this.maze).split('');
     }.bind(this), 500);
-    this.ghosts[2].directions = this.path([Math.abs(Math.floor((this.ghosts[2].body.position.z - 87.5) / 12.5)),Math.abs(Math.floor((this.ghosts[2].body.position.x) / 12.5))], this.maze).split('');
   }
   this.assetsManager.onFinish = function(tasks) {
     this.engine.runRenderLoop(this.runLoop);
