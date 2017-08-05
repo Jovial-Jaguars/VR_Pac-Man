@@ -1,18 +1,25 @@
-var express = require('express');
-var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-var port = process.env.PORT || 3000;
+const express = require('express');
+//const fs = require('fs')
+// const sslPath = '/etc/letsencrypt/live/vrpacman.com/';
+// const options = {
+//   key: fs.readFileSync(sslPath + 'privkey.pem'),
+//   cert: fs.readFileSync(sslPath + 'fullchain.pem')
+// };
 
-var passport = require('passport');
-var flash = require('connect-flash');
-var path = require('path');
-var morgan = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var session = require('express-session');
-var helmet = require('helmet');
+const app = express();
+const http = require('https').Server(app);
+//const http = require('https').createServer(options, app);
+const io = require('socket.io')(http);
+const port = process.env.PORT || 3000; // 443
 
+const passport = require('passport');
+const flash = require('connect-flash');
+const path = require('path');
+const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const session = require('express-session');
+const helmet = require('helmet');
 
 io.on('connection', function(socket) {
   console.log('a user connected');
