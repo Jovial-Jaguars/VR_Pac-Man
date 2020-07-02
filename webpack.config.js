@@ -66,8 +66,6 @@ const path = require('path');
 // };
 
 
-const HtmlWebPackPlugin = require("html-webpack-plugin");
-
 module.exports = {
   entry: './client/components/router.jsx',
   devtool: 'inline-source-map',
