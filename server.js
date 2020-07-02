@@ -7,7 +7,7 @@ const express = require('express');
 // };
 
 const app = express();
-const http = require('https').Server(app);
+const http = require('http').Server(app);
 //const http = require('https').createServer(options, app);
 const io = require('socket.io')(http);
 const port = process.env.PORT || 3000; // 443
@@ -65,7 +65,13 @@ mysql.createConnection({
 });
 
 var Sequelize = require('sequelize');
-var sequelize = new Sequelize('PacmanVR', 'root', supersecret.dbPassword);
+var sequelize = new Sequelize({
+  database:'PacmanVR', 
+  username: 'root', 
+  password: supersecret.dbPassword,
+  host: 'localhost',
+  dialect: 'mysql'
+}); 
 
 sequelize
   .authenticate()

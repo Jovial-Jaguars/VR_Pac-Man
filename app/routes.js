@@ -6,14 +6,14 @@ var ResetPassword = require('../app/models/resetpassword')
 var path = require('path');
 var jwt = require('jsonwebtoken');
 var supersecret = require('../config/config');
-var ExpressBrute = require('express-brute');
-var store = new ExpressBrute.MemoryStore();
-var bruteforce = new ExpressBrute(store);
+// var ExpressBrute = require('express-brute');
+// var store = new ExpressBrute.MemoryStore();
+// var bruteforce = new ExpressBrute(store);
 var nodemailer = require('nodemailer');
 
 module.exports = function(app, passport) {
 
-  app.post('/login', bruteforce.prevent, function(req, res) {
+  app.post('/login', function(req, res) {
     passport.authenticate('local-login', function(err, user, info) {
       if (!user) {
         console.log('hit !user')
