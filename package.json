@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "babel ./client/components --out-dir client/compiled --presets=es2015,react --ignore=node_modules,compiled,bower_components --source-maps inline && webpack && nodemon server.js",
+    "start": "node -r dotenv/config server.js",
+    "start2": "babel ./client/components --out-dir client/compiled --presets=es2015,react --ignore=node_modules,compiled,bower_components --source-maps inline && webpack && nodemon server.js",
     "build": "webpack --mode production"
   },
   "author": "",
@@ -36,6 +37,7 @@
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.3",
     "core-js": "^2.4.1",
+    "dotenv": "^8.2.0",
     "express": "^4.14.0",
     "express-session": "^1.14.2",
     "helmet": "^3.4.0",
