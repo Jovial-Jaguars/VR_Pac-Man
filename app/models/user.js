@@ -15,8 +15,8 @@ var User = sequelize.define(
   "User",
   {
     id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      type: Sequelize.UUID,
+      defaultValue: Sequelize.UUIDV4,
       primaryKey: true,
     },
     oAuthID: {
@@ -92,12 +92,12 @@ User.validPassword = function (password, hash) {
   return bcrypt.compareSync(password, hash);
 };
 // force: true will drop the table if it already exists
-User.sync({ force: true }); //.then(function () {
-//   return User.create({
-//     username: "admin",
-//     email: "testtest@gmail.com",
-//     password: "admin",
-//   });
-// });
+User.sync({ force: true }).then(function () {
+  return User.create({
+    username: "admin",
+    email: "testtest@gmail.com",
+    password: "admin",
+  });
+});
 
 module.exports = User;

@@ -24,6 +24,6 @@ var ResetPassword = sequelize.define(
   }
 );
 
-ResetPassword.sync({ force: false });
+ResetPassword.sync({ force: true });
 
 module.exports = ResetPassword;
