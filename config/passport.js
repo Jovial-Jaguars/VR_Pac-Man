@@ -28,7 +28,6 @@ module.exports = function (passport) {
         // enableProof: true
       },
       function (accessToken, refreshToken, profile, cb) {
-        console.log("profile:", profile);
         var user = { oAuthID: profile.id, username: profile.displayName };
         User.findOrCreate({
           where: {
@@ -40,7 +39,7 @@ module.exports = function (passport) {
           },
         })
           .then(function (user) {
-            return cb(null, user);
+            return cb(null, user[0]);
           })
           .catch(function (err) {
             return cb(err, null);
