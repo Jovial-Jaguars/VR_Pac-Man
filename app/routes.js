@@ -67,6 +67,7 @@ module.exports = function (app, passport) {
   app.get("/profileInfo", isLoggedIn, function (req, res) {
     console.log("hit profileinfo request.");
     console.log("req.session:", req.session.passport);
+    var result = {};
     var id = req.session.passport.user.id || req.session.passport.user[0].id;
     User.findOne({
       where: {
@@ -77,8 +78,23 @@ module.exports = function (app, passport) {
       if (!user) {
         res.json({ success: false });
       } else {
-        res.json({ success: true, user: user });
+        result.user = user;
       }
+      
+      HighScores["spHighScores_PC"].findAll({}).then(function(scores) {
+        var sorted = scores.sort(function (a, b) {
+          return b.score - a.score;
+        });
+        result.spHighScores_PC = sorted[0].score;
+        HighScores["mpHighScores_PC"].findAll({}).then(function(mpScores) {
+          var sortedMp = mpScores.sort(function (a, b) {
+            return b.score - a.score;
+          });
+          result.mpHighScores_PC = sortedMp[0].score;
+          result.success = true;
+          res.json(result)
+        });
+      })
     });
   });
 
@@ -213,6 +229,7 @@ module.exports = function (app, passport) {
       .create({
         user_id: id,
         score: score,
+        username: req.session.passport.user.username
       })
       .then(function () {
         res.send("Score posted!");
@@ -221,7 +238,7 @@ module.exports = function (app, passport) {
 
   app.get("/highScoreTable", function (req, res) {
     var table = req.query.table;
-    HighScores[table].findAll({ raw: true }).then(function (arr) {
+    HighScores[table].findAll({ raw: true, limit: 5 }).then(function (arr) {
       var sorted = arr.sort(function (a, b) {
         return b.score - a.score;
       });
@@ -393,6 +410,19 @@ module.exports = function (app, passport) {
     "/auth/facebook/callback",
     passport.authenticate("facebook", { failureRedirect: "/" }),
     function (req, res) {
+      res.redirect("/profile");
+    }
+  );
+  app.get(
+    "/auth/google",
+    passport.authenticate("google", { scope: ["profile"] })
+  );
+
+  app.get(
+    "/auth/google/callback",
+    passport.authenticate("google", { failureRedirect: "/" }),
+    function (req, res) {
+      // Successful authentication, redirect home.
       res.redirect("/profile");
     }
   );

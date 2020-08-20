@@ -19,6 +19,10 @@ var spHighScores_PC = sequelize.define(
     },
     user_id: {
       type: Sequelize.UUID,
+      allowNull: true,
+    },
+    username: {
+      type: Sequelize.STRING,
       allowNull: false,
     },
   },
@@ -36,6 +40,10 @@ var spHighScores_VR = sequelize.define(
     },
     user_id: {
       type: Sequelize.UUID,
+      allowNull: true,
+    },
+    username: {
+      type: Sequelize.STRING,
       allowNull: false,
     },
   },
@@ -53,6 +61,10 @@ var mpHighScores_PC = sequelize.define(
     },
     user_id: {
       type: Sequelize.UUID,
+      allowNull: true,
+    },
+    username: {
+      type: Sequelize.STRING,
       allowNull: false,
     },
   },
@@ -70,6 +82,10 @@ var mpHighScores_VR = sequelize.define(
     },
     user_id: {
       type: Sequelize.UUID,
+      allowNull: true,
+    },
+    username: {
+      type: Sequelize.STRING,
       allowNull: false,
     },
   },
@@ -101,14 +117,6 @@ spHighScores_VR.sync({ force: true }).then(function () {
     score: 42,
   });
   spHighScores_VR.create({
-    username: "newbie123",
-    score: 522,
-  });
-  spHighScores_VR.create({
-    username: "beginner",
-    score: 1010,
-  });
-  spHighScores_VR.create({
     username: "dknguyen",
     score: 6,
   });
@@ -116,30 +124,26 @@ spHighScores_VR.sync({ force: true }).then(function () {
     username: "trash",
     score: 5,
   });
-  spHighScores_VR.create({
-    username: "wellswannabe",
-    score: 9999,
-  });
 });
 
 spHighScores_PC.sync({ force: true }).then(function () {
   spHighScores_PC.create({
     username: "wells",
-    score: 9999,
+    score: 10,
   });
 });
 
 mpHighScores_VR.sync({ force: true }).then(function () {
   mpHighScores_VR.create({
     username: "wells",
-    score: 9999,
+    score: 10,
   });
 });
 
 mpHighScores_PC.sync({ force: true }).then(function () {
   mpHighScores_PC.create({
     username: "wells",
-    score: 9999,
+    score: 10,
   });
 });
 
