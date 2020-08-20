@@ -61,7 +61,7 @@ export default class MyProfileMaps extends React.Component{
   render(){
     return (
     <div className="singleProfileMap-container">
-      <table className="singleProfileMap" onClick={this.mapSelected.bind(this)}>
+      <table className="singleProfileMap" onClick={this.props.mapSelect}>
       <tbody>
       {
         this.props.singleMap[0].map((curr, indy)=> (

@@ -1,6 +1,7 @@
 import React from 'react';
 import TopNav from './topNav';
 import MyProfileMaps from './myprofilemaps';
+import MazeRunner from './mazeRunner';
 import {Router, Route, browserHistory, Link, withRouter} from 'react-router';
 
 
@@ -12,12 +13,15 @@ export default class ProfilePage extends React.Component {
       username: null,
       savedMaps: null,
       spHighScore: null,
-      mpHighScore: null
+      mpHighScore: null,
+      choice: 0,
+      mapId: 0
     }
     this.mazebuilderClick = this.mazebuilderClick.bind(this);
     this.mazestoreClick = this.mazestoreClick.bind(this);
     this.convertArray = this.convertArray.bind(this);
     this.convertData = this.convertData.bind(this);
+    this.mapSelect = this.mapSelect.bind(this);
   }
 
   componentWillMount() {
@@ -68,14 +72,15 @@ export default class ProfilePage extends React.Component {
 
   getMyMazes() {
     var that = this;
-    console.log('test', localStorage.getItem('username'))
     $.ajax({
       type: 'GET',
       url: '/maps',
-      data: {username: localStorage.getItem('username'), token: document.cookie},
       success: function(data) {
         if (data[1]) {
           // console.log('success myMaps', that.convertData(data[1], 'myMaps'));
+          console.log("getting my maze");
+          console.log(data[1])
+          that.convertData(data[1],'myMaps')
         }
       }
     });
@@ -108,6 +113,9 @@ export default class ProfilePage extends React.Component {
     $('#mpModeButton').css('box-shadow', 'none');
     $('#spModeButton').css('box-shadow', 'inset 0 0 0 1px #27496d,inset 0 5px 30px #193047');
     window.customMode = 'singleplayer'
+  }
+  mapSelect(mapId) {
+    this.setState({choice: 1, mapId: mapId})
   }
 
   customGamePlayButtonClick() {
@@ -212,8 +220,9 @@ export default class ProfilePage extends React.Component {
   }
 
   render() {
-    console.log('mymaps:',this.state.myMaps);
-    return (
+    return (this.state.choice ?
+      <MazeRunner maze={this.state.myMaps[this.state.mapId][0]} router={this.props.router} route={this.props.route} />
+      : 
       <div>
         <TopNav router={this.props.router}/>
         <div className="profilePageContent">
@@ -226,7 +235,7 @@ export default class ProfilePage extends React.Component {
           </div><br/>
           <div className="myMazesScreen">
             <h1 className="headers ">My Mazes</h1>
-            <div className="profilemaps-container">{this.state.myMaps.map((singleMap, index)=><MyProfileMaps key={index} mapId={index} singleMap={singleMap}/>)}</div>
+            <div className="profilemaps-container">{this.state.myMaps.map((singleMap, index)=><MyProfileMaps key={index} mapId={index} mapSelect={()=>{this.mapSelect(index)}} singleMap={singleMap}/>)}</div>
           </div>
         </div>
         <div id="customModal" className="modal">
@@ -247,7 +256,7 @@ export default class ProfilePage extends React.Component {
             </div>
             <div id="customMazeSelection">
               <p className="customGameHeaders">Choose a maze:</p>
-              <div className="profilemaps-container">{this.state.myMaps.map((singleMap, index)=><MyProfileMaps key={index} mapId={index} singleMap={singleMap}/>)}</div>
+              <div className="profilemaps-container">{this.state.myMaps.map((singleMap, index)=><MyProfileMaps key={index} mapId={index} mapSelect={this.mapSelect} singleMap={singleMap}/>)}</div>
             </div>
             <button id="customGamePlayButton" onClick={this.customGamePlayButtonClick.bind(this)}>Play</button>
           </div>
