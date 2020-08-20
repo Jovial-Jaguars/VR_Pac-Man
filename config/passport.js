@@ -1,5 +1,6 @@
 var LocalStrategy = require("passport-local").Strategy;
 var FacebookStrategy = require("passport-facebook").Strategy;
+var GoogleStrategy = require("passport-google-oauth20").Strategy;
 
 var User = require("../app/models/user");
 var jwt = require("jsonwebtoken");
@@ -18,6 +19,33 @@ module.exports = function (passport) {
     });
   });
 
+  passport.use(
+    new GoogleStrategy(
+      {
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL: `${process.env.MAIL_USER}/auth/google/callback`,
+      },
+      function (accessToken, refreshToken, profile, cb) {
+        var user = { oAuthID: profile.id, username: profile.displayName };
+        User.findOrCreate({
+          where: {
+            oAuthID: profile.id,
+          },
+          defaults: {
+            username: profile.displayName,
+            active: true,
+          },
+        })
+          .then(function (user) {
+            return cb(null, user[0]);
+          })
+          .catch(function (err) {
+            return cb(err, null);
+          });
+      }
+    )
+  );
   passport.use(
     new FacebookStrategy(
       {
