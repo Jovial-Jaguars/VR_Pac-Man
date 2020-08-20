@@ -15,18 +15,14 @@ export default class PublicMaps extends React.Component{
 
 
 componentWillMount(){
-  console.log('showmaps in mount',this.props.showMaps);
-  console.log('singlemap in mount', this.props.singleMap);
   if(this.props.showMaps === 'publicMaps'){
     this.setState({clickedIcon: 'insertcoin'});
   } else if(this.props.showMaps === 'myMaps'){
     
     if (this.props.singleMap[2] === false){
       this.setState({clickedIcon: 'private'});
-      console.log('private hit');
     } else if( this.props.singleMap[2] === true){
-      this.setState({clickedIcon: 'public'});
-      console.log('public hit');
+      this.setState({clickedIcon: 'public'});k
     }
   } else if(this.props.showMaps === 'cartMaps'){
     this.setState({clickedIcon: 'onecredit'});

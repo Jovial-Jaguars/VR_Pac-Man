@@ -16,7 +16,6 @@ module.exports = function (app, passport) {
     function (req, res) {
       passport.authenticate("local-login", function (err, user, info) {
         if (!user) {
-          console.log("hit !user");
           res.send(info);
         } else {
           req.logIn(user, function () {
@@ -51,7 +50,6 @@ module.exports = function (app, passport) {
           if (error) {
             return console.log(error);
           }
-          console.log("Message sent:", info.messageId, info.response);
         });
 
         // send back a json web token upon successful signup
@@ -65,8 +63,6 @@ module.exports = function (app, passport) {
   });
 
   app.get("/profileInfo", isLoggedIn, function (req, res) {
-    console.log("hit profileinfo request.");
-    console.log("req.session:", req.session.passport);
     var result = {};
     var id = req.session.passport.user.id || req.session.passport.user[0].id;
     User.findOne({
@@ -80,21 +76,21 @@ module.exports = function (app, passport) {
       } else {
         result.user = user;
       }
-      
-      HighScores["spHighScores_PC"].findAll({}).then(function(scores) {
+
+      HighScores["spHighScores_PC"].findAll({}).then(function (scores) {
         var sorted = scores.sort(function (a, b) {
           return b.score - a.score;
         });
         result.spHighScores_PC = sorted[0].score;
-        HighScores["mpHighScores_PC"].findAll({}).then(function(mpScores) {
+        HighScores["mpHighScores_PC"].findAll({}).then(function (mpScores) {
           var sortedMp = mpScores.sort(function (a, b) {
             return b.score - a.score;
           });
           result.mpHighScores_PC = sortedMp[0].score;
           result.success = true;
-          res.json(result)
+          res.json(result);
         });
-      })
+      });
     });
   });
 
@@ -158,23 +154,17 @@ module.exports = function (app, passport) {
   app.post("/leaveGameRoomRanked", function (req, res) {
     var roomNumber = req.body.room.slice(4);
     var username = req.session.passport.user.username;
-    console.log(username + " left room number:", roomNumber);
-    console.log("roomsInPlayRanked:", roomsInPlayRanked);
     if (roomsInPlayRanked[roomNumber]) {
       roomsInPlayRanked[roomNumber]--;
       if (roomsInPlayRanked[roomNumber] <= 0) {
-        console.log("hit");
         delete roomsInPlayRanked[roomNumber];
       }
-      console.log("roomsInPlayRanked:", roomsInPlayRanked);
     } else if (!roomsInPlayRanked[roomNumber]) {
-      console.log("waitingRoom", waitingRoomRanked);
       waitingRoomRanked.forEach(function (room, idx) {
         if (room === Number(roomNumber)) {
           waitingRoomRanked.splice(idx, 1);
         }
       });
-      console.log("waitingRoom", waitingRoomRanked);
     }
     res.end();
   });
@@ -205,7 +195,6 @@ module.exports = function (app, passport) {
   app.post("/leaveGameRoomCustom", function (req, res) {
     var roomNumber = req.body.room.slice(4);
     var username = req.session.passport.user.username;
-    console.log(username + " left room number:", roomNumber);
     customRooms[roomNumber]--;
     if (customRooms[roomNumber] <= 0) {
       delete customRooms[roomNumber];
@@ -218,7 +207,6 @@ module.exports = function (app, passport) {
   app.post("/leaveGameRoomCustom", function (req, res) {
     var roomNumber = req.body.room.slice(4);
     var username = req.session.passport.user.username;
-    console.log(username + " left room:", roomNumber);
   });
 
   app.post("/submitScore", isLoggedIn, function (req, res) {
@@ -229,7 +217,7 @@ module.exports = function (app, passport) {
       .create({
         user_id: id,
         score: score,
-        username: req.session.passport.user.username
+        username: req.session.passport.user.username,
       })
       .then(function () {
         res.send("Score posted!");
@@ -254,10 +242,6 @@ module.exports = function (app, passport) {
       raw: true,
     }).then(function (user) {
       var table = req.body.table;
-      console.log("table", table);
-      console.log(user);
-      console.log("req.body.score", req.body.score);
-      console.log("user[table]", user[table]);
       // compare user.table high score with req.body.score
       if (req.body.score > user[table]) {
         User.update(
@@ -272,7 +256,6 @@ module.exports = function (app, passport) {
   });
 
   app.post("/updateMyMapSharing", isLoggedIn, function (req, res) {
-    console.log(req.body.apiPackage);
     var myMaps = req.body.apiPackage;
     myMaps.forEach(function (entry) {
       Maps.update(
@@ -324,7 +307,6 @@ module.exports = function (app, passport) {
   });
 
   app.post("/forgotPassword", function (req, res) {
-    console.log("reqbody", req.body);
     var email = req.body.email;
     var token = jwt.sign({ email }, process.env.SECRET, {
       expiresIn: "15m", // expires in 15 minutes
@@ -376,7 +358,6 @@ module.exports = function (app, passport) {
           },
           raw: true,
         }).then(function (activeToken) {
-          console.log("activeToken:", activeToken);
           if (!activeToken) {
             res.send({ access: false });
           } else {
@@ -403,7 +384,7 @@ module.exports = function (app, passport) {
 
   app.get(
     "/auth/facebook",
-    passport.authenticate("facebook", { scope: "email" })
+    passport.authenticate("facebook", { scope: ["email"] })
   );
 
   app.get(
@@ -415,7 +396,7 @@ module.exports = function (app, passport) {
   );
   app.get(
     "/auth/google",
-    passport.authenticate("google", { scope: ["profile"] })
+    passport.authenticate("google", { scope: ["profile", "email"] })
   );
 
   app.get(

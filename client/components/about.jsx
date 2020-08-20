@@ -50,13 +50,11 @@ export default class About extends React.Component {
       url: '/submitScore',
       data: {table: 'spHighScores_VR', score: 9},
       success: function(data) {
-        console.log(data);
         $.ajax({
           type: 'POST',
           url: '/updateMyHighScores',
           data: {table: 'spHighScores_VR', score: 9},
           success: function(data) {
-            console.log(data);
           }
         })
       }
@@ -69,7 +67,6 @@ export default class About extends React.Component {
       url: '/highScoreTable',
       data: {table: 'spHighScores_PC'},
       success: function(scores) {
-        console.log(JSON.stringify(scores));
       }
     })
   }

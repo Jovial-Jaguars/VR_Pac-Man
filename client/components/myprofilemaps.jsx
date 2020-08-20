@@ -54,7 +54,6 @@ export default class MyProfileMaps extends React.Component{
 //   }
 // }
   mapSelected(event) {
-    console.log(this.props.singleMap[0]);
     window.selectedMaze = this.props.singleMap[0];
   }
 

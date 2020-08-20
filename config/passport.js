@@ -8,12 +8,10 @@ var jwt = require("jsonwebtoken");
 module.exports = function (passport) {
   // serialize and deserialize users for sessions
   passport.serializeUser(function (user, done) {
-    console.log("hit serialize");
     done(null, user);
   });
 
   passport.deserializeUser(function (username, done) {
-    console.log("hit deserialize");
     User.findOne({ username: username }).then(function (user) {
       done(null, user);
     });
@@ -25,14 +23,16 @@ module.exports = function (passport) {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL: `${process.env.MAIL_USER}/auth/google/callback`,
+        profileFields: ["email"],
       },
       function (accessToken, refreshToken, profile, cb) {
         var user = { oAuthID: profile.id, username: profile.displayName };
         User.findOrCreate({
           where: {
-            oAuthID: profile.id,
+            email: profile.emails[0].value,
           },
           defaults: {
+            oAuthID: profile.id,
             username: profile.displayName,
             active: true,
           },
@@ -52,16 +52,17 @@ module.exports = function (passport) {
         clientID: process.env.FACEBOOK_APP_ID,
         clientSecret: process.env.FACEBOOK_APP_SECRET,
         callbackURL: `${process.env.MAIL_USER}/auth/facebook/callback`,
-        // profileFields: ['id', 'displayName'],
+        profileFields: ["id", "emails", "displayName"],
         // enableProof: true
       },
       function (accessToken, refreshToken, profile, cb) {
         var user = { oAuthID: profile.id, username: profile.displayName };
         User.findOrCreate({
           where: {
-            oAuthID: profile.id,
+            email: profile.emails[0].value,
           },
           defaults: {
+            oAuthID: profile.id,
             username: profile.displayName,
             active: true,
           },
@@ -86,16 +87,13 @@ module.exports = function (passport) {
       },
       function (req, username, password, done) {
         User.findOne({ where: { username: username } }).then(function (user) {
-          console.log("hits found query");
           if (!user) {
-            console.log("hit !user");
             // return done(err);
             return done(null, false, { message: "Invalid username." });
             // return done(null, false, req.flash('loginMessage', 'User not found.'));
           }
           var hash = user.dataValues.password;
           if (!User.validPassword(password, hash)) {
-            console.log("***Enter valid password condition***");
             // return done(err);
             return done(null, false, { message: "Invalid password." });
             // return done(null, false, req.flash('loginMessage', 'Invalid password.'));
@@ -107,8 +105,6 @@ module.exports = function (passport) {
             });
           }
           //login success
-          console.log("login success");
-          console.log("user:", user.dataValues);
           return done(null, user);
         });
       }

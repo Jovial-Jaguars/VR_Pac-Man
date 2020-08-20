@@ -152,7 +152,7 @@ export default class MultiplayerCustom extends React.Component {
       }
       return curr[1];
     }
-    console.log(path([0,0], that.maze));
+    // console.log(path([0,0], that.maze));
     setInterval(function() {
       var curr = path([Math.abs(Math.floor((ghostBody.position.z - 175) / 25)),Math.abs(Math.floor((ghostBody.position.x) / 25))], that.maze);
       if(typeof curr === 'string') {
@@ -816,13 +816,13 @@ window.addEventListener("resize", function () {
         decodeView[i] = data.charCodeAt( i );
       }
       var decodedState = new Float64Array(decodeBuffer);
-      console.log(decodedState);
+      // console.log(decodedState);
       player2.position = {x: decodedState[0], y: decodedState[1], z: decodedState[2]};
       player2.rotation = {x: decodedState[3], y: decodedState[4], z: decodedState[5]};
     });
 
     socket.on('otherPlayerPelletCollision', function(pelletId) {
-      console.log('other player collision pellet id:', pelletMeshes[pelletId]);
+      // console.log('other player collision pellet id:', pelletMeshes[pelletId]);
       pelletMeshes[pelletId].dispose();
       pelletRemover = pelletId;
     })
@@ -835,7 +835,7 @@ window.addEventListener("resize", function () {
       url: 'leaveGameRoomCustom',
       data: {room: room, username: localStorage.getitem('username')},
       success: function() {
-        console.log('left room');
+        // console.log('left room');
         window.room = null;
       },
       error: function() {
@@ -855,7 +855,7 @@ window.addEventListener("resize", function () {
       url: 'leaveGameRoomCustom',
       data: {room: room, username: localStorage.getItem('username')},
       success: function() {
-        console.log('left room');
+        // console.log('left room');
         window.room = null;
       },
       error: function() {
@@ -894,7 +894,7 @@ myEvent(chkevent, function(e) { // For >=IE7, Chrome, Firefox
       url: 'leaveGameRoomCustom',
       data: {room: window.room},
       success: function() {
-        console.log('left room');
+        // console.log('left room');
         window.room = null;
       },
       error: function() {

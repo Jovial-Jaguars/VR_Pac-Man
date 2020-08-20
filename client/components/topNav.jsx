@@ -40,7 +40,6 @@ export default class TopNav extends React.Component {
             spHighScore: data.spHighScores_PC,
             mpHighScore: data.mpHighScores_PC
           });
-          console.log(data.success);
           localStorage.setItem('username', data.user.username);
         }
       }.bind(this)

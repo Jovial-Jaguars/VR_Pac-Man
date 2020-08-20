@@ -26,7 +26,6 @@ var User = sequelize.define(
     username: {
       type: Sequelize.STRING,
       allowNull: false,
-      unique: true,
       validate: {
         notEmpty: true,
         len: [1, 20],
@@ -78,7 +77,6 @@ var User = sequelize.define(
         return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
       },
       validPassword: function (password, hash) {
-        console.log("hash in validPw:", hash);
         // return 'pacmanx';
         return bcrypt.compareSync(password, hash);
       },

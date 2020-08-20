@@ -281,7 +281,6 @@ export default class Ranked extends React.Component {
               }));
             
               })
-              console.log(scores);
               callback();
             }
           })

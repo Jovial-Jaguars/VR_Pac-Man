@@ -71,7 +71,6 @@ var sequelize = new Sequelize({
 sequelize
   .authenticate()
   .then(function (err) {
-    console.log("Connection established successfully!");
   })
   .catch(function (err) {
     console.log("Unable to connect to the database:", err);

@@ -51,7 +51,6 @@ export default class ProfilePage extends React.Component {
      }
      //obj[strName] = arrayMaps;
      this.setState({[strName] : arrayMaps});
-     console.log('arrayMaps',arrayMaps);
   }
 
   //converts the map string into an array of row arrays
@@ -78,8 +77,6 @@ export default class ProfilePage extends React.Component {
       success: function(data) {
         if (data[1]) {
           // console.log('success myMaps', that.convertData(data[1], 'myMaps'));
-          console.log("getting my maze");
-          console.log(data[1])
           that.convertData(data[1],'myMaps')
         }
       }
@@ -136,8 +133,6 @@ export default class ProfilePage extends React.Component {
       roomMode = 'create';
     }
 
-    console.log('roomname', roomName);
-    console.log(window.customMode);
     // if multiplayer..
       // if creating room and room doesn't exist, create
       // if creating room and room exists, send error
@@ -153,11 +148,9 @@ export default class ProfilePage extends React.Component {
           success: function(data) {
             if (data === 'created') {
               roomSuccess = true;
-              console.log('room created');
               this.props.router.push({pathname: '/multiplayerCustom'})
             } else if (data === 'taken') {
               roomSuccess = false;
-              console.log('room taken');
             }
           }.bind(this),
           error: function() {
@@ -189,7 +182,6 @@ export default class ProfilePage extends React.Component {
         })
       }
       window.room = roomName;
-      console.log('room joined/created', room);
       // if conditions are all met, join socket room and enter game
       if (roomSuccess && window.selectedMaze) {
         socket.emit('join', room);

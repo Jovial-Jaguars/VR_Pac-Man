@@ -11,8 +11,6 @@ export default class ResetPassword extends React.Component {
   resetPasswordClick(e) {
     e.preventDefault();
     $('#resetPasswordForm .resetPasswordError').css('display', 'none');
-    console.log('pw1:', $('#resetPasswordForm .password').val());
-    console.log('pw2:', $('#resetPasswordForm .retypePassword').val());
 
     var formData = $('#resetPasswordForm').serialize();
     // if password's don't match, show error message

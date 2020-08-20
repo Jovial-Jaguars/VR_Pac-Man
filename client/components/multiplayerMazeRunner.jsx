@@ -144,7 +144,7 @@ export default class MultiplayerMazeRunner extends React.Component {
       }
       return curr[1];
     }
-    console.log(path([0,0], that.maze));
+    // console.log(path([0,0], that.maze));
     setInterval(function() {
       var curr = path([Math.abs(Math.floor((ghostBody.position.z - 175) / 25)),Math.abs(Math.floor((ghostBody.position.x) / 25))], that.maze);
       if(typeof curr === 'string') {
@@ -627,7 +627,7 @@ export default class MultiplayerMazeRunner extends React.Component {
       async: false,
       success: function(number) {
         room = 'room' + number;
-        console.log('successfully joined room:', room);
+        // console.log('successfully joined room:', room);
       },
       error: function() {
         console.log('Erorr joining game room');
@@ -651,14 +651,14 @@ export default class MultiplayerMazeRunner extends React.Component {
   });
 
   socket.on('otherPlayerPelletCollision', function(pelletId) {
-    console.log('other player collision pellet id:', pelletMeshes[pelletId]);
+    // console.log('other player collision pellet id:', pelletMeshes[pelletId]);
     pelletMeshes[pelletId].dispose();
     pelletRemover = pelletId;
   })
     // });
     engine.runRenderLoop(function () {
       BABYLON.SceneOptimizer.OptimizeAsync(scene);
-      console.log(engine.fps);
+      // console.log(engine.fps);
       socket.on('error', console.error.bind(console));
       // socket.on('otherPlayerCoords', function(data) {
       //   console.log(data);

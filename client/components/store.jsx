@@ -63,7 +63,6 @@ convertData (data, strName) {
      }
      //obj[strName] = arrayMaps;
      this.setState({[strName] : arrayMaps});
-     console.log('arrayMaps',arrayMaps);
   }
 
   //converts the map string into an array of row arrays
@@ -89,8 +88,6 @@ componentWillMount(){
       type: 'GET',
       url: '/maps',
       success: function(data) {
-        console.log('success publicMaps', that.convertData(data[0], 'publicMaps'));
-        console.log('success myMaps', that.convertData(data[1], 'myMaps'));
 
         that.setState({fetched: true});
       }
@@ -134,7 +131,6 @@ componentWillMount(){
 
   purchaseOne (mapId){
     var object = this.state.cartMaps;
-    console.log(object);
     object[mapId] = this.state.publicMaps[mapId];
     this.setState({cartMaps: object});
 
@@ -155,7 +151,6 @@ componentWillMount(){
       delete object[mapId];
       this.setState({updateMyMaps: object});
     }
-    console.log(this.state.updateMyMaps);
   }
 
   sendUpdate (){
@@ -179,7 +174,6 @@ componentWillMount(){
         url: '/updateMyMapSharing',
         data: {apiPackage: apiPackage, username: localStorage.getItem('username')},
         success: function(data) {
-          console.log(data);
         },
         error: function(err) {
           console.log(err);
@@ -204,7 +198,6 @@ componentWillMount(){
   }
 
   navClickHome() {
-    console.log('clicked home')
     this.props.router.push({pathname: '/'});
   }
 
@@ -226,16 +219,13 @@ componentWillMount(){
 
 
     if(fetched && showMaps === 'publicMaps'){
-      {console.log('inside show publicMaps', publicMaps);}
       content = <div className="maps">{publicMaps.map((singleMap, index)=><PublicMaps key={index} mapId={index} singleMap={singleMap} showMaps={showMaps} purchaseOne={this.purchaseOne.bind(this)} returnOne={this.returnOne.bind(this)} makeUpdate={this.makeUpdate.bind(this)}/>)}</div>;
     } else if (fetched && showMaps === 'myMaps'){
-      {console.log('inside show myMaps', myMaps);}
       content = <div>
                   <div className="maps">{myMaps.map((singleMap, index)=><MyMaps key={index} mapId={index} singleMap={singleMap} showMaps={showMaps} purchaseOne={this.purchaseOne.bind(this)} returnOne={this.returnOne.bind(this)} makeUpdate={this.makeUpdate.bind(this)} sendUpdate={this.sendUpdate.bind(this)}/>)}</div>
                   <button className='sendUpdate-mymaps' onClick={this.sendUpdate.bind(this)}>Update</button>
                 </div>
     } else if (fetched && showMaps === 'cartMaps'){
-      {console.log('inside show cartMaps', cartMaps);}
       for(var key in cartMaps){
         cartMapsArray.push(cartMaps[key]);
       }
@@ -261,9 +251,6 @@ componentWillMount(){
     }
 
     return  <div className="maps-container">
-
-      {console.log(this.state.cartMaps)}
-
       <Sidebar sidebar={sidebarContent}
                open={this.state.sidebarOpen}
                onSetOpen={this.onSetSidebarOpen}
@@ -351,25 +338,18 @@ shouldComponentUpdate(){
 }
 
 componentWillReceiveProps(nextprops){
-  console.log('nextprops', nextprops);
-  console.log('showMaps in receive', nextprops.showMaps);
-  console.log('singleMap in receive', nextprops.singleMap);
   this.setState({showMaps: nextprops.showMaps, singleMap: nextprops.singleMap});
 }
 
 componentWillMount(){
-  console.log('showmaps in mount',this.state.showMaps);
-  console.log('singlemap in mount', this.state.singleMap);
   if(this.state.showMaps === 'publicMaps'){
     this.setState({clickedIcon: 'insertcoin'});
   } else if(this.state.showMaps === 'myMaps'){
 
     if (this.state.singleMap[2] === false){
       this.setState({clickedIcon: 'private'});
-      console.log('private hit');
     } else if( this.state.singleMap[2] === true){
       this.setState({clickedIcon: 'public'});
-      console.log('public hit');
     }
   } else if(this.state.showMaps === 'cartMaps'){
     this.setState({clickedIcon: 'onecredit'});
