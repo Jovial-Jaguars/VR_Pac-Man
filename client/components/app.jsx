@@ -164,6 +164,8 @@ export default class App extends React.Component {
       type: 'GET',
       url: '/maps',
       success: function(data) {
+        that.convertData(data[0], 'publicMaps');
+        that.convertData(data[1], 'myMaps');
       }
     });
   }
