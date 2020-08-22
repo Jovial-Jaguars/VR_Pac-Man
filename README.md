@@ -5,14 +5,14 @@
 ## Table of Contents
 
 1. [VR Pacman](#VR_Pac-Man)
-  1. [Overview](#Overview)
-  2. [Controls](#Controls)
-  3. [Supported browsers](#Supported_Browsers)
+  1. [Overview](##Overview)
+  2. [Controls](##Controls)
+  3. [Supported browsers](##Supported_Browsers)
 2. [Development](#development)
-   1. [Overview](#Overview)
-   2. [Authentication](#Authentication)
-   3. [Libraries](#Libraries)
-   4. [Goals&Accomplishments](#Goals&Accomplishments)
+   1. [Overview](##Overview)
+   2. [Authentication](##Authentication)
+   3. [Libraries](##Libraries)
+   4. [Goals&Accomplishments](##Goals&Accomplishments)
 3. [Team](#team)
 
 # VR_Pac-Man
@@ -65,7 +65,7 @@ _*Game sound is currently (and sadly) not working under IE & Safari browsers!_
 
 # Development
 
-## Overview
+## DevOverview
 
 VR PacMan is built with a React frontend served throught the express js backend using  MYSQL database. Authentication is provided
 using passport based sessions. The webvr game is built using Babylonjs rendering engine, Cannon js is used to simulate physics
