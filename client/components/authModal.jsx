@@ -155,6 +155,7 @@ export default class AuthModal extends React.Component {
           <h2 id="formheader">Login</h2>
           <LoginForm loginFormSubmit={this.loginFormSubmit.bind(this)}/><br/>
           <p><a href="/auth/facebook"><img src="../assets/fb.png" width="40%"/></a></p>
+          <p><a href="/auth/google"><img src="../assets/google.png" width="40%"/></a></p>
           <p className="authError loginError"></p>
           <p><a onClick={this.forgotPasswordClick}>Forgot Password?</a></p>
         </div>

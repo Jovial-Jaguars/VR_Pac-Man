@@ -54,14 +54,13 @@ export default class MyProfileMaps extends React.Component{
 //   }
 // }
   mapSelected(event) {
-    console.log(this.props.singleMap[0]);
     window.selectedMaze = this.props.singleMap[0];
   }
 
   render(){
     return (
     <div className="singleProfileMap-container">
-      <table className="singleProfileMap" onClick={this.mapSelected.bind(this)}>
+      <table className="singleProfileMap" onClick={this.props.mapSelect}>
       <tbody>
       {
         this.props.singleMap[0].map((curr, indy)=> (

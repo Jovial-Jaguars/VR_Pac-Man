@@ -46,8 +46,6 @@ function checkAuth() {
 
 function checkResetPasswordToken() {
     if (location.search) {
-        console.log('location', location);
-        console.log('search.slice', location.search.slice(8));
         var token = location.search.slice(8);
         $.ajax({
             type: 'GET',
@@ -55,7 +53,6 @@ function checkResetPasswordToken() {
             data: {token: token},
             success: function(data) {
                 // do nothing
-                console.log('success. data:', data);
                 if (!data.access) {
                     browserHistory.replace('/')
                 }

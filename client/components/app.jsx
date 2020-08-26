@@ -164,14 +164,12 @@ export default class App extends React.Component {
       type: 'GET',
       url: '/maps',
       success: function(data) {
-        console.log(data);
-        console.log('success publicMaps', that.convertData(data[0], 'publicMaps'));
-        console.log('success myMaps', that.convertData(data[1], 'myMaps'));
+        that.convertData(data[0], 'publicMaps');
+        that.convertData(data[1], 'myMaps');
       }
     });
   }
   convertData(data, strName) {
-     console.log(data);
      var that = this;
      var arrayMaps = [];
      //var obj = {};
@@ -185,7 +183,6 @@ export default class App extends React.Component {
      }
      //obj[strName] = arrayMaps;
      this.setState({[strName] : arrayMaps});
-     console.log('arrayMaps',arrayMaps);
 
   }
     //converts the map string into an array of row arrays
@@ -203,7 +200,6 @@ export default class App extends React.Component {
   }
 
   enterMaze() {
-    console.log('Entering maze...');
     this.setState({
       choice: !this.state.choice
     });

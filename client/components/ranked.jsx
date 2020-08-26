@@ -177,7 +177,7 @@ export default class Ranked extends React.Component {
               marginAlignment: "h: left, v:center",
               fontName: "20pt Arial",
           }));
-          scores.push(new BABYLON.Text2D('Your Score:', {
+           scores.push(new BABYLON.Text2D('Your Score:', {
               id: "text3",
               y: -30,
               x: 325,
@@ -186,78 +186,116 @@ export default class Ranked extends React.Component {
           }));
           scores.push(new BABYLON.Text2D(this.score.toString(), {
               id: "text4",
-              y: -60,
+              y: -30,
+              x: 340,
               marginAlignment: "h: center, v:center",
               fontName: "20pt Arial",
           }));
+          scores.push(new BABYLON.Rectangle2D({
+            id: "gg", width: 200, height: 100, y: 150, x:175,
+            fill: "#404080FF", border: "#A040A0D0, #FFFFFFFF", borderThickness: 10, 
+            roundRadius: 10, 
+            children: 
+              [
+                new BABYLON.Text2D('Play Again', {
+                  id: "ploy",
+                  marginAlignment: "h: center, v:center",
+                  fontName: "20pt Arial",
+                })
+              ]
+            }));
+            scores.push(new BABYLON.Rectangle2D({
+            id: "back", width: 200, height: 100, y: 150, x:450,
+            fill: "#404080FF", border: "#A040A0D0, #FFFFFFFF", borderThickness: 10, 
+            roundRadius: 10, 
+            children: 
+              [
+                new BABYLON.Text2D('Main Menu', {
+                  id: "menu",
+                  marginAlignment: "h: center, v:center",
+                  fontName: "20pt Arial",
+                })
+              ]
+            }));
+          var callback = function() {
+            var gameOver = new BABYLON.ScreenSpaceCanvas2D(this.scene, {
+              id: "gameover2",
+              x: 400,
+              y: 0,
+              size: new BABYLON.Size(800, 1300),
+              backgroundFill: "#C0C0C040",
+              backgroundRoundRadius: 50,
+              children: scores
+    });
+  gameOver.children[3].pointerEventObservable.add(function () {
+    this.score = 0;
+    this.engine.stopRenderLoop();
+    this.engine.clear(BABYLON.Color3.Black(),false,false);
+    this.maze = [[1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 7, 1],
+                [1, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1],
+                [1, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1],
+                [1, 7, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
+                [1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1],
+                [1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 1],
+                [1, 1, 1, 1, 2, 1, 1, 1, 0, 1, 0, 1, 1, 1, 2, 1],
+                [1, 1, 1, 1, 2, 1, 2, 0, 0, 0, 0, 0, 0, 1, 2, 1],
+                [1, 0, 0, 0, 2, 0, 0, 1, 1, 0, 1, 1, 0, 0, 2, 1],
+                [1, 1, 1, 1, 2, 1, 0, 1, 4, 4, 4, 1, 0, 1, 2, 1],
+                [1, 1, 1, 1, 2, 1, 0, 1, 1, 1, 1, 1, 0, 1, 2, 1],
+                [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
+                [1, 2, 1, 1, 5, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1],
+                [1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 1],
+                [1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1],
+                [1, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6, 2, 7, 1]];
+              this.setState({});
+            }.bind(this), BABYLON.PrimitivePointerInfo.PointerUp);
+            gameOver.children[4].pointerEventObservable.add(function () {
+              this.engine.stopRenderLoop();
+              this.engine.clear(BABYLON.Color3.Black(),false,false);
+              window.removeEventListener('resize', this.resize);
+              this.props.router.push({pathname: '/'});
+            }.bind(this), BABYLON.PrimitivePointerInfo.PointerUp);
+            for(var i = 0; i < this.ghostCount; i++) {
+              clearInterval(this.ghosts[i].interval);
+            }
+            this.isGameOver = true;
+          }.bind(this);
+          $.ajax({
+            type: 'GET',
+            url: '/highScoreTable?table=spHighScores_PC',
+            success: function(highScoreList) {
+              highScoreList.forEach((highScore, ind)=>{
+                scores.push(new BABYLON.Text2D(highScore.username, {
+                  id: "text3" + ind,
+                  y: -30 - ((ind + 1) * 50),
+                  x: 325,
+                  marginAlignment: "h: left, v:center",
+                  fontName: "20pt Arial",
+              }));
+                scores.push(new BABYLON.Text2D("" + highScore.score, {
+                  id: "text4" + ind,
+                  y: -30 - ((ind+1) * 50),
+                  x: 340,
+                  marginAlignment: "h: center, v:center",
+                  fontName: "20pt Arial",
+              }));
+            
+              })
+              callback();
+            }
+          })
+          
+          var score = this.score.toString()
+          $.ajax({
+            type: 'POST',
+            url: '/submitScore',
+            data: {table: "spHighScores_PC", score: score},
+            success: function() {
+            }
+          })
 
-          scores.push(new BABYLON.Rectangle2D({
-          id: "gg", width: 200, height: 100, y: 150, x:175,
-          fill: "#404080FF", border: "#A040A0D0, #FFFFFFFF", borderThickness: 10, 
-          roundRadius: 10, 
-          children: 
-            [
-              new BABYLON.Text2D('Play Again', {
-                id: "ploy",
-                marginAlignment: "h: center, v:center",
-                fontName: "20pt Arial",
-              })
-            ]
-          }));
-          scores.push(new BABYLON.Rectangle2D({
-          id: "back", width: 200, height: 100, y: 150, x:450,
-          fill: "#404080FF", border: "#A040A0D0, #FFFFFFFF", borderThickness: 10, 
-          roundRadius: 10, 
-          children: 
-            [
-              new BABYLON.Text2D('Main Menu', {
-                id: "menu",
-                marginAlignment: "h: center, v:center",
-                fontName: "20pt Arial",
-              })
-            ]
-          }));
-          var gameOver = new BABYLON.ScreenSpaceCanvas2D(this.scene, {
-                      id: "gameover2",
-                      x: 400,
-                      y: 0,
-                      size: new BABYLON.Size(800, 1300),
-                      backgroundFill: "#C0C0C040",
-                      backgroundRoundRadius: 50,
-                      children: scores
-            });
-          gameOver.children[3].pointerEventObservable.add(function () {
-            this.score = 0;
-            this.engine.stopRenderLoop();
-            this.engine.clear(BABYLON.Color3.Black(),false,false);
-            this.maze = [[1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 7, 1],
-                        [1, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1],
-                        [1, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1],
-                        [1, 7, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
-                        [1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1],
-                        [1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 1],
-                        [1, 1, 1, 1, 2, 1, 1, 1, 0, 1, 0, 1, 1, 1, 2, 1],
-                        [1, 1, 1, 1, 2, 1, 2, 0, 0, 0, 0, 0, 0, 1, 2, 1],
-                        [1, 0, 0, 0, 2, 0, 0, 1, 1, 0, 1, 1, 0, 0, 2, 1],
-                        [1, 1, 1, 1, 2, 1, 0, 1, 4, 4, 4, 1, 0, 1, 2, 1],
-                        [1, 1, 1, 1, 2, 1, 0, 1, 1, 1, 1, 1, 0, 1, 2, 1],
-                        [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
-                        [1, 2, 1, 1, 5, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1],
-                        [1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 1],
-                        [1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1],
-                        [1, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6, 2, 7, 1]];
-            this.setState({});
-          }.bind(this), BABYLON.PrimitivePointerInfo.PointerUp);
-          gameOver.children[4].pointerEventObservable.add(function () {
-            this.engine.stopRenderLoop();
-            this.engine.clear(BABYLON.Color3.Black(),false,false);
-            window.removeEventListener('resize', this.resize);
-            this.props.router.push({pathname: '/'});
-          }.bind(this), BABYLON.PrimitivePointerInfo.PointerUp);
-          for(var i = 0; i < this.ghostCount; i++) {
-            clearInterval(this.ghosts[i].interval);
-          }
-          this.isGameOver = true;
+          
+          
         }
       }
     }.bind(this, ghostBody));
@@ -987,7 +1025,7 @@ componentDidUpdate() {
   this.isUpsideDown = false;
   this.isGameOver = false;
   this.currPacVec = {'i': 0, 'j': 0};
-  this.pacVelocity = 30;
+  this.pacVelocity = 50;
   this.isGrav = false;
   this.isGhostPellet = false;
   this.ghostRemover = 0;

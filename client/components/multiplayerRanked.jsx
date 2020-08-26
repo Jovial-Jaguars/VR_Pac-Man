@@ -4,8 +4,6 @@ import {Router, Route, browserHistory, Link} from 'react-router';
 export default class Ranked extends React.Component {
   constructor(props){
     super(props);
-    console.log('lol');
-    console.log(browserHistory);
     this.state = {
       maze: [[1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1],
             [1, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1],
@@ -444,9 +442,7 @@ componentDidMount() {
     ghostBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);
     // ghostBody.collisionResponse =
     ghostBody.addEventListener('collide', function(e){
-      console.log('collide');
       if (e.body.isPlayer) {
-        console.log('lol');
         ghostBody.velocity.x = 0;
         ghostBody.velocity.z = 0;
         sphereBody.velocity.x = 0;
@@ -458,7 +454,6 @@ componentDidMount() {
             url: '/submitScore',
             data: {table: 'mpHighScores_PC', score: score, username: username},
             success: function(data) {
-              console.log(data);
               $.ajax({
                 type: 'POST',
                 url: '/updateMyHighScores',
@@ -469,7 +464,6 @@ componentDidMount() {
                     url: '/highScoreTable',
                     data: {table: 'mpHighScores_PC'},
                     success: function(scores) {
-                      console.log(JSON.stringify(scores));
                       var data = scores;
                       var scores = [];
                       scores.push(new BABYLON.Text2D('Game Over', {
@@ -496,7 +490,7 @@ componentDidMount() {
                         data = data.slice(0, 10);
                       }
                       for (var i = 0; i < data.length; i++) {
-                        console.log((i + 1).toString() + data[i].username + data[i].score.toString());
+                        // console.log((i + 1).toString() + data[i].username + data[i].score.toString());
                         scores.push(new BABYLON.Text2D((i + 1).toString() + '.  ' + data[i].username + '  ' + data[i].score.toString() + '\n ', {
                           id: "text6",
                           y: (-30 * i) - 130,
@@ -520,7 +514,6 @@ componentDidMount() {
           })
             $(".none").toggleClass("none");
             $(".play-again").click(function() {
-              console.log('hello')
               that.setState({
                 maze: [[1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1],
                       [1, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1],
@@ -1115,9 +1108,7 @@ componentDidUpdate() {
     ghostBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);
     // ghostBody.collisionResponse =
     ghostBody.addEventListener('collide', function(e){
-      console.log('collide');
       if (e.body.isPlayer) {
-        console.log('lol');
         ghostBody.velocity.x = 0;
         ghostBody.velocity.z = 0;
         sphereBody.velocity.x = 0;
@@ -1128,7 +1119,6 @@ componentDidUpdate() {
             url: '/submitScore',
             data: {table: 'spHighScores_PC', score: score},
             success: function(data) {
-              console.log(data);
               $.ajax({
                 type: 'POST',
                 url: '/updateMyHighScores',
@@ -1139,7 +1129,6 @@ componentDidUpdate() {
                     url: '/highScoreTable',
                     data: {table: 'spHighScores_PC'},
                     success: function(scores) {
-                      console.log(JSON.stringify(scores));
                       var data = scores;
                       var scores = [];
                       scores.push(new BABYLON.Text2D('Game Over', {
@@ -1166,7 +1155,6 @@ componentDidUpdate() {
                         data = data.slice(0, 10);
                       }
                       for (var i = 0; i < data.length; i++) {
-                        console.log((i + 1).toString() + data[i].username + data[i].score.toString());
                         scores.push(new BABYLON.Text2D((i + 1).toString() + '.  ' + data[i].username + '  ' + data[i].score.toString() + '\n ', {
                           id: "text6",
                           y: (-30 * i) - 130,
@@ -1190,7 +1178,6 @@ componentDidUpdate() {
           })
             $(".none").toggleClass("none");
             $(".play-again").click(function() {
-              console.log('hello')
               that.setState({
                 maze: [[1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1],
                       [1, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1],
@@ -1380,7 +1367,6 @@ componentDidUpdate() {
       async: false, //necessary
       success: function(number) {
         room = 'room' + number;
-        console.log('successfully joined room:', room);
         window.room = room;
       },
       error: function() {
@@ -1412,13 +1398,11 @@ componentDidUpdate() {
         decodeView[i] = data.charCodeAt( i );
       }
       var decodedState = new Float64Array(decodeBuffer);
-      console.log(decodedState);
       player2.position = {x: decodedState[0], y: decodedState[1], z: decodedState[2]};
       player2.rotation = {x: decodedState[3], y: decodedState[4], z: decodedState[5]};
     });
 
     socket.on('otherPlayerPelletCollision', function(pelletId) {
-      console.log('other player collision pellet id:', pelletMeshes[pelletId]);
       pelletMeshes[pelletId].dispose();
       pelletRemover = pelletId;
     })
@@ -1431,7 +1415,6 @@ componentDidUpdate() {
       url: 'leaveGameRoomRanked',
       data: {room: room, username: localStorage.getItem('username')},
       success: function() {
-        console.log('left room');
         window.room = null;
       },
       error: function() {
@@ -1451,7 +1434,6 @@ componentDidUpdate() {
       url: 'leaveGameRoomRanked',
       data: {room: room, username: localStorage.getItem('username')},
       success: function() {
-        console.log('left room');
         window.room = null;
       },
       error: function() {
@@ -1490,7 +1472,6 @@ myEvent(chkevent, function(e) { // For >=IE7, Chrome, Firefox
       url: 'leaveGameRoomRanked',
       data: {room: window.room},
       success: function() {
-        console.log('left room');
         window.room = null;
       },
       error: function() {
