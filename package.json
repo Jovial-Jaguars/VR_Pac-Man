@@ -18,7 +18,7 @@
     "babel-loader": "^7.1.4",
     "html-loader": "^1.1.0",
     "html-webpack-plugin": "^4.3.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "jsx-loader": "^0.13.2",
     "socket.io": "^2.3.0",
     "webpack": "^4.43.0",
